@@ -29,6 +29,12 @@ Inject your own filter function with full access to options.
 
 ---
 
+## 🟩 Zero Dependencies
+
+`zcomponents-ui` is built with **zero external dependencies**.
+
+---
+
 ## 📚 Storybook Documentation
 
 All components in the **zComponents UI Library** come with interactive examples and full API documentation.

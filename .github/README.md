@@ -14,6 +14,14 @@ This package will grow over time, adding new UI building blocks with unified sty
 - ✅ Ready for npm distribution
 - ✅ Interactive documentation powered by Storybook
 
+---
+
+# 🟩 Zero Dependencies
+
+`zcomponents-ui` is built with **zero external dependencies**.
+
+---
+
 The first component included in the library is:
 
 # 🎯 **ZDrop — Advanced Dropdown / Select Component**
@@ -22,7 +30,7 @@ This README describes the **ZDrop** component inside the **zComponents** package
 
 ---
 
-## 📚 Storybook Documentation
+# 📚 Storybook Documentation
 
 All components in the **zComponents UI Library** come with interactive examples and full API documentation.
 
@@ -35,33 +43,35 @@ The Storybook is deployed automatically from `main` using GitHub Pages.
 
 # 📚 Table of Contents
 
-- [📘 zComponents — Growing React Component Library](#-zcomponents--growing-react-component-library)
-- [🎯 ZDrop — Advanced Dropdown / Select Component](#-zdrop--advanced-dropdown--select-component)
-- [🚀 Installation](#-installation)
-- [✨ Features (ZDrop)](#-features-zdrop)
-- [📦 Basic Usage (ZDrop)](#-basic-usage-zdrop)
-- [🧩 Multiple Select Example](#-multiple-select-example)
-- [🎨 Custom Rendering](#-custom-rendering)
+- 📘 [zComponents — Growing React Component Library](#-zcomponents--growing-ui-react-component-library)
+- 🎯 [ZDrop — Advanced Dropdown / Select Component](#-zdrop--advanced-dropdown--select-component)
+- 🚀 [Installation](#-installation)
+- ✨ [Features (ZDrop)](#-features-zdrop)
+- 📦 [Basic Usage (ZDrop)](#-basic-usage-zdrop)
+- 🧩 [Multiple Select Example](#-multiple-select-example)
+- 🎨 [Custom Rendering](#-custom-rendering)
   - [Custom Option Renderer](#custom-option-renderer)
   - [Custom Value Renderer](#custom-value-renderer)
   - [Custom Expand Toggle](#custom-expand-toggle)
-- [🧠 Object Options Example](#-object-options-example)
-- [🔍 Search Features](#-search-features)
-- [🔎 Additional Behaviors & Notes](#-additional-behaviors--notes)
+- 🧠 [Object Options Example](#-object-options-example)
+- 🔍 [Search Features](#-search-features)
+- 📦 [Additional Behaviors & Notes](#-additional-behaviors--notes)
   - [Flexible Option Types](#flexible-option-types)
   - [valueKey — Underlying Value Extraction](#valuekey--underlying-value-extraction)
   - [labelKey — Display Label](#labelkey--display-label)
   - [referenceElementClassName — Boundary Handling](#referenceelementclassname--boundary-handling)
-- [📌 Dropdown Positioning & Max Height](#-dropdown-positioning--max-height)
-- [🎛 Props Reference](#-props-reference)
-- [🎨 Styling Reference](#-styling-reference)
-- [📤 Events](#-events)
-- [🏗 Build Outputs](#-build-outputs)
-- [📄 License](#-license)
+  - [Clear Behavior (`clear` prop)](#-clear-behavior-clear-prop)
+  - [noDataContent](#-nodatacontent)
+- 📌 [Dropdown Positioning & Max Height](#-dropdown-positioning--max-height)
+- 🎛 [Props Reference](#-props-reference)
+- 🎨 [Styling Reference](#-styling-reference)
+- 📤 [Events](#-events)
+- 🏗 [Build Outputs](#-build-outputs)
+- 📄 [License](#-license)
 
 ---
 
-## 🚀 Installation
+# 🚀 Installation
 
 ```bash
 npm install zcomponents
@@ -73,7 +83,7 @@ pnpm add zcomponents
 
 ---
 
-## ✨ Features (ZDrop)
+# ✨ Features (ZDrop)
 
 - ✔ Single or multiple selection
 - ✔ Searchable dropdown
@@ -129,7 +139,7 @@ export default function App() {
 
 # 🎨 Custom Rendering
 
-## Custom Option Renderer
+### Custom Option Renderer
 
 ```tsx
 const optionRenderer = (option, isSelected) => (
@@ -141,7 +151,7 @@ const optionRenderer = (option, isSelected) => (
 
 ---
 
-## Custom Value Renderer
+### Custom Value Renderer
 
 ```tsx
 const valueRenderer = ({ option, onRemove }) => (
@@ -155,7 +165,7 @@ const valueRenderer = ({ option, onRemove }) => (
 
 ---
 
-## Custom Expand Toggle
+### Custom Expand Toggle
 
 ```tsx
 const toggleRenderer = (isOpen) => <span>{isOpen ? "▲" : "▼"}</span>;
@@ -208,9 +218,9 @@ searchFilterDelay={200}
 
 ---
 
-# 🔎 Additional Behaviors & Notes
+# 📦 Additional Behaviors & Notes
 
-## Flexible Option Types
+### Flexible Option Types
 
 ZDrop supports:
 
@@ -226,7 +236,7 @@ Returned values may be:
 
 ---
 
-## valueKey — Underlying Value Extraction
+### valueKey — Underlying Value Extraction
 
 ```tsx
 valueKey = "id";
@@ -236,7 +246,7 @@ Used to extract a unique primitive identifier from object-based options.
 
 ---
 
-## labelKey — Display Label
+### labelKey — Display Label
 
 ```tsx
 labelKey = "name";
@@ -258,6 +268,75 @@ referenceElementClassName = "container";
 
 ---
 
+# 🧼 Clear Behavior (`clear` prop)
+
+The `clear` prop controls how and when the clear button becomes visible.
+
+```ts
+type Clear = "always" | "whenChanged" | "whenSearched" | "none";
+```
+
+### 🔹 `clear: "always"`
+
+The Clear button is always visible after a selection is made or a search is used (unless disabled).
+
+### 🔹 `clear: "whenChanged"`
+
+Visible **only visible after a value has been selected.**.
+
+### 🔹 `clear: "whenSearched"`
+
+Visible **only visible when a search input is active**.
+
+### 🔹 `clear: "none"`
+
+Clear button hidden entirely.
+
+### `onClear` Event
+
+```ts
+onClear?: () => void;
+```
+
+Example:
+
+```tsx
+<ZDrop
+  name="countries"
+  clear="whenChanged"
+  onClear={() => console.log("Cleared!")}
+/>
+```
+
+---
+
+# 📭 `noDataContent`
+
+The `noDataContent` prop allows you to customize what is displayed when the dropdown has **no matching options** after applying the search filter.
+
+You can provide:
+
+- plain text
+- a React element
+- a fully custom styled component
+
+### Example
+
+```tsx
+<ZDrop
+  name="users"
+  options={userList}
+  isSearchable
+  noDataContent={
+    <div style={{ padding: 8, color: "#888" }}>No results found</div>
+  }
+/>
+```
+
+Use this prop to create a more user‑friendly “empty state” when the list becomes empty during search.
+
+---
+
 # 📌 Dropdown Positioning & Max Height
 
 ### `positionToReferenceElement`
@@ -274,7 +353,7 @@ positionToReferenceElement = "bottom"; // prefers downward (default)
 
 ---
 
-## `listMaxHeightLimiter`
+### `listMaxHeightLimiter`
 
 ```tsx
 listMaxHeightLimiter={200} // px
