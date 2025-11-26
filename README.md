@@ -2,9 +2,10 @@
 
 **Lightweight, typed, customizable UI building blocks for React.**
 
-![npm version](<https://img.shields.io/npm/v/zcomponents?color=rgb(25,150,90)&style=flat-square>)
-![npm downloads](https://img.shields.io/npm/dm/zcomponents?color=blue&style=flat-square)
-![license](https://img.shields.io/npm/l/zcomponents?style=flat-square)
+![npm version](<https://img.shields.io/npm/v/zcomponents-ui?color=rgb(25,150,90)&style=flat-square>)
+![npm downloads](https://img.shields.io/npm/dm/zcomponents-ui?color=blue&style=flat-square)
+![license](https://img.shields.io/npm/l/zcomponents-ui?style=flat-square)
+[![storybook](https://img.shields.io/badge/Storybook-Docs%20Site-FF4785?style=flat-square)](https://piotrnowoslawski.github.io/zComponents)
 
 ---
 
@@ -25,6 +26,17 @@ Boundary detection, list height limit, smart direction switching.
 ### ✔ Custom search logic
 
 Inject your own filter function with full access to options.
+
+---
+
+## 📚 Storybook Documentation
+
+All components in the **zComponents UI Library** come with interactive examples and full API documentation.
+
+🔗 **Live Storybook:**  
+https://piotrnowoslawski.github.io/zComponents
+
+The Storybook is deployed automatically from `main` using GitHub Pages.
 
 ---
 
