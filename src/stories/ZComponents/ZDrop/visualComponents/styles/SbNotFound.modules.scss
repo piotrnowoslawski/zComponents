@@ -1,0 +1,21 @@
+@use "@stories/styles/SbZDropColorsAndGlow.modules.scss" as global;
+
+.sbNotFound {
+  &Wrapper {
+    width: 100%;
+    min-width: 316px;
+    max-width: 500px;
+    margin-top: 15px;
+    padding: 0;
+
+    @media (max-width: 600px) {
+      min-width: 100%;
+      max-width: 100%;
+    }
+  }
+
+  &Board {
+    width: 100%;
+    @include global.glowImgTight(global.$neonRed, xl);
+  }
+}

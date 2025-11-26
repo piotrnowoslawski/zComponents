@@ -1,0 +1,46 @@
+@use "@stories/styles/SbZDropColorsAndGlow.modules.scss" as global;
+
+.sbSelection {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+
+  @media (max-width: 999px) {
+    width: calc(100% * 2 / 3 - 20px);
+  }
+
+  @media (max-width: 600px) {
+    width: 100%;
+  }
+
+  & > div:first-child {
+    margin-right: 20px;
+  }
+
+  &Element {
+    position: relative;
+    width: 50%;
+    max-width: 300px;
+    transition: transform 0.3s ease-in-out, filter 0.18s ease,
+      opacity 0.18s ease;
+    cursor: pointer;
+
+    &Background {
+      width: 100%;
+    }
+
+    &Image {
+      position: absolute;
+      bottom: 50%;
+      right: 1%;
+      transform: translateY(50%);
+      width: auto;
+      height: 90%;
+    }
+
+    &:hover {
+      transform: scale(1.1);
+      @include global.glowImgTight(global.$neonRed, xl);
+    }
+  }
+}

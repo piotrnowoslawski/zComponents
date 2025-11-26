@@ -1,0 +1,152 @@
+@use "sass:meta";
+@use "sass:map";
+@use "sass:list";
+
+@function mget($m, $key) {
+  @if meta.function-exists(get, $module: map) {
+    @return map.get($m, $key);
+  }
+  @return map-get($m, $key);
+}
+
+$inputTransition: border-color 0.22s ease, box-shadow 0.22s ease;
+$transformTransition: transform 0.3s ease-in-out;
+
+$white: rgb(255, 255, 255);
+$black: rgb(0, 0, 0);
+
+$neonWhite: (
+  c0: rgb(255, 255, 255),
+  c1: rgba(255, 255, 255, 0.9),
+  c2: rgba(255, 255, 255, 0.7),
+  c3: rgba(255, 255, 255, 0.5),
+  c4: rgba(255, 255, 255, 0.35),
+  c5: rgba(255, 255, 255, 0.1),
+);
+
+$neonBlack: (
+  c0: rgb(40, 40, 40),
+  c1: rgba(40, 40, 40, 0.9),
+  c2: rgba(40, 40, 40, 0.7),
+  c3: rgba(40, 40, 40, 0.5),
+  c4: rgba(40, 40, 40, 0.35),
+  c5: rgba(40, 40, 40, 0.1),
+);
+
+$neonRed: (
+  c0: rgb(255, 0, 80),
+  c1: rgba(255, 0, 60, 0.9),
+  c2: rgba(255, 0, 60, 0.7),
+  c3: rgba(255, 0, 60, 0.5),
+  c4: rgba(255, 0, 60, 0.35),
+  c5: rgba(255, 0, 60, 0.1),
+);
+
+$neonGreen: (
+  c0: rgb(150, 255, 80),
+  c1: rgba(150, 255, 80, 0.9),
+  c2: rgba(140, 255, 60, 0.7),
+  c3: rgba(100, 200, 40, 0.5),
+  c4: rgba(90, 180, 30, 0.35),
+  c5: rgba(90, 180, 30, 0.1),
+);
+
+$glow-use-filter: true !default;
+
+$glow-radius: (
+  xs: 4px,
+  sm: 6px,
+  md: 8px,
+  lg: 12px,
+  xl: 16px,
+) !default;
+
+$glow-tight-radius: (
+  xs: (
+    1px,
+    2px,
+  ),
+  sm: (
+    2px,
+    3px,
+  ),
+  md: (
+    2px,
+    4px,
+  ),
+  lg: (
+    3px,
+    6px,
+  ),
+  xl: (
+    4px,
+    8px,
+  ),
+) !default;
+
+@function _glow-r($size) {
+  @return map.get($glow-radius, $size);
+}
+@function _glow-pair($size) {
+  @return map.get($glow-tight-radius, $size);
+}
+
+@mixin glowFilter($m, $size: md) {
+  @if $glow-use-filter == true {
+    filter: drop-shadow(0 0 2px mget($m, c1))
+      drop-shadow(0 0 6px mget($m, c2))
+      drop-shadow(0 0 12px mget($m, c3))
+      drop-shadow(0 0 24px mget($m, c4));
+  } @else {
+    $p: _glow-pair($size);
+    filter: drop-shadow(0 0 #{list.nth($p, 1)} mget($m, c0))
+      drop-shadow(0 0 #{list.nth($p, 2)} mget($m, c1));
+  }
+}
+
+@mixin glowShadow($m, $size: md) {
+  $r: _glow-r($size);
+  box-shadow: 0 0 #{calc(#{$r} - 2px)} mget($m, c1), 0 0 #{$r} mget($m, c2),
+    0 0 #{calc(#{$r} * 2)} mget($m, c3);
+}
+
+@mixin glowBorder($borderColor, $m, $size: md) {
+  border: 2px solid transparent;
+  border-color: $borderColor;
+  @include glowShadow($m, $size);
+}
+
+@mixin glowImgTight($m, $size: md, $important: false) {
+  $p: _glow-pair($size);
+  $val: drop-shadow(0 0 #{list.nth($p, 1)} mget($m, c0))
+    drop-shadow(0 0 #{list.nth($p, 2)} mget($m, c1));
+  @if $important == true {
+    filter: #{$val} !important;
+    -webkit-filter: #{$val} !important;
+  } @else {
+    filter: #{$val};
+    -webkit-filter: #{$val};
+  }
+  will-change: filter;
+}
+
+@mixin glowImgFast($m, $size: md, $important: false) {
+  $r: _glow-r($size);
+  $val: drop-shadow(0 0 #{$r} mget($m, c1));
+  @if $important == true {
+    filter: #{$val} !important;
+    -webkit-filter: #{$val} !important;
+  } @else {
+    filter: #{$val};
+    -webkit-filter: #{$val};
+  }
+  will-change: filter;
+}
+
+@mixin glowImgHoverTight($m, $size: md, $important: false) {
+  transition: filter 0.16s ease, opacity 0.16s ease;
+  &:hover,
+  &:focus {
+    @include glowImgTight($m, $size, $important);
+  }
+}

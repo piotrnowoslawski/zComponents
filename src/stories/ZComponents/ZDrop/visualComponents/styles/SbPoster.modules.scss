@@ -1,0 +1,56 @@
+@use "@stories/styles/SbZDropColorsAndGlow.modules.scss" as global;
+
+.sbPoster {
+  width: 92%;
+  padding: 2.5% 4%;
+  border-radius: 8px;
+
+  &Wrapper {
+    position: relative;
+    width: calc(100% - 326px);
+    max-width: calc(100% - 326px);
+    max-width: 620px;
+    min-width: 620px;
+    margin-right: 10px;
+    max-height: fit-content;
+    border-radius: 8px;
+    cursor: pointer;
+
+    @media (max-width: 999px) {
+      max-width: calc(100% / 3);
+      margin-left: 20px;
+      margin-right: 0;
+      min-width: unset;
+    }
+
+    @media (max-width: 600px) {
+      width: 100%;
+      max-width: 100%;
+      margin-left: 0;
+    }
+
+    &:hover {
+      .sbPosterFrame {
+        transform: scale(1.04);
+        @include global.glowImgTight(global.$neonRed, xl);
+      }
+    }
+  }
+
+  &Image {
+    width: 100%;
+    height: auto;
+  }
+
+  &Frame {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    max-width: 100%;
+    border-radius: 8px;
+    transition: transform 0.3s ease-in-out, filter 0.18s ease,
+      opacity 0.18s ease;
+  }
+}

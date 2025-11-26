@@ -1,0 +1,151 @@
+@use "sass:meta";
+@use "sass:map";
+@use "@stories/styles/SbZDropColorsAndGlow.modules.scss" as global;
+
+@function mget($m, $key) {
+  @if meta.function-exists(get, $module: map) {
+    @return map.get($m, $key);
+  }
+  @return map-get($m, $key);
+}
+
+.zDropSurvivors {
+  &Input {
+    display: flex;
+    align-items: center;
+    height: 120px;
+    min-width: 150px;
+
+    &Field {
+      border: 2px solid global.$black;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: global.$inputTransition;
+
+      &:hover {
+        @include global.glowBorder(
+          mget(global.$neonBlack, c0),
+          global.$neonBlack
+        );
+      }
+
+      &:focus-within {
+        @include global.glowBorder(mget(global.$neonRed, c0), global.$neonRed);
+      }
+    }
+
+    &Value {
+      font-size: 16px;
+      color: mget(global.$neonRed, c0);
+      font-weight: 500;
+
+      &Content {
+        display: flex;
+        align-items: center;
+
+        img {
+          width: 120px;
+          height: 120px;
+        }
+      }
+
+      &RemoveButton {
+        background: none;
+        border: none;
+        cursor: pointer;
+
+        img {
+          width: 60px;
+          height: 60px;
+          transition: filter 0.18s ease, opacity 0.18s ease,
+            transform 0.3s ease-in-out;
+        }
+
+        &:hover {
+          img {
+            transform: scale(1.1);
+            @include global.glowImgTight(global.$neonRed, xl);
+          }
+        }
+      }
+    }
+  }
+
+  &ClearButton {
+    img {
+      width: 30px;
+      height: 30px;
+      transition: transform 0.3s ease-in-out, filter 0.18s ease,
+        opacity 0.18s ease;
+      cursor: pointer;
+    }
+
+    &:hover {
+      img {
+        transform: scale(1.1);
+        @include global.glowImgTight(global.$neonRed, sm);
+      }
+    }
+  }
+
+  &ExpandToggle {
+    padding: 0 15px;
+
+    &:hover {
+      img {
+        @include global.glowImgTight(global.$neonBlack);
+      }
+    }
+
+    &Icon {
+      width: 60px;
+      height: 60px;
+      transform: scaleX(-1);
+      transition: global.$transformTransition;
+
+      &--active {
+        transform: scaleX(-1) rotate(90deg);
+      }
+    }
+  }
+
+  &ListItem {
+    font-weight: 900;
+    color: mget(global.$neonBlack, c0);
+    text-transform: capitalize;
+    transition: background-color 0.25s ease-in-out, color 0.25s ease-in-out;
+
+    div {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    img {
+      width: 120px;
+      height: 120px;
+      transition: all 0.25s ease-in-out;
+    }
+
+    &:focus {
+      background-color: mget(global.$neonBlack, c1);
+      @include global.glowFilter(global.$neonBlack);
+    }
+
+    &:focus,
+    &:hover {
+      @include global.glowFilter(global.$neonBlack);
+      color: mget(global.$neonGreen, c0);
+
+      img {
+        transform: scale(1.1);
+        @include global.glowImgTight(global.$neonGreen, xl);
+      }
+    }
+
+    &Selected {
+      @include global.glowImgTight(global.$neonGreen, xl);
+    }
+  }
+}

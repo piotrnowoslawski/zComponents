@@ -1,0 +1,294 @@
+@use "sass:meta";
+@use "sass:map";
+@use "@stories/styles/SbZDropColorsAndGlow.modules.scss" as global;
+
+@function mget($m, $key) {
+  @if meta.function-exists(get, $module: map) {
+    @return map.get($m, $key);
+  }
+  @return map-get($m, $key);
+}
+
+.zDropZombies {
+  &Input {
+    &Field {
+      border: 2px solid global.$black;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: global.$inputTransition;
+
+      &:hover {
+        @include global.glowBorder(
+          mget(global.$neonBlack, c0),
+          global.$neonBlack
+        );
+      }
+
+      ul {
+        align-items: flex-start;
+        margin-top: 4px;
+      }
+
+      &:focus-within {
+        @include global.glowBorder(mget(global.$neonRed, c0), global.$neonRed);
+      }
+    }
+
+    &Value {
+      position: relative;
+      background: global.$black;
+
+      img {
+        width: 40px;
+        height: 40px;
+        @include global.glowImgTight(global.$neonRed, md);
+      }
+    }
+
+    &Search {
+      background: transparent;
+
+      input {
+        color: mget(global.$neonRed, c0);
+      }
+    }
+  }
+
+  &ClearButton {
+    img {
+      width: 40px;
+      height: 40px;
+      transition: transform 0.3s ease-in-out, filter 0.18s ease,
+        opacity 0.18s ease;
+      cursor: pointer;
+    }
+
+    &:hover {
+      img {
+        transform: scale(1.1);
+        @include global.glowImgTight(global.$neonRed, sm);
+      }
+    }
+  }
+
+  &ExpandToggle {
+    padding: 0 5px;
+    cursor: pointer;
+
+    &:hover {
+      img {
+        @include global.glowImgTight(global.$neonBlack);
+      }
+    }
+
+    &Icon {
+      width: 60px;
+      height: 60px;
+      transform: scaleX(-1);
+      transition: global.$transformTransition;
+
+      &--active {
+        transform: scaleX(-1) rotate(90deg);
+      }
+    }
+  }
+
+  &RemoveButton {
+    position: absolute;
+    top: 1px;
+    right: 1px;
+    background: none;
+    border: none;
+    cursor: pointer;
+
+    img {
+      width: 20px;
+      height: 20px;
+      transition: transform 0.3s ease-in-out, filter 0.18s ease,
+        opacity 0.18s ease;
+    }
+
+    &:hover {
+      img {
+        transform: scale(1.1);
+        @include global.glowImgTight(global.$neonWhite, sm);
+      }
+    }
+  }
+
+  &List {
+    &Item {
+      position: relative;
+      overflow: hidden;
+      justify-content: space-between;
+      padding: 0;
+      font-weight: 700;
+      color: mget(global.$neonBlack, c0);
+      text-transform: capitalize;
+      transition: background 0.25s ease-in-out, font-weight 0.25s ease-in-out,
+        color 0.25s ease-in-out, filter 0.18s ease, opacity 0.18s ease;
+
+      &Title {
+        margin-right: 10px;
+      }
+
+      &ImagesWrapper {
+        position: relative;
+        width: calc(100% - 30px);
+        height: 90px;
+      }
+
+      img {
+        width: 90px;
+        min-width: 90px;
+        max-width: 90px;
+        height: 90px;
+        transition: left 0.2s ease, right 0.2s ease, transform 0.3s ease-in-out,
+          filter 0.18s ease, opacity 0.3s ease;
+        pointer-events: none;
+      }
+
+      &Image {
+        &Weapon {
+          position: absolute;
+          top: 0;
+          left: 150%;
+        }
+
+        &Survivor {
+          position: absolute;
+          top: 0;
+          left: 150%;
+        }
+
+        &Zombie {
+          position: absolute;
+          top: 0;
+          left: 0;
+          opacity: 1;
+
+          &--killed {
+            position: absolute;
+            z-index: 2;
+            top: 0;
+            opacity: 0;
+          }
+        }
+      }
+
+      &Content {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        max-width: 100%;
+        padding: 2px 8px;
+
+        &--selected {
+          .zDropZombiesListItemImageZombie {
+            opacity: 0;
+
+            &--killed {
+              opacity: 1;
+              @include global.glowImgTight(global.$neonRed, xl);
+            }
+          }
+        }
+
+        &--noWeaponOrSurvivorSelected {
+          .zDropZombiesListItemImageZombie {
+            opacity: 1;
+
+            &--killed {
+              opacity: 0;
+            }
+          }
+
+          &.zDropZombiesListItemContent--selected {
+            .zDropZombiesListItemImageZombie {
+              opacity: 0;
+
+              &--killed {
+                opacity: 1;
+                @include global.glowImgTight(global.$neonRed, xl);
+              }
+            }
+          }
+        }
+      }
+
+      &:hover,
+      &:focus {
+        font-weight: 900;
+        background: mget(global.$neonBlack, c0);
+
+        .zDropZombiesListItemImageWeapon {
+          z-index: 2;
+          left: 100px;
+          transform: translateX(-50%);
+          @include global.glowImgTight(global.$neonWhite, xl);
+        }
+
+        .zDropZombiesListItemImageSurvivor {
+          z-index: 3;
+          left: 210px;
+          transform: translateX(-100%);
+          @include global.glowImgTight(global.$neonGreen, xl);
+        }
+
+        .zDropZombiesListItemImageZombie {
+          @include global.glowImgTight(global.$neonRed, xl);
+        }
+
+        .zDropZombiesListItemContent {
+          color: mget(global.$neonRed, c0);
+
+          &--noWeaponOrSurvivorSelected {
+            .zDropZombiesListItemImageZombie {
+              transform: translateX(100%);
+            }
+          }
+
+          &--weaponOrSurvivorSelected {
+            .zDropZombiesListItemImageZombie {
+              opacity: 1;
+            }
+
+            .zDropZombiesListItemImageSurvivor {
+              z-index: 2;
+              left: 160px;
+            }
+
+            .zDropZombiesListItemImageWeapon {
+              z-index: 2;
+              left: 100px;
+            }
+          }
+
+          &--selected {
+            .zDropZombiesListItemImageZombie {
+              opacity: 1;
+
+              &--killed {
+                opacity: 0;
+                @include global.glowImgTight(global.$neonRed, xl);
+              }
+            }
+          }
+
+          &--selected.zDropZombiesListItemContent--noWeaponOrSurvivorSelected {
+            .zDropZombiesListItemImageZombie {
+              opacity: 1;
+              transform: translateX(100%);
+
+              &--killed {
+                opacity: 0;
+                @include global.glowImgTight(global.$neonRed, xl);
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

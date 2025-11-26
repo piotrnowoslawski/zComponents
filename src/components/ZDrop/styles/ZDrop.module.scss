@@ -1,0 +1,350 @@
+/* ZDrop.module.scss — „override-friendly” */
+
+:global(:root) {
+  --zd-color-primary: #676767;
+  --zd-color-primary-transp: #67676775;
+  --zd-color-secondary: #0079bd;
+  --zd-color-secondary-transp: #0079bd50;
+  --zd-color-disabled: #ddd;
+
+  --zd-font-family: Helvetica, Arial, sans-serif;
+  --zd-font-size: 14px;
+
+  --zd-radius: 3px;
+  --zd-border: 1px solid var(--zd-color-primary);
+  --zd-focus-ring: 0 0 0 0.2rem var(--zd-color-secondary-transp);
+}
+
+:where(.container) * {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+:where(.container) {
+  position: relative;
+  width: fit-content;
+  max-width: 500px;
+  min-width: 200px;
+  height: fit-content;
+  max-height: fit-content;
+  font-family: var(--zd-font-family);
+  font-size: var(--zd-font-size);
+}
+
+:where(.label) {
+  display: block;
+  margin: 0 0 5px 10px;
+  color: var(--zd-color-primary);
+}
+
+:where(.inputField) {
+  position: relative;
+  display: flex;
+  min-height: 35px;
+  border: var(--zd-border);
+  border-radius: var(--zd-radius);
+  padding-left: 10px;
+  overflow-y: auto;
+  transition: border 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+:where(.inputField) > input {
+  cursor: pointer;
+}
+
+:where(.inputField):hover {
+  border-color: var(--zd-color-secondary);
+}
+
+:where(.inputField):focus-within {
+  border-color: var(--zd-color-secondary);
+  box-shadow: var(--zd-focus-ring);
+}
+
+:where(.inputField):focus-within > input {
+  cursor: text;
+}
+
+:where(.inputField--multiple) {
+  padding-left: 4px;
+}
+
+:where(.inputField--disabled) {
+  background: var(--zd-color-disabled);
+  cursor: default;
+  pointer-events: none;
+}
+
+:where(.input) {
+  width: 100%;
+  min-height: 100%;
+  padding-right: 10px;
+  border: none;
+  border-radius: var(--zd-radius);
+  color: var(--zd-color-primary);
+  background: transparent;
+}
+
+:where(.input):focus {
+  outline: none;
+}
+
+:where(.input):disabled {
+  background: var(--zd-color-disabled);
+}
+
+:where(.input)::placeholder {
+  color: var(--zd-color-primary-transp);
+}
+
+:where(.inputSingle) {
+  display: flex;
+  align-items: center;
+  max-width: 100%;
+  min-height: 35px;
+  white-space: nowrap;
+  overflow: hidden;
+  height: auto;
+}
+
+:where(.inputSingleValue) {
+  width: fit-content;
+  height: 100%;
+  border: var(--zd-border);
+  border-radius: var(--zd-radius);
+}
+
+:where(.inputSingleValueRenderer) {
+  display: flex;
+  align-items: center;
+}
+
+:where(.inputSingleSearch) {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  max-width: 100%;
+  min-height: 35px;
+  line-height: 35px;
+  overflow: hidden;
+  white-space: nowrap;
+  color: var(--zd-color-primary);
+  border: none;
+  background: transparent;
+}
+
+:where(.inputSingleSearch):focus {
+  outline: none;
+}
+
+:where(.inputMultiple) {
+  display: flex;
+  flex-wrap: wrap;
+  max-width: calc(100% - 47px);
+  align-items: center;
+  margin-right: 5px;
+  list-style: none;
+  height: auto;
+}
+
+:where(.inputMultipleValue) {
+  display: flex;
+  align-items: center;
+  width: fit-content;
+  min-width: fit-content;
+  margin: 2px;
+  padding: 3px 6px;
+  color: var(--zd-color-primary);
+  border-radius: var(--zd-radius);
+  background: var(--zd-color-disabled);
+  cursor: pointer;
+
+  span {
+    display: flex;
+    width: fit-content;
+    min-width: fit-content;
+    white-space: nowrap;
+  }
+}
+
+:where(.inputMultipleValueRemoveBtn) {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 10px;
+  min-width: 10px;
+  margin-left: 3px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+:where(.inputMultipleValueRemoveBtn):focus {
+  outline: none;
+}
+
+:where(.inputMultipleValueRemoveBtnIcon) {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  width: 10px;
+  height: 10px;
+}
+
+:where(.inputMultipleValueRemoveBtnIcon)::before,
+:where(.inputMultipleValueRemoveBtnIcon)::after {
+  position: absolute;
+  content: "";
+  height: 10px;
+  width: 2px;
+  background-color: var(--zd-color-primary);
+}
+
+:where(.inputMultipleValueRemoveBtnIcon)::before {
+  transform: rotate(45deg);
+}
+:where(.inputMultipleValueRemoveBtnIcon)::after {
+  transform: rotate(-45deg);
+}
+
+:where(.inputMultipleValueRemoveBtn):hover
+  > .inputMultipleValueRemoveBtnIcon::before,
+:where(.inputMultipleValueRemoveBtn):hover
+  > .inputMultipleValueRemoveBtnIcon::after,
+:where(.inputMultipleValueRemoveBtn):focus
+  > .inputMultipleValueRemoveBtnIcon::after,
+:where(.inputMultipleValueRemoveBtn):focus
+  > .inputMultipleValueRemoveBtnIcon::before {
+  background-color: var(--zd-color-secondary);
+}
+
+:where(.inputMultipleSearchWrapper) {
+  min-width: 100%;
+  flex: auto;
+}
+
+:where(.inputMultipleSearch) {
+  min-width: 40px;
+  width: 100%;
+  padding: 3px;
+  color: var(--zd-color-primary);
+  border: none;
+  background: transparent;
+}
+
+:where(.inputMultipleSearch):focus {
+  outline: none;
+}
+
+:where(.inputMultiplePlaceholder) {
+  padding-left: 6px;
+}
+
+:where(.inputClearBtnWrapper) {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+:where(.inputClearBtn) {
+  max-height: fit-content;
+  background: none;
+  border: none;
+}
+
+:where(.inputClearBtnIcon) {
+  display: block;
+  position: relative;
+  min-width: 14px;
+  max-width: 14px;
+  height: 15px;
+  cursor: pointer;
+}
+
+:where(.inputClearBtnIcon)::before,
+:where(.inputClearBtnIcon)::after {
+  position: absolute;
+  left: 6px;
+  content: "";
+  height: 15px;
+  width: 2px;
+  background: var(--zd-color-primary);
+}
+
+:where(.inputClearBtnIcon)::before {
+  transform: rotate(45deg);
+}
+
+:where(.inputClearBtnIcon)::after {
+  transform: rotate(-45deg);
+}
+
+:where(.inputClearBtnIcon:hover)::before,
+:where(.inputClearBtnIcon:hover)::after {
+  background: var(--zd-color-secondary);
+}
+
+:where(.expandToggle) {
+  display: flex;
+  min-width: fit-content;
+  align-items: center;
+  padding: 0 10px;
+}
+
+:where(.expandToggleIcon) {
+  transform: rotate(135deg);
+  border: solid var(--zd-color-primary);
+  border-width: 0 2px 2px 0;
+  padding: 4px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+:where(.expandToggleIcon--active) {
+  transform: translateY(-30%) rotate(45deg);
+  color: var(--zd-color-secondary);
+}
+
+:where(.expandToggleIcon):hover {
+  border-color: var(--zd-color-secondary);
+}
+
+:where(.listWrapper) {
+  min-width: 100%;
+}
+
+:where(.list) {
+  width: 100%;
+  max-height: 100%;
+  margin-top: 5px;
+  border-radius: var(--zd-radius);
+  border: var(--zd-border);
+  overflow: auto;
+}
+
+:where(.option, .noData) {
+  padding: 10px 8px;
+  color: var(--zd-color-primary);
+  list-style: none;
+}
+
+:where(.option) {
+  cursor: pointer;
+}
+
+:where(.option):focus {
+  outline: none;
+  background: var(--zd-color-secondary-transp);
+}
+
+:where(.option):hover {
+  font-weight: 700;
+}
+
+:where(.option--active) {
+  color: var(--zd-color-secondary);
+}
