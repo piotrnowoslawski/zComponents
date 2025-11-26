@@ -1,8 +1,8 @@
 # 📘 zComponents — Growing UI React Component Library
 
-![npm version](https://img.shields.io/npm/v/zcomponents?color=rgb%2825%2C150%2C90%29&style=for-the-badge)
-![npm downloads](https://img.shields.io/npm/dm/zcomponents?color=blue&style=for-the-badge)
-![license](https://img.shields.io/npm/l/zcomponents?style=for-the-badge)
+![npm version](https://img.shields.io/npm/v/zcomponents-ui?color=rgb%2825%2C150%2C90%29&style=for-the-badge)
+![npm downloads](https://img.shields.io/npm/dm/zcomponents-ui?color=blue&style=for-the-badge)
+![license](https://img.shields.io/npm/l/zcomponents-ui?style=for-the-badge)
 ![types included](https://img.shields.io/badge/TypeScript-included-blue?style=for-the-badge)
 
 **zComponents** is an evolving library of reusable, customizable React components.  
