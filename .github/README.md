@@ -68,11 +68,11 @@ The Storybook is deployed automatically from `main` using GitHub Pages.
 - 📤 [Events](#-events)
 - 🔌 [Integrations](#-integrations)
   - [Integrations React Hook Form](#-react-hook-form)
-    - 🔌 [Installation & Import](#installation--import)
-    - 🧱 [ZDropField API](#zdropfield-api)
-    - 🔄 [Value Mapping: onChangeTransform & valueSelector](#value-mapping-onchangetransform--valueselector)
-    - 🧪 [Validation](#validation)
-    - 🧩 [Yup / Zod Example](#yup--zod-validation)
+    - 🔌 [Installation & Import](#-installation--import)
+    - 🧱 [ZDropField API](#-zdropfield-api)
+    - 🔄 [Value Mapping: onChangeTransform & valueSelector](#-value-mapping-onchangetransform--valueselector)
+    - 🧪 [Validation](#-validation)
+    - 🧩 [Yup / Zod Example](#-yup--zod-validation)
 - 🏗 [Build Outputs](#-build-outputs)
 - 📄 [License](#-license)
 
@@ -459,7 +459,7 @@ Triggered when the clear button is pressed.
 
 # 🔌 Integrations
 
-## 🧩 React Hook Form Integration
+## 🧩 React Hook Form
 
 `ZDrop` works seamlessly with **react-hook-form** using the helper component `ZDropField`.  
 This integration is optional — you can still use `ZDrop` standalone.
