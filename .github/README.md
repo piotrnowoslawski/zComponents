@@ -362,6 +362,9 @@ positionToReferenceElement = "bottom"; // prefers downward (default)
 
 ### `listMaxHeightLimiter`
 
+- Only works if a reference element is provided via **referenceElementClassName** prop
+- Height adjustment also possible via CSS
+
 ```tsx
 listMaxHeightLimiter={200} // px
 ```

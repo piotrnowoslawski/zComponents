@@ -133,7 +133,10 @@ labelKey?: string; // default: "label"
 isSearchable?: boolean;
 searchFilter?: SearchFilter;
 isMultiple?: boolean;
-listMaxHeightLimiter?: number;
+isDisabled?: boolean;
+valueRenderer?: ValueRenderer;
+optionRenderer?: OptionRenderer;
+expandToggleRenderer?: ExpandToggleRenderer;
 ```
 
 ---

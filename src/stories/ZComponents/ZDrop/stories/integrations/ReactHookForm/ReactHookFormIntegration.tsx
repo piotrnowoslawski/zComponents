@@ -132,6 +132,7 @@ const ReactHookFormIntegration: Story = {
   },
   args: {
     options: survivorOptionsObjects,
+    label: "Survivor:",
     isMultiple: false,
     isDisabled: false,
     isSearchable: true,
@@ -170,6 +171,18 @@ const ReactHookFormIntegration: Story = {
       table: { disable: true },
       control: false,
     },
+    listMaxHeightLimiter: {
+      table: { disable: true },
+      control: false,
+    },
+    positionToReferenceElement: {
+      table: { disable: true },
+      control: false,
+    },
+    searchFilterDelay: {
+      table: { disable: true },
+      control: false,
+    },
     onClear: {
       table: { disable: true },
       control: false,
@@ -197,6 +210,11 @@ const ReactHookFormIntegration: Story = {
     noDataContent: {
       table: { disable: true },
       control: false,
+    },
+  },
+  parameters: {
+    controls: {
+      exclude: ["onChange", "name", "value"],
     },
   },
 };
