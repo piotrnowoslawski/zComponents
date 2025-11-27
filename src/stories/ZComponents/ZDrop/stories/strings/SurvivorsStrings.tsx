@@ -102,7 +102,6 @@ const SurvivorsStrings: Story = {
           <StoriesVisualComponents storyType="strings" posterType="survivors" />
           <ZDrop
             value={survivor?.string}
-            options={survivorOptionsStrings}
             onChange={(selected: any) => onChange(selected)}
             {...args}
           />

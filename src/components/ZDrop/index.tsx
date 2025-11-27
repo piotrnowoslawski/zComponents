@@ -34,7 +34,7 @@ import { deepEqual } from "../../helpers/checkIsEqual";
 const ZDrop = (props: ZDropProps) => {
   const {
     name,
-    options = [],
+    options,
     value,
     valueKey = "value",
     label,
@@ -120,7 +120,7 @@ const ZDrop = (props: ZDropProps) => {
       const currentMultipleSelected = getCurrentMultipleValue(
         selected,
         selectedValue,
-        options,
+        options || [],
         valueKey
       );
 
@@ -504,7 +504,7 @@ const ZDrop = (props: ZDropProps) => {
       <div className={inputFieldClasses} onClick={onInputFieldClick}>
         <ZDropInput
           name={name}
-          options={options}
+          options={options || []}
           selectedValue={selectedValue}
           {...(isSearchable && {
             currentSearchedValue: currentSearchedValue,
