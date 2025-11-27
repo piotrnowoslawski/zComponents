@@ -1,0 +1,17 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "noEmit": false,
+    "declaration": true,
+    "emitDeclarationOnly": false,
+    "skipLibCheck": true
+  },
+  "include": ["src"],
+  "exclude": [
+    "src/stories",
+    "**/*.stories.*",
+    "dist",
+    "node_modules",
+    "storybook-static"
+  ]
+}

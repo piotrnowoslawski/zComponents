@@ -1,5 +1,6 @@
 import {
   ChangeEventHandler,
+  FocusEventHandler,
   KeyboardEventHandler,
   MouseEventHandler,
   ReactElement,
@@ -93,6 +94,7 @@ export interface ZDropProps {
   searchFilter?: SearchFilter;
   shouldReturnObjectOnChange?: boolean;
   onChange?: Function;
+  onBlur?: FocusEventHandler<HTMLDivElement>;
   onClear?: Function;
   valueRenderer?: ValueRenderer;
   optionRenderer?: OptionRenderer;

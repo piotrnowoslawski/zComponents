@@ -48,6 +48,7 @@ const ZDrop = (props: ZDropProps) => {
     searchFilter = defaultSearchFilter,
     shouldReturnObjectOnChange = false,
     onChange,
+    onBlur,
     onClear,
     valueRenderer,
     optionRenderer,
@@ -496,7 +497,7 @@ const ZDrop = (props: ZDropProps) => {
   );
 
   return (
-    <div ref={containerRef} className={containerClasses}>
+    <div ref={containerRef} className={containerClasses} onBlur={onBlur}>
       {label && (
         <ZDropLabel name={name} label={label} className={styleClasses?.label} />
       )}

@@ -66,6 +66,13 @@ The Storybook is deployed automatically from `main` using GitHub Pages.
 - 🎛 [Props Reference](#-props-reference)
 - 🎨 [Styling Reference](#-styling-reference)
 - 📤 [Events](#-events)
+- 🔌 [Integrations](#-integrations)
+  - [Integrations React Hook Form](#-react-hook-form)
+    - 🔌 [Installation & Import](#installation--import)
+    - 🧱 [ZDropField API](#zdropfield-api)
+    - 🔄 [Value Mapping: onChangeTransform & valueSelector](#value-mapping-onchangetransform--valueselector)
+    - 🧪 [Validation](#validation)
+    - 🧩 [Yup / Zod Example](#yup--zod-validation)
 - 🏗 [Build Outputs](#-build-outputs)
 - 📄 [License](#-license)
 
@@ -449,6 +456,196 @@ export interface StyleClasses {
 Triggered when the clear button is pressed.
 
 ---
+
+# 🔌 Integrations
+
+## 🧩 React Hook Form Integration
+
+`ZDrop` works seamlessly with **react-hook-form** using the helper component `ZDropField`.  
+This integration is optional — you can still use `ZDrop` standalone.
+
+---
+
+### 🔌 Installation & Import
+
+```bash
+npm install zcomponents-ui react-hook-form
+```
+
+```tsx
+import { ZDropField } from "zcomponents-ui/react-hook-form";
+```
+
+---
+
+### 📦 Basic Example
+
+```tsx
+import { useForm } from "react-hook-form";
+import { ZDropField } from "zcomponents-ui/react-hook-form";
+
+type FormValues = { survivor: string };
+
+const options = [
+  { value: "hiroshi", label: "Hiroshi" },
+  { value: "harper", label: "Harper" },
+];
+
+export function ExampleForm() {
+  const { control, handleSubmit, watch } = useForm<FormValues>({
+    defaultValues: { survivor: "hiroshi" },
+  });
+
+  return (
+    <form onSubmit={handleSubmit(console.log)}>
+      <ZDropField<FormValues>
+        control={control}
+        name="survivor"
+        options={options}
+        placeholder="select a survivor"
+        isSearchable
+      />
+    </form>
+  );
+}
+```
+
+---
+
+## 🧱 ZDropField API
+
+`ZDropField` accepts nearly all props of `ZDrop`, except for:
+
+| Removed from ZDropField | Why                       |
+| ----------------------- | ------------------------- |
+| `value`                 | Managed internally by RHF |
+| `onChange`              | Controlled by RHF         |
+| `name`                  | Must match RHF schema     |
+
+Instead, RHF-specific fields are added:
+
+```ts
+type ZDropFieldProps = Omit<ZDropProps, "value" | "onChange" | "name"> & {
+  control: Control<TFieldValues>;
+  name: Path<TFieldValues>;
+  rules?: RegisterOptions<TFieldValues>;
+  onChangeTransform?: (value: unknown) => unknown;
+  valueSelector?: (formValue: unknown) => unknown;
+  errorClassName?: string;
+  errorRenderer?: (message: string) => React.ReactNode;
+};
+```
+
+---
+
+### 🔑 Additional Props Explained
+
+#### `rules`
+
+Standard react-hook-form validation rules.
+
+#### `onChangeTransform`
+
+Transforms the selected option before it is stored inside the form.
+
+#### `valueSelector`
+
+Transforms the form value before passing it back into ZDrop.
+
+#### `errorClassName`
+
+CSS class for validation error.
+
+#### `errorRenderer`
+
+Custom renderer for validation messages.
+
+---
+
+## 🔄 Value Mapping: `onChangeTransform` & `valueSelector`
+
+These two functions give complete control over how data flows.
+
+---
+
+### Case 1 — Store only an ID
+
+```tsx
+<ZDropField<FormValues>
+  name="survivorId"
+  valueKey="id"
+  options={options}
+  onChangeTransform={(option) => option?.id ?? null}
+  valueSelector={(id) => options.find((o) => o.id === id)}
+/>
+```
+
+---
+
+### Case 2 — Store the entire object
+
+```tsx
+<ZDropField<FormValues>
+  name="survivor"
+  shouldReturnObjectOnChange
+  onChangeTransform={(option) => option ?? null}
+/>
+```
+
+---
+
+## 🧪 Validation
+
+### Built-in RHF rules
+
+```tsx
+<ZDropField name="survivor" rules={{ required: "Survivor is required" }} />
+```
+
+### Validate only on submit
+
+```tsx
+useForm({
+  mode: "onSubmit",
+  reValidateMode: "onSubmit",
+});
+```
+
+---
+
+## 🧩 Yup / Zod Validation
+
+```ts
+const schema = z.object({
+  survivor: z
+    .object({
+      id: z.number(),
+      label: z.string(),
+    })
+    .nullable(),
+});
+```
+
+```tsx
+const { control } = useForm({
+  resolver: zodResolver(schema),
+});
+
+<ZDropField
+  name="survivor"
+  shouldReturnObjectOnChange
+  onChangeTransform={(option) => option ?? null}
+/>;
+```
+
+---
+
+## 🧭 Summary
+
+- 🔌 Easy integration with react-hook-form
+- 🔄 Full control over value mapping
+- ✔ Supports Yup/Zod
+- 🎨 Customizable error rendering
 
 # 🏗 Build Outputs
 

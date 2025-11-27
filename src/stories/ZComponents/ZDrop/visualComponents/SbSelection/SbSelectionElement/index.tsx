@@ -1,15 +1,22 @@
 import { goToStory } from "@stories/storybookLinks";
 import { SelectType, StoryType } from "@stories/types/visualComponentsTypes";
 import styles from "@stories/styles/StorybookTheme.module.scss";
+import { classNames } from "@helpers/classNames";
 
 interface Props {
   selected?: string;
   selectType?: SelectType;
   storyType: StoryType;
+  className?: string;
 }
 
 const SbSelectionElement = (props: Props) => {
-  const { selected, selectType, storyType } = props;
+  const { selected, selectType, storyType, className } = props;
+
+  const selectionElementClasses = classNames(
+    styles.sbSelectionElement,
+    className
+  );
 
   const boardImageUrl = selected
     ? `icons/${selectType}/z-${selected}.webp`
@@ -18,13 +25,21 @@ const SbSelectionElement = (props: Props) => {
       }.webp`;
 
   const onSelectionElementClick = () => {
+    if (storyType === "integrations") {
+      return;
+    }
+
     goToStory(selectType === "survivors" ? "survivors" : "weapons", storyType);
   };
 
   return (
     <div
-      className={styles.sbSelectionElement}
+      className={selectionElementClasses}
       onClick={onSelectionElementClick}
+      style={{
+        cursor: storyType === "integrations" ? "default" : "pointer",
+        pointerEvents: storyType === "integrations" ? "none" : "auto",
+      }}
     >
       <img
         className={styles.sbSelectionElementBackground}

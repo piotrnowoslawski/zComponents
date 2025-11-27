@@ -7,22 +7,30 @@ import dts from "rollup-plugin-dts";
 
 export default [
   {
-    input: "src/index.ts",
+    input: {
+      index: "src/index.ts",
+      "react-hook-form": "src/integrations-react-hook-form.ts",
+    },
     output: [
-      { file: "dist/index.esm.js", format: "esm", sourcemap: true },
       {
-        file: "dist/index.cjs.js",
+        dir: "dist",
+        format: "esm",
+        sourcemap: true,
+        entryFileNames: "[name].esm.js", // index.esm.js, react-hook-form.esm.js
+      },
+      {
+        dir: "dist",
         format: "cjs",
         sourcemap: true,
         exports: "named",
+        entryFileNames: "[name].cjs.js", // index.cjs.js, react-hook-form.cjs.js
       },
     ],
-    plugins: {},
     plugins: [
       peerDepsExternal(),
       resolve(),
       commonjs(),
-      typescript({ tsconfig: "./tsconfig.json" }),
+      typescript({ tsconfig: "./tsconfig.build.json" }),
       postcss({
         extract: true, // dist/index.css
         modules: true, // *.module.scss → CSS Modules
@@ -39,10 +47,18 @@ export default [
       }),
     ],
   },
-
   {
-    input: "dist/types/index.d.ts",
-    output: [{ file: "dist/index.d.ts", format: "esm" }],
+    input: {
+      index: "dist/types/index.d.ts",
+      "react-hook-form": "dist/types/integrations-react-hook-form.d.ts",
+    },
+    output: [
+      {
+        dir: "dist",
+        format: "esm",
+        entryFileNames: "[name].d.ts", // index.d.ts, react-hook-form.d.ts
+      },
+    ],
     plugins: [dts()],
   },
 ];

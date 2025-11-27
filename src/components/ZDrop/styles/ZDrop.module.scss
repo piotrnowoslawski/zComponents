@@ -6,6 +6,9 @@
   --zd-color-secondary: #0079bd;
   --zd-color-secondary-transp: #0079bd50;
   --zd-color-disabled: #ddd;
+  --zd-color-error: #ff4d4f;
+  --zd-color-error-transp: #ffe6e6;
+  --zd-color-background-transp: #ffffffdd;
 
   --zd-font-family: Helvetica, Arial, sans-serif;
   --zd-font-size: 14px;
@@ -314,10 +317,14 @@
 }
 
 :where(.listWrapper) {
+  position: absolute;
+  z-index: 2;
   min-width: 100%;
 }
 
 :where(.list) {
+  position: absolute;
+  z-index: 2;
   width: 100%;
   max-height: 100%;
   margin-top: 5px;
@@ -347,4 +354,13 @@
 
 :where(.option--active) {
   color: var(--zd-color-secondary);
+}
+
+:where(.errorMessage) {
+  margin-top: 5px;
+  padding: 8px;
+  color: var(--zd-color-error);
+  border: 1px solid var(--zd-color-error);
+  border-radius: var(--zd-radius);
+  background: var(--zd-color-error-transp);
 }

@@ -138,6 +138,25 @@ listMaxHeightLimiter?: number;
 
 ---
 
+# 🔌 React Hook Form Integration (Short Note)
+
+## Features
+
+- Full compatibility with rules, mode, reValidateMode
+
+- Works with Yup / Zod through RHF resolvers
+
+- Supports value mapping via
+
+- onChangeTransform (ZDrop → RHF)
+
+- valueSelector (RHF → ZDrop)
+
+- Customizable error rendering
+
+📌 Use ZDropField when working with forms.
+📌 Use ZDrop standalone for uncontrolled usage.
+
 # 📄 License
 
 MIT © Piotr Nowosławski
