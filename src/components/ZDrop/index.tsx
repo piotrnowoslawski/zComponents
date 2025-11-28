@@ -493,6 +493,7 @@ const ZDrop = (props: ZDropProps) => {
         listItem: styleClasses?.listItem,
         noData: styleClasses?.noData,
       }}
+      isListWrapperEnabled={!!referenceElementClassName}
     />
   );
 

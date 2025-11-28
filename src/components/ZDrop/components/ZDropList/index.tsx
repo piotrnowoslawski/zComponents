@@ -52,9 +52,12 @@ export const ZDropList = (props: ZDropListProps) => {
     noDataContent,
     currentSearchedValue,
     listStyleClasses,
+    isListWrapperEnabled,
   } = props;
 
-  const dropdownListClasses = classNames(styles.list, listStyleClasses?.list);
+  const dropdownListClasses = classNames(styles.list, listStyleClasses?.list, {
+    [styles["list--wrapper-enabled"]]: !!isListWrapperEnabled,
+  });
 
   const getListItemClasses = (option: ZDropOption) => {
     if (Array.isArray(selectedValue)) {

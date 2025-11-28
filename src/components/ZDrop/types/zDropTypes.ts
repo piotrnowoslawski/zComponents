@@ -125,6 +125,7 @@ export interface ZDropListProps {
   noDataContent?: string | ReactElement;
   currentSearchedValue?: string;
   listStyleClasses?: ListStyleClasses;
+  isListWrapperEnabled?: boolean;
 }
 
 export interface ZDropListItemProps {

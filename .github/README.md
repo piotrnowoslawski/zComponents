@@ -425,6 +425,16 @@ export interface ZDropProps {
 
 # 🎨 Styling Reference
 
+zcomponents-ui ships with a compiled CSS file containing all default styles.
+You need to import it once in your application (usually in your main entry file).
+
+```ts
+import "zcomponents-ui/styles.css";
+```
+
+The default styles are intentionally minimal and unobtrusive — the component does not impose a visual identity.
+The goal of ZDrop is to stay out of the way and give you full freedom in shaping your own look & feel, whether through custom CSS, SCSS Modules, Tailwind, or the styleClasses override system.
+
 ```ts
 export interface StyleClasses {
   container?: string;

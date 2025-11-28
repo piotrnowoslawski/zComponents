@@ -125,6 +125,22 @@ const ReactHookFormIntegration: Story = {
                 </p>
               )}
             </div>
+            <ZDropField<FormValues>
+              control={control}
+              name="survivor"
+              valueKey="stateId"
+              onChangeTransform={(selected: any) => {
+                onChange(selected);
+                return selected;
+              }}
+              rules={{
+                validate: (value) =>
+                  value ? true : "Survivor is required (disabled)",
+              }}
+              options={survivorOptionsObjects}
+              clear="always"
+              isSearchable={true}
+            />
           </div>
         </div>
       </div>

@@ -7,7 +7,7 @@ export const ZDropListNoData = (props: ZDropListNoDataProps) => {
 
   const noDataClasses = classNames(styles.noData, className);
 
-  return <li className={noDataClasses}>{noDataContent}</li>;
+  return <div className={noDataClasses}>{noDataContent}</div>;
 };
 
 export default ZDropListNoData;

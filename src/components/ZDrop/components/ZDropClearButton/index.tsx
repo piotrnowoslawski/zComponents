@@ -48,7 +48,7 @@ const ZDropClearButton = (props: ZDropClearButtonProps) => {
   return (
     <div className={styles.inputClearBtnWrapper}>
       <button tabIndex={-1} className={clearButtonClasses} onClick={onClear}>
-        {clearIcon || <span className={styles.inputClearBtnIcon}></span>}
+        {clearIcon || <span className={styles.inputClearBtnIcon} />}
       </button>
     </div>
   );
