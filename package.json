@@ -18,7 +18,8 @@
       "types": "./dist/react-hook-form.d.ts",
       "import": "./dist/react-hook-form.esm.js",
       "require": "./dist/react-hook-form.cjs.js"
-    }
+    },
+    "./styles.css": "./dist/zcomponents-ui.css"
   },
   "files": [
     "dist/**/*",

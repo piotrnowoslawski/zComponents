@@ -32,7 +32,7 @@ export default [
       commonjs(),
       typescript({ tsconfig: "./tsconfig.build.json" }),
       postcss({
-        extract: true, // dist/index.css
+        extract: "zcomponents-ui.css",
         modules: true, // *.module.scss → CSS Modules
         use: [
           [
