@@ -1,7 +1,7 @@
 import { ZDropClearButtonProps } from "../../types/zDropTypes";
 import { classNames } from "../../../../helpers/classNames";
 import styles from "../../styles/ZDrop.module.scss";
-import { checkIsClearHidden } from "../../helpers/checkIsClearHidden";
+import { checkIsClearButtonHidden } from "../../helpers/checkIsClearButtonHidden";
 
 const ZDropClearButton = (props: ZDropClearButtonProps) => {
   const {
@@ -34,7 +34,7 @@ const ZDropClearButton = (props: ZDropClearButtonProps) => {
   };
 
   if (
-    checkIsClearHidden(
+    checkIsClearButtonHidden(
       hasValueChanged,
       currentSearchedValue,
       isListVisible,

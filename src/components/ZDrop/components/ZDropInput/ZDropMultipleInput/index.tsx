@@ -1,7 +1,4 @@
-import {
-  ZDropMultipleInputProps,
-  ZDropMultipleValue,
-} from "../../../types/zDropTypes";
+import { ZDropMultipleInputProps } from "../../../types/zDropTypes";
 import { classNames } from "../../../../../helpers/classNames";
 import ZDropMultipleInputValue from "../ZDropMultipleInputValue";
 import styles from "../../../styles/ZDrop.module.scss";

@@ -9,8 +9,8 @@ import {
 import { classNames } from "@helpers/classNames";
 import StoriesVisualComponents from "@stories/ZComponents/ZDrop/visualComponents";
 import { zombieOptionsObjects } from "../../staticData/objects/zDropObjectsData";
-import { removeOrReplaceCharacter } from "@helpers/removeOrReplaceCharacter";
-import { shrinkName } from "@helpers/shrinkName";
+import { removeOrReplaceCharacter } from "@stories/helpers/removeOrReplaceCharacter";
+import { shrinkName } from "@stories/helpers/shrinkName";
 import { on } from "events";
 import SbNotFound from "../../visualComponents/SbNotFound";
 

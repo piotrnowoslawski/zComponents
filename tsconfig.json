@@ -19,7 +19,9 @@
       "@components/*": ["components/*"],
       "@stories/*": ["stories/*"],
       "@helpers/*": ["helpers/*"],
-      "@styles/*": ["styles/*"]
+      "@hooks/*": ["hooks/*"],
+      "@styles/*": ["styles/*"],
+      "@types/*": ["types/*"]
     }
   },
   "include": ["src", ".storybook"],

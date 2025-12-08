@@ -22,6 +22,7 @@ const meta: Meta<typeof ZDrop> = {
     layout: "padded",
   },
 };
+
 export default meta;
 
 export const SurvivorsNumbersStory = {

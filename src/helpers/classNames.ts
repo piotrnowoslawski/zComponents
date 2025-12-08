@@ -2,7 +2,9 @@ interface ClassNames {
   [key: string]: boolean;
 }
 
-export const classNames = (...params: (string | ClassNames | undefined)[]) => {
+export const classNames = (
+  ...params: (string | ClassNames | undefined)[]
+): string => {
   const classes: string[] = [];
 
   params.forEach((param) => {

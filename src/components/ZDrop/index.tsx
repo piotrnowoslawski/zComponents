@@ -17,7 +17,7 @@ import {
   InputOptionRemove,
 } from "./types/zDropTypes";
 import { classNames } from "../../helpers/classNames";
-import { useOutsideClose } from "../../helpers/useOutsideClose";
+import { useOutsideClose } from "../../hooks/useOutsideClose";
 import styles from "./styles/ZDrop.module.scss";
 import ZDropLabel from "./components/ZDropLabel";
 import { ZDropList } from "./components/ZDropList";
@@ -29,7 +29,7 @@ import { findOption } from "./helpers/findOption";
 import { defaultSearchFilter } from "./helpers/searchFilter";
 import { getCurrentMultipleValue } from "./helpers/getCurrentMultipleValue";
 import ZDropListWrapper from "./components/ZDropList/ZDropListWrapper";
-import { deepEqual } from "../../helpers/checkIsEqual";
+import { checkIsValueEqualToSelectedValue } from "./helpers/checkIsValueEqualToSelectedValue";
 
 const ZDrop = (props: ZDropProps) => {
   const {
@@ -435,21 +435,23 @@ const ZDrop = (props: ZDropProps) => {
     }
   };
 
-  useOutsideClose(containerRef, () => {
-    if (!isListVisible) {
-      return;
-    }
+  useOutsideClose(
+    containerRef,
+    () => {
+      setIsListVisible(false);
 
-    setIsListVisible(false);
+      if (isSearchable && !currentSearchedValue) {
+        setOptionsData(options || []);
+      }
 
-    if (isSearchable && !currentSearchedValue) {
-      setOptionsData(options || []);
+      if (valueRenderer && isSelectedValueCorrect) {
+        setIsInputItemVisible(true);
+      }
+    },
+    {
+      isActive: isListVisible,
     }
-
-    if (valueRenderer && isSelectedValueCorrect) {
-      setIsInputItemVisible(true);
-    }
-  });
+  );
 
   useEffect(() => {
     if (options) {
@@ -464,7 +466,10 @@ const ZDrop = (props: ZDropProps) => {
   }, [optionsData]);
 
   useEffect(() => {
-    if (isValueCorrect && !deepEqual(value, selectedValue)) {
+    if (
+      isValueCorrect &&
+      !checkIsValueEqualToSelectedValue(value, selectedValue)
+    ) {
       setCurrentValue(defaultInputValue(value));
       valueRenderer && setIsInputItemVisible(true);
     }

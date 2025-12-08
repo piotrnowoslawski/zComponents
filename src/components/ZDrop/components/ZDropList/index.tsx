@@ -4,40 +4,7 @@ import ZDropListNoData from "./ZDropListNoData";
 import { ZDropListProps, ZDropOption } from "../../types/zDropTypes";
 import styles from "../../styles/ZDrop.module.scss";
 import { checkIsValueEqualToOption } from "../../helpers/checkIsValueEqualToOption";
-
-interface CheckIsEqualParams {
-  value: any;
-  option: any;
-  valueType: string;
-  labelType: string;
-}
-
-interface CheckIsEqualFunction {
-  (
-    value: CheckIsEqualParams["value"],
-    option: CheckIsEqualParams["option"],
-    valueType: CheckIsEqualParams["valueType"]
-  ): boolean;
-}
-
-interface CheckIsEqualMultipleFunction {
-  (
-    checkIsEqual: CheckIsEqualFunction,
-    value: any[],
-    option: ZDropOption,
-    valueKey: string
-  ): boolean;
-}
-
-const checkIsEqualMultiple: CheckIsEqualMultipleFunction = (
-  checkIsInputValueEqualToOptionValue: CheckIsEqualFunction,
-  value: any[],
-  option: ZDropOption,
-  valueKey: string
-): boolean =>
-  value.some((value) =>
-    checkIsInputValueEqualToOptionValue(value, option, valueKey)
-  );
+import { checkIsOptionSelected } from "../../helpers/checkIsOptionSelected";
 
 export const ZDropList = (props: ZDropListProps) => {
   const {
@@ -59,24 +26,18 @@ export const ZDropList = (props: ZDropListProps) => {
     [styles["list--wrapper-enabled"]]: !!isListWrapperEnabled,
   });
 
-  const getListItemClasses = (option: ZDropOption) => {
+  const getListItemClasses = (
+    option: ZDropOption,
+    isOptionSelected: boolean
+  ) => {
     if (Array.isArray(selectedValue)) {
       return classNames(styles.option, listStyleClasses?.listItem, {
-        [styles["option--active"]]: checkIsEqualMultiple(
-          checkIsValueEqualToOption,
-          selectedValue,
-          option,
-          valueKey
-        ),
+        [styles["option--active"]]: isOptionSelected,
       });
     }
 
     return classNames(styles.option, listStyleClasses?.listItem, {
-      [styles["option--active"]]: checkIsValueEqualToOption(
-        selectedValue,
-        option,
-        valueKey
-      ),
+      [styles["option--active"]]: isOptionSelected,
     });
   };
 
@@ -91,33 +52,33 @@ export const ZDropList = (props: ZDropListProps) => {
 
   return (
     <ul className={dropdownListClasses}>
-      {options.map((option, index) => (
-        <ZDropListItem
-          key={(option as any)?.[valueKey] || index}
-          innerRef={(el: HTMLLIElement | null) => {
-            optionsRef.current[index] = el;
-          }}
-          option={option}
-          index={index}
-          labelKey={labelKey}
-          onOptionClick={onOptionClick}
-          onOptionKeyDown={onOptionKeyDown}
-          className={getListItemClasses(option)}
-        >
-          {optionRenderer?.(
-            option,
-            Array.isArray(selectedValue)
-              ? checkIsEqualMultiple(
-                  checkIsValueEqualToOption,
-                  selectedValue,
-                  option,
-                  valueKey
-                )
-              : checkIsValueEqualToOption(selectedValue, option, valueKey),
-            currentSearchedValue
-          )}
-        </ZDropListItem>
-      ))}
+      {options.map((option, index) => {
+        const isOptionSelected = Array.isArray(selectedValue)
+          ? checkIsOptionSelected(
+              checkIsValueEqualToOption,
+              selectedValue,
+              option,
+              valueKey
+            )
+          : checkIsValueEqualToOption(selectedValue, option, valueKey);
+
+        return (
+          <ZDropListItem
+            key={(option as any)?.[valueKey] || index}
+            innerRef={(el: HTMLLIElement | null) => {
+              optionsRef.current[index] = el;
+            }}
+            option={option}
+            index={index}
+            labelKey={labelKey}
+            onOptionClick={onOptionClick}
+            onOptionKeyDown={onOptionKeyDown}
+            className={getListItemClasses(option, isOptionSelected)}
+          >
+            {optionRenderer?.(option, isOptionSelected, currentSearchedValue)}
+          </ZDropListItem>
+        );
+      })}
     </ul>
   );
 };

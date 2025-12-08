@@ -21,8 +21,6 @@ export const ZDropListVisibilityToggle = (
     }
   );
 
-  console.log(iconClasses);
-
   return (
     <div className={toggleClasses} onClick={onClick}>
       {expandToggleRenderer ? (

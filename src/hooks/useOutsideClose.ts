@@ -1,4 +1,8 @@
-import { RefObject, useEffect } from "react";
+import { useEffect } from "react";
+
+type Settings = {
+  isActive?: boolean;
+};
 
 type OutsideHandler = (event: MouseEvent | KeyboardEvent) => void;
 
@@ -6,10 +10,13 @@ type RefLike = { current: HTMLElement | null };
 
 export const useOutsideClose = (
   ref: RefLike,
-  onOutsideClose: OutsideHandler
+  onOutsideClose: OutsideHandler,
+  settings?: Settings
 ) => {
+  const isActive = settings?.isActive ?? true;
+
   useEffect(() => {
-    const handleClick = (e: MouseEvent) => {
+    const handleClick = (e: MouseEvent): void => {
       if (
         ref &&
         ref.current &&
@@ -25,14 +32,19 @@ export const useOutsideClose = (
       }
     };
 
-    document.addEventListener("click", handleClick);
-    document.addEventListener("keydown", handleKey);
+    if (isActive) {
+      document.addEventListener("click", handleClick);
+      document.addEventListener("keydown", handleKey);
+    } else {
+      document.removeEventListener("click", handleClick);
+      document.removeEventListener("keydown", handleKey);
+    }
 
     return () => {
       document.removeEventListener("click", handleClick);
       document.removeEventListener("keydown", handleKey);
     };
-  }, [onOutsideClose, ref]);
+  }, [onOutsideClose, ref, isActive]);
 };
 
 export default useOutsideClose;

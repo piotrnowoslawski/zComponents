@@ -4,6 +4,8 @@ import {
   KeyboardEventHandler,
   MouseEventHandler,
   ReactElement,
+  ReactNode,
+  RefObject,
   Ref,
 } from "react";
 
@@ -113,6 +115,12 @@ export interface ZDropLabelProps {
   className?: string;
 }
 
+export interface ZDropListWrapperProps {
+  referenceElementClassName: string;
+  positionToReferenceElement?: "top" | "bottom";
+  listMaxHeightLimiter?: number;
+  children: ReactNode;
+}
 export interface ZDropListProps {
   options: ZDropOption[];
   selectedValue: ZDropValue;
@@ -133,7 +141,7 @@ export interface ZDropListItemProps {
   index: number;
   children?: ReactElement;
   labelKey?: string;
-  innerRef: Ref<HTMLLIElement>;
+  innerRef: Ref<HTMLLIElement | null>;
   onOptionClick: Function;
   onOptionKeyDown: Function;
   className?: string;
@@ -179,9 +187,9 @@ export interface ZDropInputProps {
   setIsListVisible: Function;
   isInputItemVisible: boolean;
   valueRenderer?: ValueRenderer;
-  inputRef: Ref<HTMLInputElement>;
-  inputRefMultipleValueRenderer: Ref<HTMLInputElement | HTMLDivElement>;
-  inputRefSingleValueRenderer: Ref<HTMLInputElement>;
+  inputRef: RefObject<HTMLInputElement | null>;
+  inputRefMultipleValueRenderer: RefObject<HTMLInputElement | null>;
+  inputRefSingleValueRenderer: RefObject<HTMLInputElement | null>;
   onInputClick: MouseEventHandler;
   onInputItemClick: MouseEventHandler;
   onInputKeyDown: KeyboardEventHandler;
@@ -203,8 +211,8 @@ export interface ZDropSingleInputProps {
   isDisabled?: boolean;
   isSearchable?: boolean;
   valueRenderer?: ValueRenderer;
-  inputRef: Ref<HTMLInputElement>;
-  inputRefSingleValueRenderer: Ref<HTMLInputElement>;
+  inputRef: RefObject<HTMLInputElement | null>;
+  inputRefSingleValueRenderer: RefObject<HTMLInputElement | null>;
   isInputItemVisible?: boolean;
   onInputClick: MouseEventHandler;
   onInputItemClick: MouseEventHandler;
@@ -224,7 +232,7 @@ export interface ZDropSingleInputValueRendererProps {
   inputValue: string | number;
   isListVisible: boolean;
   placeholder?: string;
-  inputRefSingleValueRenderer?: Ref<HTMLInputElement>;
+  inputRefSingleValueRenderer?: RefObject<HTMLInputElement | null>;
   isInputItemVisible?: boolean;
   onChange: ChangeEventHandler<HTMLInputElement>;
   onInputItemClick: MouseEventHandler<HTMLDivElement>;
@@ -244,7 +252,7 @@ export interface ZDropMultipleInputProps {
   isSearchable?: boolean;
   currentSearchedValue?: string;
   valueRenderer?: ValueRenderer;
-  inputRefMultipleValueRenderer: Ref<HTMLInputElement>;
+  inputRefMultipleValueRenderer: RefObject<HTMLInputElement | null>;
   onInputClick: MouseEventHandler;
   onInputKeyDown: KeyboardEventHandler;
   onInputChange: ChangeEventHandler;

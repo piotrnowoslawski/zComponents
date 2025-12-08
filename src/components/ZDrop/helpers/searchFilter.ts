@@ -1,6 +1,8 @@
-import { ZDropDefaultSearchFilter } from "../types/zDropTypes";
+import { ZDropDefaultSearchFilter, ZDropOption } from "../types/zDropTypes";
 
-export const defaultSearchFilter = (props: ZDropDefaultSearchFilter) => {
+export const defaultSearchFilter = (
+  props: ZDropDefaultSearchFilter
+): ZDropOption[] => {
   const { options, currentValue, labelKey } = props;
 
   const searchedValue = currentValue || "";

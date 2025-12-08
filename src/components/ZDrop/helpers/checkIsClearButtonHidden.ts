@@ -1,4 +1,12 @@
-export const checkIsClearHidden = (
+interface CheckIsClearButtonHiddenParams {
+  hasValueChanged: boolean;
+  currentSearchedValue: string;
+  isListVisible: boolean;
+  isClearableOnlyWhenChange: boolean;
+  isClearableOnlyWhenSearch: boolean;
+}
+
+export const checkIsClearButtonHidden = (
   hasValueChanged: boolean,
   currentSearchedValue: string,
   isListVisible: boolean,

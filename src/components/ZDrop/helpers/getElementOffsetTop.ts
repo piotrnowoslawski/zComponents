@@ -1,4 +1,4 @@
-export const getElementOffsetTop = (element: HTMLElement | null) => {
+export const getElementOffsetTop = (element: HTMLElement | null): number => {
   if (!element) return 0;
 
   const rect = element.getBoundingClientRect();

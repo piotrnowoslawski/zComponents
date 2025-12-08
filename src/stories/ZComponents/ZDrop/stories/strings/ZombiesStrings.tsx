@@ -8,8 +8,8 @@ import {
 } from "@stories/ZComponents/ZDrop/store/zDropStore";
 import { zombieOptionsStrings } from "@stories/ZComponents/ZDrop/staticData/strings/ZDropStringsData";
 import { classNames } from "@helpers/classNames";
-import { removeOrReplaceCharacter } from "@helpers/removeOrReplaceCharacter";
-import { shrinkName } from "@helpers/shrinkName";
+import { removeOrReplaceCharacter } from "@stories/helpers/removeOrReplaceCharacter";
+import { shrinkName } from "@stories/helpers/shrinkName";
 import StoriesVisualComponents from "@stories/ZComponents/ZDrop/visualComponents";
 import SbNotFound from "../../visualComponents/SbNotFound";
 

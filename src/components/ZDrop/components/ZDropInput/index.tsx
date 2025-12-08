@@ -44,9 +44,7 @@ const ZDropInput = (props: ZDropInputProps) => {
         isSearchable={isSearchable}
         currentSearchedValue={currentSearchedValue}
         valueRenderer={valueRenderer}
-        inputRefMultipleValueRenderer={
-          inputRefMultipleValueRenderer as React.RefObject<HTMLInputElement>
-        }
+        inputRefMultipleValueRenderer={inputRefMultipleValueRenderer}
         onInputClick={onInputClick}
         onInputKeyDown={onInputKeyDown}
         onInputChange={onInputChange}

@@ -1,48 +1,9 @@
 import { ChangeEvent, useState, useEffect, MouseEvent } from "react";
-import {
-  ZDropSingleInputProps,
-  ZDropOption,
-  ZDropSingleValue,
-} from "../../../types/zDropTypes";
+import { ZDropSingleInputProps } from "../../../types/zDropTypes";
 import { classNames } from "../../../../../helpers/classNames";
 import styles from "../../../styles/ZDrop.module.scss";
 import ZDropSingleInputValue from "../ZDropSingleInputValue";
-
-const getLabelFromOption = (
-  options: ZDropOption[],
-  selectedValue: ZDropSingleValue,
-  valueKey: string,
-  labelKey: string
-): string | number => {
-  const foundOption = options.find((option) => {
-    if (
-      typeof option === "object" &&
-      option !== null &&
-      (typeof selectedValue === "string" || typeof selectedValue === "number")
-    ) {
-      return option[valueKey] === selectedValue;
-    }
-
-    if (
-      typeof option === "object" &&
-      option !== null &&
-      typeof selectedValue === "object" &&
-      selectedValue !== null
-    ) {
-      return option[valueKey] === selectedValue[valueKey];
-    }
-
-    return option === selectedValue;
-  });
-
-  if (foundOption !== undefined && foundOption !== null) {
-    return typeof foundOption === "object"
-      ? foundOption[labelKey]
-      : foundOption;
-  }
-
-  return "";
-};
+import { getLabelFromOption } from "../../../helpers/getLabelFromOption";
 
 export const ZDropSingleInput = (props: ZDropSingleInputProps) => {
   const {

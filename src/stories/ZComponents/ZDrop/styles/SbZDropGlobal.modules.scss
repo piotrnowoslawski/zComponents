@@ -3,6 +3,9 @@
     display: flex;
     height: 100vh;
     padding: 10px;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-image: url("/backgrounds/main/z-city-1.webp");
 
     @media (max-width: 390px) {
       padding: 5px;

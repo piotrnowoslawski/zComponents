@@ -11,7 +11,7 @@ import {
   weaponOptionsStrings,
   weaponNames,
 } from "@stories/ZComponents/ZDrop/staticData/strings/ZDropStringsData";
-import { removeOrReplaceCharacter } from "@helpers/removeOrReplaceCharacter";
+import { removeOrReplaceCharacter } from "@stories/helpers/removeOrReplaceCharacter";
 import StoriesVisualComponents from "@stories/ZComponents/ZDrop/visualComponents";
 import SbNotFound from "../../visualComponents/SbNotFound";
 

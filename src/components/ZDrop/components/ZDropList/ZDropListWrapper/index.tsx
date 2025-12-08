@@ -1,16 +1,10 @@
-import { useState, ReactNode, useCallback, CSSProperties } from "react";
+import { useState, useCallback, CSSProperties } from "react";
 import {
   getElementOffsetTop,
   getReferenceElementDimensions,
 } from "../../../helpers/getElementOffsetTop";
 import styles from "../../../styles/ZDrop.module.scss";
-
-interface Props {
-  referenceElementClassName: string;
-  positionToReferenceElement?: "top" | "bottom";
-  listMaxHeightLimiter?: number;
-  children: ReactNode;
-}
+import { ZDropListWrapperProps } from "integrations-react-hook-form";
 
 const distanceGap = 0;
 const marginTop = 10;
@@ -29,7 +23,7 @@ const calculateHeightForTop = (
     : scrollHeight;
 };
 
-const ZDropListWrapper = (props: Props) => {
+const ZDropListWrapper = (props: ZDropListWrapperProps) => {
   const {
     referenceElementClassName,
     positionToReferenceElement = "bottom",

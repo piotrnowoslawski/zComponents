@@ -11,7 +11,7 @@ export const findOption = (
   options: ZDropOption[] = [],
   selected: ZDropSingleValue | ZDropMultipleValue,
   valueKey: string
-) => {
+): ZDropOption | undefined => {
   const key =
     isObj(selected) && valueKey in selected ? selected[valueKey] : selected;
 
