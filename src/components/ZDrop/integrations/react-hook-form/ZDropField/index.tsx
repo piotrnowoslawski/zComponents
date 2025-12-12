@@ -48,7 +48,10 @@ export function ZDropField<TFieldValues extends FieldValues = FieldValues>(
     ...zDropProps
   } = props;
 
-  const errorMessageClasses = classNames(styles.errorMessage, errorClassName);
+  const errorMessageClasses = classNames(
+    styles["zd__error-message"],
+    errorClassName
+  );
 
   return (
     <Controller
@@ -69,14 +72,25 @@ export function ZDropField<TFieldValues extends FieldValues = FieldValues>(
           );
         };
 
+        const {
+          isAutoHeightEnabled,
+          autoHeightPosition,
+          referenceElementClassName,
+          positionToReferenceElement,
+          ...rest
+        } = zDropProps;
+
         return (
           <>
             <ZDrop
-              {...zDropProps}
               name={fieldName}
               value={zDropValue as any}
               onChange={handleChange}
               onBlur={onBlur}
+              {...(isAutoHeightEnabled
+                ? { isAutoHeightEnabled, autoHeightPosition }
+                : { referenceElementClassName, positionToReferenceElement })}
+              {...rest}
             />
             {fieldState.error?.message && (
               <div className={errorMessageClasses}>

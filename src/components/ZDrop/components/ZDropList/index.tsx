@@ -20,25 +20,41 @@ export const ZDropList = (props: ZDropListProps) => {
     currentSearchedValue,
     listStyleClasses,
     isListWrapperEnabled,
+    isAutoHeightEnabled,
   } = props;
 
-  const dropdownListClasses = classNames(styles.list, listStyleClasses?.list, {
-    [styles["list--wrapper-enabled"]]: !!isListWrapperEnabled,
-  });
+  const dropdownListClasses = classNames(
+    {
+      [styles["zd__list"]]: !isAutoHeightEnabled,
+      [styles["zd__list--auto-height-enabled"]]: isAutoHeightEnabled,
+      [styles["zd__list--reference-wrapper-enabled"]]: isListWrapperEnabled,
+    },
+    listStyleClasses?.list
+  );
+
+  console.log("render list", dropdownListClasses, isAutoHeightEnabled);
 
   const getListItemClasses = (
     option: ZDropOption,
     isOptionSelected: boolean
   ) => {
     if (Array.isArray(selectedValue)) {
-      return classNames(styles.option, listStyleClasses?.listItem, {
-        [styles["option--active"]]: isOptionSelected,
-      });
+      return classNames(
+        styles["zd__option"],
+        {
+          [styles["zd__option--active"]]: isOptionSelected,
+        },
+        listStyleClasses?.listItem
+      );
     }
 
-    return classNames(styles.option, listStyleClasses?.listItem, {
-      [styles["option--active"]]: isOptionSelected,
-    });
+    return classNames(
+      styles["zd__option"],
+      {
+        [styles["zd__option--active"]]: isOptionSelected,
+      },
+      listStyleClasses?.listItem
+    );
   };
 
   if (options.length === 0) {

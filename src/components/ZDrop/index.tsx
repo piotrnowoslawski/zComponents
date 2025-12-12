@@ -30,6 +30,7 @@ import { defaultSearchFilter } from "./helpers/searchFilter";
 import { getCurrentMultipleValue } from "./helpers/getCurrentMultipleValue";
 import ZDropListWrapper from "./components/ZDropList/ZDropListWrapper";
 import { checkIsValueEqualToSelectedValue } from "./helpers/checkIsValueEqualToSelectedValue";
+import ZDropListAutoHeightWrapper from "./components/ZDropList/ZDropListAutoHeightWrapper";
 
 const ZDrop = (props: ZDropProps) => {
   const {
@@ -57,6 +58,8 @@ const ZDrop = (props: ZDropProps) => {
     noDataContent,
     referenceElementClassName,
     positionToReferenceElement,
+    autoHeightPosition,
+    isAutoHeightEnabled,
     listMaxHeightLimiter,
     styleClasses,
   } = props;
@@ -89,16 +92,16 @@ const ZDrop = (props: ZDropProps) => {
     selectedValue !== "";
 
   const containerClasses = classNames(
-    styles.container,
+    styles["zd__container"],
     styleClasses?.container
   );
   const inputFieldClasses = classNames(
-    styles.inputField,
-    styleClasses?.inputField,
+    styles["zd__input-field"],
     {
-      [styles["inputField--multiple"]]: isMultiple,
-      [styles["inputField--disabled"]]: isDisabled,
-    }
+      [styles["zd__input-field--multiple"]]: isMultiple,
+      [styles["zd__input-field--disabled"]]: isDisabled,
+    },
+    styleClasses?.inputField
   );
 
   const updateOptionsDataBySearch = (
@@ -499,6 +502,7 @@ const ZDrop = (props: ZDropProps) => {
         noData: styleClasses?.noData,
       }}
       isListWrapperEnabled={!!referenceElementClassName}
+      isAutoHeightEnabled={isAutoHeightEnabled}
     />
   );
 
@@ -563,7 +567,10 @@ const ZDrop = (props: ZDropProps) => {
           }}
         />
       </div>
-      {isListVisible && !referenceElementClassName && zDropList}
+      {isListVisible &&
+        !referenceElementClassName &&
+        !isAutoHeightEnabled &&
+        zDropList}
       {isListVisible && referenceElementClassName && (
         <ZDropListWrapper
           referenceElementClassName={referenceElementClassName}
@@ -572,6 +579,14 @@ const ZDrop = (props: ZDropProps) => {
         >
           {zDropList}
         </ZDropListWrapper>
+      )}
+      {isListVisible && isAutoHeightEnabled && (
+        <ZDropListAutoHeightWrapper
+          containerRef={containerRef}
+          position={autoHeightPosition}
+        >
+          {zDropList}
+        </ZDropListAutoHeightWrapper>
       )}
     </div>
   );

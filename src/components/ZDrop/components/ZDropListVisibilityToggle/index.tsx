@@ -9,16 +9,16 @@ export const ZDropListVisibilityToggle = (
     props;
 
   const toggleClasses = classNames(
-    styles.expandToggle,
+    styles["zd__expand-toggle"],
     toggleStyleClasses?.expandToggle
   );
 
   const iconClasses = classNames(
-    styles.expandToggleIcon,
-    toggleStyleClasses?.expandToggleIcon,
+    styles["zd__expand-toggle-icon"],
     {
-      [styles["expandToggleIcon--active"]]: isListVisible,
-    }
+      [styles["zd__expand-toggle-icon--active"]]: isListVisible,
+    },
+    toggleStyleClasses?.expandToggleIcon
   );
 
   return (

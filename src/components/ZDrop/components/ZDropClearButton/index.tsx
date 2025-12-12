@@ -15,7 +15,10 @@ const ZDropClearButton = (props: ZDropClearButtonProps) => {
     clearIcon,
   } = props;
 
-  const clearButtonClasses = classNames(styles.inputClearBtn, className);
+  const clearButtonClasses = classNames(
+    styles["zd__input-clear-btn"],
+    className
+  );
 
   interface ClearValueEvent {
     preventDefault: () => void;
@@ -46,9 +49,9 @@ const ZDropClearButton = (props: ZDropClearButtonProps) => {
   }
 
   return (
-    <div className={styles.inputClearBtnWrapper}>
+    <div className={styles["zd__input-clear-btn-wrapper"]}>
       <button tabIndex={-1} className={clearButtonClasses} onClick={onClear}>
-        {clearIcon || <span className={styles.inputClearBtnIcon} />}
+        {clearIcon || <span className={styles["zd__input-clear-btn-icon"]} />}
       </button>
     </div>
   );

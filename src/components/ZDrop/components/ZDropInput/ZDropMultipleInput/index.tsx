@@ -27,15 +27,16 @@ export const ZDropMultipleInput = (props: ZDropMultipleInputProps) => {
   } = props;
 
   const inputSelectClasses = classNames(
-    styles.input,
-    styles.inputMultiple,
+    styles["zd__input"],
+    styles["zd__input-multiple"],
     inputClassName
   );
-  const inputMultipleSearchClasses = classNames(styles.inputMultipleSearch);
-
+  const inputMultipleSearchClasses = classNames(
+    styles["zd__input-multiple-search"]
+  );
   const inputMultipleSearchWrapperClasses = classNames(
-    styles.inputMultiple,
-    styles.inputMultipleSearchWrapper,
+    styles["zd__input-multiple"],
+    styles["zd__input-multiple-search-wrapper"],
     inputMultipleSearchClassName
   );
 
@@ -88,7 +89,7 @@ export const ZDropMultipleInput = (props: ZDropMultipleInputProps) => {
       {((!isListVisible && selectedValue.length === 0) ||
         ((selectedValue.length === 0 || !selectedValue) && !isSearchable)) && (
         <span
-          className={styles.inputMultiplePlaceholder}
+          className={styles["zd__input-multiple-placeholder"]}
           onClick={onPlaceholderClick}
         >
           {placeholder}

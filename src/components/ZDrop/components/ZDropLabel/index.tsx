@@ -5,7 +5,7 @@ import styles from "../../styles/ZDrop.module.scss";
 export const ZDropLabel = (props: ZDropLabelProps) => {
   const { name, label, className } = props;
 
-  const labelClasses = classNames(styles.label, className);
+  const labelClasses = classNames(styles["zd__label"], className);
 
   if (typeof label === "string") {
     return (

@@ -18,17 +18,20 @@
   --zd-focus-ring: 0 0 0 0.2rem var(--zd-color-secondary-transp);
 }
 
-:where(.container) * {
+:where(.zd__container) * {
   padding: 0;
   margin: 0;
+}
+
+.zd__container * {
   box-sizing: border-box;
 }
 
-.container {
+.zd__container {
   position: relative;
 }
 
-:where(.container) {
+:where(.zd__container) {
   width: fit-content;
   max-width: 500px;
   min-width: 200px;
@@ -38,20 +41,20 @@
   font-size: var(--zd-font-size);
 }
 
-.label {
+.zd__label {
   display: block;
 }
 
-:where(.label) {
+:where(.zd__label) {
   margin: 0 0 5px 10px;
   color: var(--zd-color-primary);
 }
 
-.inputField {
+.zd__input-field {
   position: relative;
 }
 
-:where(.inputField) {
+:where(.zd__input-field) {
   display: flex;
   min-height: 35px;
   border: var(--zd-border);
@@ -61,34 +64,34 @@
   transition: border 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 
-.inputField > input {
+.zd__input-field > input {
   cursor: pointer;
 }
 
-:where(.inputField):hover {
+:where(.zd__input-field):hover {
   border-color: var(--zd-color-secondary);
 }
 
-:where(.inputField):focus-within {
+:where(.zd__input-field):focus-within {
   border-color: var(--zd-color-secondary);
   box-shadow: var(--zd-focus-ring);
 }
 
-.inputField:focus-within > input {
+.zd__input-field:focus-within > input {
   cursor: text;
 }
 
-:where(.inputField--multiple) {
+:where(.zd__input-field--multiple) {
   padding-left: 4px;
 }
 
-:where(.inputField--disabled) {
+:where(.zd__input-field--disabled) {
   background: var(--zd-color-disabled);
   cursor: default;
   pointer-events: none;
 }
 
-:where(.input) {
+:where(.zd__input) {
   width: 100%;
   min-height: 100%;
   padding-right: 10px;
@@ -98,19 +101,19 @@
   background: transparent;
 }
 
-:where(.input):focus {
+:where(.zd__input):focus {
   outline: none;
 }
 
-:where(.input):disabled {
+:where(.zd__input):disabled {
   background: var(--zd-color-disabled);
 }
 
-:where(.input)::placeholder {
+:where(.zd__input)::placeholder {
   color: var(--zd-color-primary-transp);
 }
 
-:where(.inputSingle) {
+:where(.zd__input-single) {
   display: flex;
   align-items: center;
   max-width: 100%;
@@ -120,19 +123,19 @@
   height: auto;
 }
 
-:where(.inputSingleValue) {
+:where(.zd__input-single-value) {
   width: fit-content;
   height: 100%;
   border: var(--zd-border);
   border-radius: var(--zd-radius);
 }
 
-:where(.inputSingleValueRenderer) {
+:where(.zd__input-single-value-renderer) {
   display: flex;
   align-items: center;
 }
 
-:where(.inputSingleSearch) {
+:where(.zd__input-single-search) {
   display: flex;
   align-items: center;
   flex: 1;
@@ -146,11 +149,11 @@
   background: transparent;
 }
 
-:where(.inputSingleSearch):focus {
+:where(.zd__input-single-search):focus {
   outline: none;
 }
 
-:where(.inputMultiple) {
+:where(.zd__input-multiple) {
   display: flex;
   flex-wrap: wrap;
   max-width: calc(100% - 47px);
@@ -160,7 +163,7 @@
   height: auto;
 }
 
-:where(.inputMultipleValue) {
+:where(.zd__input-multiple-value) {
   display: flex;
   align-items: center;
   width: fit-content;
@@ -180,7 +183,7 @@
   }
 }
 
-:where(.inputMultipleValueRemoveBtn) {
+:where(.zd__input-multiple-value-remove-btn) {
   position: relative;
   display: flex;
   align-items: center;
@@ -193,11 +196,11 @@
   cursor: pointer;
 }
 
-:where(.inputMultipleValueRemoveBtn):focus {
+:where(.zd__input-multiple-value-remove-btn):focus {
   outline: none;
 }
 
-:where(.inputMultipleValueRemoveBtnIcon) {
+:where(.zd__input-multiple-value-remove-btn-icon) {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -206,8 +209,8 @@
   height: 10px;
 }
 
-:where(.inputMultipleValueRemoveBtnIcon)::before,
-:where(.inputMultipleValueRemoveBtnIcon)::after {
+:where(.zd__input-multiple-value-remove-btn-icon)::before,
+:where(.zd__input-multiple-value-remove-btn-icon)::after {
   position: absolute;
   content: "";
   height: 10px;
@@ -215,30 +218,30 @@
   background-color: var(--zd-color-primary);
 }
 
-:where(.inputMultipleValueRemoveBtnIcon)::before {
+:where(.zd__input-multiple-value-remove-btn-icon)::before {
   transform: rotate(45deg);
 }
-:where(.inputMultipleValueRemoveBtnIcon)::after {
+:where(.zd__input-multiple-value-remove-btn-icon)::after {
   transform: rotate(-45deg);
 }
 
-:where(.inputMultipleValueRemoveBtn):hover
-  > .inputMultipleValueRemoveBtnIcon::before,
-:where(.inputMultipleValueRemoveBtn):hover
-  > .inputMultipleValueRemoveBtnIcon::after,
-:where(.inputMultipleValueRemoveBtn):focus
-  > .inputMultipleValueRemoveBtnIcon::after,
-:where(.inputMultipleValueRemoveBtn):focus
-  > .inputMultipleValueRemoveBtnIcon::before {
+:where(.zd__input-multiple-value-remove-btn):hover
+  > .zd__input-multiple-value-remove-btn-icon::before,
+:where(.zd__input-multiple-value-remove-btn):hover
+  > .zd__input-multiple-value-remove-btn-icon::after,
+:where(.zd__input-multiple-value-remove-btn):focus
+  > .zd__input-multiple-value-remove-btn-icon::after,
+:where(.zd__input-multiple-value-remove-btn):focus
+  > .zd__input-multiple-value-remove-btn-icon::before {
   background-color: var(--zd-color-secondary);
 }
 
-:where(.inputMultipleSearchWrapper) {
+:where(.zd__input-multiple-search-wrapper) {
   min-width: 100%;
   flex: auto;
 }
 
-:where(.inputMultipleSearch) {
+:where(.zd__input-multiple-search) {
   min-width: 40px;
   width: 100%;
   padding: 3px;
@@ -247,11 +250,11 @@
   background: transparent;
 }
 
-:where(.inputMultipleSearch):focus {
+:where(.zd__input-multiple-search):focus {
   outline: none;
 }
 
-:where(.inputMultiplePlaceholder) {
+:where(.zd__input-multiple-placeholder) {
   padding-left: 6px;
 }
 
@@ -259,19 +262,19 @@
   position: relative;
 }
 
-:where(.inputClearBtnWrapper) {
+:where(.zd__input-clear-btn-wrapper) {
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.inputClearBtn {
+:where(.zd__input-clear-btn) {
   max-height: fit-content;
   background: none;
   border: none;
 }
 
-.inputClearBtnIcon {
+:where(.zd__input-clear-btn-icon) {
   display: block;
   position: relative;
   min-width: 14px;
@@ -280,8 +283,8 @@
   cursor: pointer;
 }
 
-.inputClearBtnIcon::before,
-.inputClearBtnIcon::after {
+:where(.zd__input-clear-btn-icon)::before,
+:where(.zd__input-clear-btn-icon)::after {
   position: absolute;
   left: 6px;
   content: "";
@@ -290,27 +293,27 @@
   background: var(--zd-color-primary);
 }
 
-.inputClearBtnIcon::before {
+:where(.zd__input-clear-btn-icon)::before {
   transform: rotate(45deg);
 }
 
-.inputClearBtnIcon::after {
+:where(.zd__input-clear-btn-icon)::after {
   transform: rotate(-45deg);
 }
 
-.inputClearBtnIcon:hover::before,
-.inputClearBtnIcon:hover::after {
+:where(.zd__input-clear-btn-icon):hover::before,
+:where(.zd__input-clear-btn-icon):hover::after {
   background: var(--zd-color-secondary);
 }
 
-.expandToggle {
+.zd__expand-toggle {
   display: flex;
   min-width: fit-content;
   align-items: center;
   padding: 0 10px;
 }
 
-.expandToggleIcon {
+.zd__expand-toggle-icon {
   transform: rotate(135deg);
   border: solid var(--zd-color-primary);
   border-width: 0 2px 2px 0;
@@ -319,68 +322,77 @@
   transition: 0.3s;
 }
 
-.expandToggleIcon--active {
+.zd__expand-toggle-icon--active {
   transform: translateY(-30%) rotate(45deg);
   color: var(--zd-color-secondary);
 }
 
-:where(.expandToggleIcon):hover {
+:where(.zd__expand-toggle-icon):hover {
   border-color: var(--zd-color-secondary);
 }
 
-.listWrapper {
+.zd__list {
   position: absolute;
-  max-height: fit-content;
-}
-
-:where(.listWrapper) {
-  z-index: 2;
-  min-width: 100%;
-}
-
-.list {
-  position: absolute;
-  max-height: fit-content;
-}
-
-:where(.list) {
   z-index: 2;
   width: 100%;
-  height: 300px;
-  margin-top: 5px;
-  border-radius: var(--zd-radius);
-  border: var(--zd-border);
+  max-height: fit-content;
   overflow: auto;
 }
 
-.list--wrapper-enabled {
+.zd__list-wrapper {
+  z-index: 2;
+  position: absolute;
+  min-width: 100%;
+  margin-top: 5px;
+  overflow: auto;
+}
+
+:where(.zd__list-wrapper) {
+  border-radius: var(--zd-radius);
+  border: var(--zd-border);
+}
+
+.zd__list-auto-height-wrapper {
+  width: 100%;
+  height: auto;
+  overflow: auto;
+  margin-top: 5px;
+}
+
+:where(.zd__list-auto-height-wrapper) {
+  border-radius: var(--zd-radius);
+  border: var(--zd-border);
+}
+
+.zd__list--auto-height-enabled,
+.zd__list--reference-wrapper-enabled {
   position: relative;
 }
 
-:where(.option, .noData) {
+:where(.zd__option, .zd__no-data) {
   padding: 10px 8px;
   color: var(--zd-color-primary);
   list-style: none;
 }
 
-:where(.option) {
+:where(.zd__option) {
   cursor: pointer;
 }
 
-:where(.option):focus {
+:where(.zd__option):focus {
   outline: none;
   background: var(--zd-color-secondary-transp);
 }
 
-:where(.option):hover {
+:where(.zd__option):hover {
   font-weight: 700;
 }
 
-:where(.option--active) {
+:where(.zd__option--active) {
   color: var(--zd-color-secondary);
 }
 
-:where(.errorMessage) {
+:where(.zd__error-message) {
   margin-top: 5px;
   padding: 8px;
   color: var(--zd-color-error);

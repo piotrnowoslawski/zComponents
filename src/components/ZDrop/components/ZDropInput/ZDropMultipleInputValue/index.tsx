@@ -13,7 +13,7 @@ export const ZDropMultipleInputValue = (props: ZDropMultipleInputItemProps) => {
   } = props;
 
   const inputItemClasses = classNames(
-    styles.inputMultipleValue,
+    styles["zd__input-multiple-value"],
     inputMultipleValueClassName
   );
 
@@ -50,10 +50,12 @@ export const ZDropMultipleInputValue = (props: ZDropMultipleInputItemProps) => {
       {onInputOptionRemove && !isDisabled && (
         <button
           tabIndex={0}
-          className={styles.inputMultipleValueRemoveBtn}
+          className={styles["zd__input-multiple-value-remove-btn"]}
           onClick={(e) => onInputOptionRemove(e, option)}
         >
-          <span className={styles.inputMultipleValueRemoveBtnIcon}></span>
+          <span
+            className={styles["zd__input-multiple-value-remove-btn-icon"]}
+          ></span>
         </button>
       )}
     </li>

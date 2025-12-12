@@ -23,7 +23,7 @@ export const ZDropSingleInputValueRenderer = (
   } = props;
 
   const inputValueClasses = classNames(
-    styles.inputSingleSearch,
+    styles["zd__input-single-search"],
     inputValueClassName
   );
 

@@ -5,58 +5,52 @@ import {
   useZDropStore,
   zDropStore,
 } from "@stories/ZComponents/ZDrop/store/zDropStore";
-import { survivorOptionsObjects } from "../../../staticData/objects/zDropObjectsData";
+import { zombieOptionsObjects } from "../../../staticData/objects/zDropObjectsData";
 import { ZDropField } from "@components/ZDrop/integrations/react-hook-form/ZDropField";
 
 import { useForm, SubmitHandler } from "react-hook-form";
-import SbSelectionElement from "@stories/ZComponents/ZDrop/visualComponents/SbSelection/SbSelectionElement";
 import { useEffect, useState } from "react";
 
 interface FormValues {
-  survivor: ZDropValue | null;
+  zombies: ZDropValue[] | null;
 }
 
 type ZDropFieldStoryArgs = Omit<ZDropProps, "name" | "value" | "onChange">;
 
 type Story = StoryObj<ZDropFieldStoryArgs>;
 
-const preparePreviewValue = (value: any) => {
-  if (!value || !value.survivor) {
-    return { survivor: null };
+const preparePreviewValue = (value: any[] | null) => {
+  console.log("Preparing preview value:", value);
+  if (!value) {
+    return { zombies: [] };
   }
 
   return {
-    survivor: {
-      id: value.survivor.id,
-      stateId: value.survivor.stateId,
-      value: value.survivor.value,
-      label: value.survivor.label,
-    },
+    zombies: value,
   };
 };
 
-const onChange = (selected: any) => {
-  const isSelected =
-    selected !== null && selected !== undefined && selected !== "";
+const onChange = (selected: any[]) => {
+  if (!selected) {
+    return;
+  }
 
   zDropStore.setState({
-    selectedSurvivor: {
-      number: isSelected ? selected.stateId : null,
-      string: isSelected ? selected.value : "",
-      object: isSelected
-        ? {
-            stateId: selected.stateId,
-            value: selected.value,
-            label: selected.label,
-          }
-        : null,
+    selectedZombies: {
+      numbers: selected,
+      strings: selected.map((num) => `z-${num}`),
+      objects: selected.map((num) => ({
+        number: num,
+        string: `z-${num}`,
+        stateId: num,
+      })),
     },
   });
 };
 
-const ReactHookFormIntegration: Story = {
+const ReactHookFormIntegrationMultiple: Story = {
   render: (args) => {
-    const survivor = useZDropStore((s) => s.selectedSurvivor);
+    const zombies = useZDropStore((s) => s.selectedZombies);
 
     const [isSubmitted, setIsSubmitted] = useState(false);
 
@@ -65,10 +59,12 @@ const ReactHookFormIntegration: Story = {
     };
 
     const { control, handleSubmit, watch } = useForm<FormValues>({
-      defaultValues: { survivor: survivor?.object ?? null },
+      defaultValues: { zombies: zombies?.objects ?? [] },
     });
 
     const values = watch();
+
+    console.log("Watched values:", values);
 
     useEffect(() => {
       if (isSubmitted) {
@@ -91,14 +87,15 @@ const ReactHookFormIntegration: Story = {
             >
               <ZDropField<FormValues>
                 control={control}
-                name="survivor"
+                name="zombies"
                 valueKey="stateId"
                 onChangeTransform={(selected: any) => {
                   onChange(selected);
                   return selected;
                 }}
                 rules={{
-                  validate: (value) => (value ? true : "Survivor is required"),
+                  validate: (value) =>
+                    value?.length === 0 ? "Survivor is required" : true,
                 }}
                 {...args}
               />
@@ -108,17 +105,11 @@ const ReactHookFormIntegration: Story = {
               </button>
             </form>
             <div className={styles.zDropHookFormValuePreview}>
-              <pre>{JSON.stringify(preparePreviewValue(values), null, 2)}</pre>
+              <pre>
+                {JSON.stringify(preparePreviewValue(values?.zombies), null, 2)}
+              </pre>
             </div>
             <div className={styles.zDropHookFormSelectionPreview}>
-              <SbSelectionElement
-                selected={survivor?.object?.value}
-                selectType="survivors"
-                storyType={"integrations"}
-                {...(isSubmitted && {
-                  className: styles.zDropHookFormSubmitted,
-                })}
-              />
               {isSubmitted && (
                 <p className={styles.zDropHookFormSubmittedMessage}>
                   Form submitted!
@@ -131,9 +122,9 @@ const ReactHookFormIntegration: Story = {
     );
   },
   args: {
-    options: survivorOptionsObjects,
+    options: zombieOptionsObjects,
     label: "Survivor:",
-    isMultiple: false,
+    isMultiple: true,
     isDisabled: false,
     isSearchable: true,
     placeholder: "select a survivor...",
@@ -221,4 +212,4 @@ const ReactHookFormIntegration: Story = {
   },
 };
 
-export default ReactHookFormIntegration;
+export default ReactHookFormIntegrationMultiple;

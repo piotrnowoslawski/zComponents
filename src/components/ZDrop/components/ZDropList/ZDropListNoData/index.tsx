@@ -5,7 +5,7 @@ import { classNames } from "../../../../../helpers/classNames";
 export const ZDropListNoData = (props: ZDropListNoDataProps) => {
   const { noDataContent, className } = props;
 
-  const noDataClasses = classNames(styles.noData, className);
+  const noDataClasses = classNames(styles["zd__no-data"], className);
 
   return <div className={noDataClasses}>{noDataContent}</div>;
 };

@@ -11,7 +11,7 @@ const preview: Preview = {
 
   decorators: [
     (Story) => (
-      <div className={styles.sbContainer}>
+      <div className={styles["sb__container"]}>
         <Story />
       </div>
     ),

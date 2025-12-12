@@ -14,6 +14,7 @@ import BasicWeaponsStrings from "./ZComponents/ZDrop/stories/basic/BasicWeaponsS
 import BasicZombiesObjects from "./ZComponents/ZDrop/stories/basic/BasicZombiesObjects";
 import BasicZombiesCustomSearch from "./ZComponents/ZDrop/stories/basic/BasicCustomSearch";
 import ReactHookFormIntegration from "./ZComponents/ZDrop/stories/integrations/ReactHookForm/ReactHookFormIntegration";
+import ReactHookFormIntegrationMultiple from "./ZComponents/ZDrop/stories/integrations/ReactHookForm/ReactHookFormIntegrationMultiple";
 
 const meta: Meta<typeof ZDrop> = {
   title: "Components/ZDrop",
@@ -93,4 +94,9 @@ export const BasicZombiesCustomSearchStory = {
 export const ReactHookFormIntegrationStory = {
   ...ReactHookFormIntegration,
   name: "Integration - React Hook Form",
+};
+
+export const ReactHookFormIntegrationMultipleStory = {
+  ...ReactHookFormIntegrationMultiple,
+  name: "Integration - React Hook Form Multiple",
 };

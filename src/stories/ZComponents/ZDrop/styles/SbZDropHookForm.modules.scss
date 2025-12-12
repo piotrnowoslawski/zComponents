@@ -1,4 +1,5 @@
 @use "@stories/styles/SbZDropColorsAndGlow.modules.scss" as global;
+@use "sass:map";
 
 .zDropHookForm {
   &Container {
@@ -12,9 +13,7 @@
   }
 
   &List {
-    position: absolute;
     z-index: 3;
-    max-height: 390px;
 
     &Item {
       background-color: var(--zd-color-background-transp);
@@ -63,7 +62,7 @@
     @include global.glowImgTight(global.$neonRed, xl);
 
     &Message {
-      color: var(--zd-color-primary);
+      color: map.get(global.$neonRed, c0);
       font-weight: 700;
     }
   }

@@ -80,7 +80,7 @@ export type SearchFilter = ({
   labelKey: string;
 }) => ZDropOption[];
 
-export interface ZDropProps {
+export interface ZDropBaseProps {
   name: string;
   options?: ZDropOption[];
   value?: ZDropValue;
@@ -103,16 +103,40 @@ export interface ZDropProps {
   expandToggleRenderer?: ExpandToggleRenderer;
   clearIcon?: ReactElement;
   noDataContent?: string | ReactElement;
-  referenceElementClassName?: string;
-  positionToReferenceElement?: "top" | "bottom";
+  isAutoHeightEnabled?: boolean;
+  autoHeightPosition?: "top" | "bottom";
   listMaxHeightLimiter?: number;
   styleClasses?: StyleClasses;
 }
+
+export interface ZDropWithReferenceElementProps extends ZDropBaseProps {
+  referenceElementClassName?: string;
+  positionToReferenceElement?: "top" | "bottom";
+  isAutoHeightEnabled?: never;
+  autoHeightPosition?: never;
+}
+
+export interface ZDropWithAutoHeightProps extends ZDropBaseProps {
+  referenceElementClassName?: never;
+  positionToReferenceElement?: never;
+  isAutoHeightEnabled?: boolean;
+  autoHeightPosition?: "top" | "bottom";
+}
+
+export type ZDropProps =
+  | ZDropWithReferenceElementProps
+  | ZDropWithAutoHeightProps;
 
 export interface ZDropLabelProps {
   name?: string;
   label?: string | ReactElement;
   className?: string;
+}
+
+export interface ZDropListAutoHeightWrapperProps {
+  containerRef: RefObject<HTMLDivElement | null>;
+  position?: "top" | "bottom";
+  children: ReactNode;
 }
 
 export interface ZDropListWrapperProps {
@@ -134,6 +158,7 @@ export interface ZDropListProps {
   currentSearchedValue?: string;
   listStyleClasses?: ListStyleClasses;
   isListWrapperEnabled?: boolean;
+  isAutoHeightEnabled?: boolean;
 }
 
 export interface ZDropListItemProps {

@@ -35,9 +35,13 @@ export const ZDropSingleInput = (props: ZDropSingleInputProps) => {
     getLabelFromOption(options, selectedValue, valueKey, valueKey)
   );
 
-  const inputSelectClasses = classNames(styles.input, inputClassName, {
-    [styles.inputSingle]: !!valueRenderer,
-  });
+  const inputSelectClasses = classNames(
+    styles["zd__input"],
+    {
+      [styles["zd__input-single"]]: !!valueRenderer,
+    },
+    inputClassName
+  );
 
   const selectedOption = options.find((option) => {
     if (
