@@ -2,13 +2,10 @@ import type { StoryObj } from "@storybook/react";
 import ZDrop from "@components/ZDrop";
 import { ZDropProps } from "@components/ZDrop/types/zDropTypes";
 import styles from "@stories/styles/StorybookTheme.module.scss";
-import {
-  useZDropStore,
-  zDropStore,
-} from "@stories/ZComponents/ZDrop/store/zDropStore";
+import { useZDropStore, zDropStore } from "@stories/store/zDropStore";
 import { classNames } from "@helpers/classNames";
 import StoriesVisualComponents from "@stories/ZComponents/ZDrop/visualComponents";
-import { zombieOptionsObjects } from "../../staticData/objects/zDropObjectsData";
+import { zombieOptionsObjects } from "@stories/staticData/objects/zDropObjectsData";
 import { removeOrReplaceCharacter } from "@stories/helpers/removeOrReplaceCharacter";
 import { shrinkName } from "@stories/helpers/shrinkName";
 import { on } from "events";

@@ -2,14 +2,11 @@ import type { StoryObj } from "@storybook/react";
 import ZDrop from "@components/ZDrop";
 import { ZDropProps } from "@components/ZDrop/types/zDropTypes";
 import styles from "@stories/styles/StorybookTheme.module.scss";
-import {
-  useZDropStore,
-  zDropStore,
-} from "@stories/ZComponents/ZDrop/store/zDropStore";
+import { useZDropStore, zDropStore } from "@stories/store/zDropStore";
 import {
   survivorOptionsNumbers,
   survivorNames,
-} from "@stories/ZComponents/ZDrop/staticData/numbers/zDropNumbersData";
+} from "@stories/staticData/numbers/zDropNumbersData";
 import StoriesVisualComponents from "@stories/ZComponents/ZDrop/visualComponents";
 
 type Story = StoryObj<ZDropProps>;

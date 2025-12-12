@@ -1,6 +1,6 @@
 import { ReactNode, useEffect, useState } from "react";
 import styles from "@stories/styles/StorybookTheme.module.scss";
-import { posterUrls } from "@stories/ZComponents/ZDrop/staticData/zDropData";
+import { posterUrls } from "@stories/staticData/zDropData";
 import { goToStory } from "@stories/storybookLinks";
 import { SelectType, StoryType } from "@stories/types/visualComponentsTypes";
 

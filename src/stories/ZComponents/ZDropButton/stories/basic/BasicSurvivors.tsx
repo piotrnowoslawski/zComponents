@@ -1,9 +1,6 @@
 import type { StoryObj } from "@storybook/react";
 import styles from "@stories/styles/StorybookTheme.module.scss";
-// import {
-//   useZDropStore,
-//   zDropStore,
-// } from "@stories/ZComponents/ZDrop/store/zDropStore";
+import { useZDropStore, zDropStore } from "@stories/store/zDropStore";
 
 // import StoriesVisualComponents from "@stories/ZComponents/ZDrop/visualComponents";
 import ZDropButton from "@components/ZDropButton";
@@ -15,15 +12,48 @@ type Story = StoryObj<ZDropButtonProps>;
 
 const BasicSurvivors: Story = {
   render: (args: ZDropButtonProps) => {
-    // const survivor = useZDropStore((s) => s.selectedSurvivor);
+    const survivor = useZDropStore((s) => s.selectedSurvivor);
+
+    const defaultSurvivorIndex = survivorOptions.findIndex(
+      (option) => option.stateId === survivor?.object?.stateId
+    );
 
     const [options, setOptions] = useState(survivorOptions);
-    const [selectedSurvivorIndex, setSelectedSurvivorIndex] =
-      useState<any>(null);
-
-    const onChange = (selectedIndex: number) => {
-      console.log("Selected survivor index:", selectedIndex);
+    const [selectedSurvivorIndex, setSelectedSurvivorIndex] = useState<any>(
+      defaultSurvivorIndex || null
+    );
+    const onSelect = (selectedIndex: number) => {
       setSelectedSurvivorIndex(selectedIndex);
+
+      const selectedSurvivor = survivorOptions[selectedIndex];
+
+      console.log("Selected Survivor:", {
+        selectedSurvivor: {
+          number: selectedSurvivor ? selectedSurvivor.stateId : null,
+          string: selectedSurvivor ? selectedSurvivor.value : "",
+          object: selectedSurvivor
+            ? {
+                stateId: selectedSurvivor.stateId,
+                value: selectedSurvivor.value,
+                label: selectedSurvivor.label,
+              }
+            : null,
+        },
+      });
+
+      zDropStore.setState({
+        selectedSurvivor: {
+          number: selectedSurvivor ? selectedSurvivor.stateId : null,
+          string: selectedSurvivor ? selectedSurvivor.value : "",
+          object: selectedSurvivor
+            ? {
+                stateId: selectedSurvivor.stateId,
+                value: selectedSurvivor.value,
+                label: selectedSurvivor.label,
+              }
+            : null,
+        },
+      });
     };
 
     const onSearch: React.ChangeEventHandler<HTMLInputElement> = (e) => {
@@ -48,14 +78,14 @@ const BasicSurvivors: Story = {
           toggleIcon={
             <img
               src={
-                selectedSurvivorIndex
+                typeof selectedSurvivorIndex === "number"
                   ? survivorOptions[selectedSurvivorIndex]?.iconPath
                   : "/icons/survivors/z-stranger.webp"
               }
               alt="Selected Survivor"
             />
           }
-          onSelect={onChange}
+          onSelect={onSelect}
           onSearch={onSearch}
           {...args}
         >

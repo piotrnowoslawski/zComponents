@@ -1,11 +1,8 @@
 import type { StoryObj } from "@storybook/react";
 import { ZDropProps, ZDropValue } from "@components/ZDrop/types/zDropTypes";
 import styles from "@stories/styles/StorybookTheme.module.scss";
-import {
-  useZDropStore,
-  zDropStore,
-} from "@stories/ZComponents/ZDrop/store/zDropStore";
-import { survivorOptionsObjects } from "../../../staticData/objects/zDropObjectsData";
+import { useZDropStore, zDropStore } from "@stories/store/zDropStore";
+import { survivorOptionsObjects } from "@stories/staticData/objects/zDropObjectsData";
 import { ZDropField } from "@components/ZDrop/integrations/react-hook-form/ZDropField";
 
 import { useForm, SubmitHandler } from "react-hook-form";

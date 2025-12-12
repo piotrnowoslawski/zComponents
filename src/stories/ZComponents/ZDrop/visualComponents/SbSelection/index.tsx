@@ -1,4 +1,4 @@
-import { useZDropStore } from "@stories/ZComponents/ZDrop/store/zDropStore";
+import { useZDropStore } from "@stories/store/zDropStore";
 import styles from "@stories/styles/StorybookTheme.module.scss";
 import SbSelectionElement from "./SbSelectionElement";
 import { StoryType } from "@stories/types/visualComponentsTypes";

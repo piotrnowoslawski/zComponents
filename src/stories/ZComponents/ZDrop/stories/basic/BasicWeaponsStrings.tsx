@@ -2,14 +2,11 @@ import type { StoryObj } from "@storybook/react";
 import ZDrop from "@components/ZDrop";
 import { ZDropProps } from "@components/ZDrop/types/zDropTypes";
 import styles from "@stories/styles/StorybookTheme.module.scss";
-import {
-  useZDropStore,
-  zDropStore,
-} from "@stories/ZComponents/ZDrop/store/zDropStore";
+import { useZDropStore, zDropStore } from "@stories/store/zDropStore";
 import {
   weaponOptionsStrings,
   weaponNames,
-} from "@stories/ZComponents/ZDrop/staticData/strings/ZDropStringsData";
+} from "@stories/staticData/strings/ZDropStringsData";
 import { removeOrReplaceCharacter } from "@stories/helpers/removeOrReplaceCharacter";
 import StoriesVisualComponents from "@stories/ZComponents/ZDrop/visualComponents";
 

@@ -3,14 +3,11 @@ import ZDrop from "@components/ZDrop";
 import { ZDropProps } from "@components/ZDrop/types/zDropTypes";
 import styles from "@stories/styles/StorybookTheme.module.scss";
 import { classNames } from "@helpers/classNames";
-import {
-  useZDropStore,
-  zDropStore,
-} from "@stories/ZComponents/ZDrop/store/zDropStore";
+import { useZDropStore, zDropStore } from "@stories/store/zDropStore";
 import {
   weaponOptionsNumbers,
   weaponNames,
-} from "@stories/ZComponents/ZDrop/staticData/numbers/zDropNumbersData";
+} from "@stories/staticData/numbers/zDropNumbersData";
 import StoriesVisualComponents from "@stories/ZComponents/ZDrop/visualComponents";
 import SbNotFound from "../../visualComponents/SbNotFound";
 

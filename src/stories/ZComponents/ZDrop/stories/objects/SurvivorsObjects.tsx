@@ -3,11 +3,8 @@ import ZDrop from "@components/ZDrop";
 import { ZDropProps } from "@components/ZDrop/types/zDropTypes";
 import styles from "@stories/styles/StorybookTheme.module.scss";
 import { classNames } from "@helpers/classNames";
-import {
-  useZDropStore,
-  zDropStore,
-} from "@stories/ZComponents/ZDrop/store/zDropStore";
-import { survivorOptionsObjects } from "@stories/ZComponents/ZDrop/staticData/objects/zDropObjectsData";
+import { useZDropStore, zDropStore } from "@stories/store/zDropStore";
+import { survivorOptionsObjects } from "@stories/staticData/objects/zDropObjectsData";
 import StoriesVisualComponents from "@stories/ZComponents/ZDrop/visualComponents";
 import SbNotFound from "../../visualComponents/SbNotFound";
 

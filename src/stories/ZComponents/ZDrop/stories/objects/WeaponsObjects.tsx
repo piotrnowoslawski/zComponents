@@ -3,12 +3,9 @@ import ZDrop from "@components/ZDrop";
 import { ZDropProps } from "@components/ZDrop/types/zDropTypes";
 import styles from "@stories/styles/StorybookTheme.module.scss";
 import { classNames } from "@helpers/classNames";
-import {
-  useZDropStore,
-  zDropStore,
-} from "@stories/ZComponents/ZDrop/store/zDropStore";
+import { useZDropStore, zDropStore } from "@stories/store/zDropStore";
 import StoriesVisualComponents from "@stories/ZComponents/ZDrop/visualComponents";
-import { weaponOptionsObjects } from "@stories/ZComponents/ZDrop/staticData/objects/zDropObjectsData";
+import { weaponOptionsObjects } from "@stories/staticData/objects/zDropObjectsData";
 import SbNotFound from "../../visualComponents/SbNotFound";
 
 type Story = StoryObj<ZDropProps>;

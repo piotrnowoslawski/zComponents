@@ -1,11 +1,8 @@
 import type { StoryObj } from "@storybook/react";
 import { ZDropProps, ZDropValue } from "@components/ZDrop/types/zDropTypes";
 import styles from "@stories/styles/StorybookTheme.module.scss";
-import {
-  useZDropStore,
-  zDropStore,
-} from "@stories/ZComponents/ZDrop/store/zDropStore";
-import { zombieOptionsObjects } from "../../../staticData/objects/zDropObjectsData";
+import { useZDropStore, zDropStore } from "@stories/store/zDropStore";
+import { zombieOptionsObjects } from "@stories/staticData/objects/zDropObjectsData";
 import { ZDropField } from "@components/ZDrop/integrations/react-hook-form/ZDropField";
 
 import { useForm, SubmitHandler } from "react-hook-form";
@@ -20,7 +17,6 @@ type ZDropFieldStoryArgs = Omit<ZDropProps, "name" | "value" | "onChange">;
 type Story = StoryObj<ZDropFieldStoryArgs>;
 
 const preparePreviewValue = (value: any[] | null) => {
-  console.log("Preparing preview value:", value);
   if (!value) {
     return { zombies: [] };
   }
@@ -37,12 +33,12 @@ const onChange = (selected: any[]) => {
 
   zDropStore.setState({
     selectedZombies: {
-      numbers: selected,
-      strings: selected.map((num) => `z-${num}`),
-      objects: selected.map((num) => ({
-        number: num,
-        string: `z-${num}`,
-        stateId: num,
+      numbers: selected.map((selectedEl) => selectedEl.stateId),
+      strings: selected.map((selectedEl) => selectedEl.value),
+      objects: selected.map((selectedEl) => ({
+        number: selectedEl.stateId,
+        string: selectedEl.value,
+        stateId: selectedEl.stateId,
       })),
     },
   });
@@ -63,8 +59,6 @@ const ReactHookFormIntegrationMultiple: Story = {
     });
 
     const values = watch();
-
-    console.log("Watched values:", values);
 
     useEffect(() => {
       if (isSubmitted) {

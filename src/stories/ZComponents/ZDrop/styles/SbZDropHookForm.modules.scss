@@ -5,6 +5,7 @@
   &Container {
     width: 100%;
     max-width: 500px;
+    min-width: 300px;
 
     @media (max-width: 600px) {
       min-width: 100%;

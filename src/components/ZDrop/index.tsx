@@ -282,6 +282,12 @@ const ZDrop = (props: ZDropProps) => {
       optionsRef.current[0]?.focus();
     }
 
+    if (e.key === "ArrowUp" && isListVisible) {
+      e.preventDefault();
+
+      optionsRef.current[optionsRef.current.length - 1]?.focus();
+    }
+
     if (!isListVisible && isSearchable && !isMultiple && valueRenderer) {
       setIsInputItemVisible(false);
     }
@@ -428,8 +434,15 @@ const ZDrop = (props: ZDropProps) => {
       optionsRef.current[index + 1]?.focus();
     }
 
+    if (e.key === "ArrowDown" && index === optionsData.length - 1) {
+      e.preventDefault();
+
+      applyInputSelectFocus();
+    }
+
     if (e.key === "ArrowUp" && index === 0) {
       e.preventDefault();
+
       applyInputSelectFocus();
     }
 
