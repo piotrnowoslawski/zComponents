@@ -41,8 +41,6 @@ The Storybook is deployed automatically from `main` using GitHub Pages.
 
 # 📌 Table of Contents
 
-# 📌 Table of Contents
-
 - 📘 [zComponents — Growing React Component Library](#-zcomponents--growing-ui-react-component-library)
 - 🚀 [Installation](#-installation)
 - 📦 Components:
