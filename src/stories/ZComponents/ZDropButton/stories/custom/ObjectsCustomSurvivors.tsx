@@ -24,7 +24,7 @@ const clearIcon = (
   />
 );
 
-const CustomSurvivors: Story = {
+const ObjectsCustomSurvivors: Story = {
   render: (args: ZDropButtonStoryProps) => {
     const survivor = useZDropStore((s) => s.selectedSurvivor);
 
@@ -152,4 +152,4 @@ const CustomSurvivors: Story = {
   },
 };
 
-export default CustomSurvivors;
+export default ObjectsCustomSurvivors;
