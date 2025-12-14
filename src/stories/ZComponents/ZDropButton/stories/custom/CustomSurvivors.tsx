@@ -5,15 +5,26 @@ import ZDropButton from "@components/ZDropButton";
 import {
   ZDropButtonContentProps,
   ZDropButtonProps,
+  ZDropButtonSearchProps,
 } from "@components/ZDropButton/types/zDropButtonTypes";
 import { survivorOptions } from "../../staticData/zDropObjectsData";
 import { useState } from "react";
 
-type ZDropButtonStoryProps = ZDropButtonProps & ZDropButtonContentProps;
+type ZDropButtonStoryProps = ZDropButtonProps &
+  ZDropButtonContentProps &
+  ZDropButtonSearchProps;
 
 type Story = StoryObj<ZDropButtonStoryProps>;
 
-const BasicSurvivors: Story = {
+const clearIcon = (
+  <img
+    className={styles.zDropButtonSearchClearIcon}
+    src={`icons/weapons/z-chainsaws.webp`}
+    alt="Remove Chainsaws Icon"
+  />
+);
+
+const CustomSurvivors: Story = {
   render: (args: ZDropButtonStoryProps) => {
     const survivor = useZDropStore((s) => s.selectedSurvivor);
 
@@ -60,7 +71,8 @@ const BasicSurvivors: Story = {
       setOptions(filteredOptions);
     };
 
-    const { position, ...zDropButtonArgs } = args;
+    const { searchClassName, shouldFocusOnOpen, position, ...zDropButtonArgs } =
+      args;
 
     return (
       <div className={styles.zDropButtonStorybookWrapper}>
@@ -79,7 +91,12 @@ const BasicSurvivors: Story = {
           onSearch={onSearch}
           {...zDropButtonArgs}
         >
-          <ZDropButton.Search placeholder="Search survivor..." />
+          <ZDropButton.Search
+            placeholder="Search survivor..."
+            searchClassName={styles.zDropButtonSearch}
+            clearIcon={clearIcon}
+            shouldFocusOnOpen={shouldFocusOnOpen}
+          />
           <ZDropButton.Content position={position}>
             <ZDropButton.List>
               {options?.map((option, index) => (
@@ -89,6 +106,7 @@ const BasicSurvivors: Story = {
                   index={index}
                   Icon={<img src={option.iconPath} alt={option.label} />}
                   isActive={selectedSurvivorIndex === index}
+                  className={styles.zDropButtonListItem}
                 />
               ))}
             </ZDropButton.List>
@@ -101,7 +119,10 @@ const BasicSurvivors: Story = {
     options: survivorOptions,
     title: "Select Survivor",
     className: styles.zDropButton,
+    toggleClassName: styles.zDropButtonToggle,
+    searchClassName: styles.zDropButtonSearch,
     position: "bottom left",
+    shouldFocusOnOpen: false,
   },
   argTypes: {
     options: {
@@ -131,4 +152,4 @@ const BasicSurvivors: Story = {
   },
 };
 
-export default BasicSurvivors;
+export default CustomSurvivors;

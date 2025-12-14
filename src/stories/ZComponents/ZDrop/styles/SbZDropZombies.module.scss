@@ -1,6 +1,6 @@
 @use "sass:meta";
 @use "sass:map";
-@use "@stories/styles/SbZDropColorsAndGlow.modules.scss" as global;
+@use "@stories/styles/SbZDropColorsAndGlow.module.scss" as global;
 
 @function mget($m, $key) {
   @if meta.function-exists(get, $module: map) {

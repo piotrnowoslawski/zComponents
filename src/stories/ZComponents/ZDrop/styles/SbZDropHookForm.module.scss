@@ -1,5 +1,13 @@
-@use "@stories/styles/SbZDropColorsAndGlow.modules.scss" as global;
+@use "sass:meta";
 @use "sass:map";
+@use "@stories/styles/SbZDropColorsAndGlow.module.scss" as global;
+
+@function mget($m, $key) {
+  @if meta.function-exists(get, $module: map) {
+    @return map.get($m, $key);
+  }
+  @return map-get($m, $key);
+}
 
 .zDropHookForm {
   &Container {
@@ -63,7 +71,7 @@
     @include global.glowImgTight(global.$neonRed, xl);
 
     &Message {
-      color: map.get(global.$neonRed, c0);
+      color: mget(global.$neonRed, c0);
       font-weight: 700;
     }
   }

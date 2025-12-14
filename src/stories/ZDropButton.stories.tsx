@@ -1,5 +1,6 @@
 import type { Meta } from "@storybook/react";
 import ZDropButton from "@components/ZDropButton";
+import CustomSurvivors from "./ZComponents/ZDropButton/stories/custom/customSurvivors";
 import BasicSurvivors from "./ZComponents/ZDropButton/stories/basic/BasicSurvivors";
 
 const meta: Meta<typeof ZDropButton> = {
@@ -12,7 +13,12 @@ const meta: Meta<typeof ZDropButton> = {
 
 export default meta;
 
+export const CustomSurvivorsStory = {
+  ...CustomSurvivors,
+  name: "Fully Custom survivor button selector",
+};
+
 export const BasicSurvivorsStory = {
   ...BasicSurvivors,
-  name: "Survivor Button Selector",
+  name: "Basic survivor button selector",
 };

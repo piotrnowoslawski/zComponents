@@ -593,7 +593,7 @@ const ZDrop = (props: ZDropProps) => {
           {zDropList}
         </ZDropListWrapper>
       )}
-      {isListVisible && isAutoHeightEnabled && (
+      {isListVisible && isAutoHeightEnabled && !referenceElementClassName && (
         <ZDropListAutoHeightWrapper
           containerRef={containerRef}
           position={autoHeightPosition}

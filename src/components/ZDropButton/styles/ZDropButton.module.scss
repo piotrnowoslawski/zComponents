@@ -32,28 +32,29 @@
 
 .zd-button__toggle {
   display: flex;
+  align-items: center;
   width: 100%;
   min-width: 100%;
-  height: 35px;
-  align-items: center;
-  background: transparent;
-  outline: none;
-  transition: 0.2s linear;
-  border: var(--zd-border);
-  border-radius: var(--zd-radius);
   padding: 0 10px;
-  transition: border 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
   cursor: pointer;
-
-  &:hover,
-  &:focus,
-  &.active {
-    border-color: var(--zd-color-secondary);
-  }
 }
 
-.zd-button__toggle-title {
-  margin-left: 4px;
+:where(.zd-button__toggle) {
+  height: 35px;
+  border: var(--zd-border);
+  border-radius: var(--zd-radius);
+  background: transparent;
+  outline: none;
+  transition: border 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+:where(.zd-button__toggle):focus,
+:where(.zd-button__toggle).active,
+:where(.zd-button__toggle):hover {
+  border-color: var(--zd-color-secondary);
+}
+
+:where(.zd-button__toggle-title) {
   font-size: 13px;
   font-weight: 500;
   color: var(--zd-color-primary);
@@ -63,14 +64,18 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-right: 6px;
+}
+
+:where(.zd-button__toggle-icon) {
   width: 30px;
   height: 30px;
+}
 
-  img,
-  svg {
-    width: 100%;
-    height: 100%;
-  }
+:where(.zd-button__toggle-icon) img,
+:where(.zd-button__toggle-icon) svg {
+  width: 100%;
+  height: 100%;
 }
 
 .zd-button__content {
@@ -78,14 +83,18 @@
   width: 100%;
   min-width: 100%;
   margin: 1px 0;
+  overflow-y: auto;
+}
+
+:where(.zd-button__content) {
   border-radius: var(--zd-radius);
   border: 1px solid var(--zd-color-primary);
-  overflow-y: auto;
 }
 
 .zd-button__search {
   padding: 1px 0;
   width: 100%;
+  height: 30px;
   max-width: 100%;
   min-width: 100%;
 }
@@ -97,7 +106,9 @@
   width: 100%;
   min-width: 100%;
   height: 100%;
-  min-height: 30px;
+}
+
+:where(.zd-button__search-input-field) {
   border: 1px solid var(--zd-color-primary);
   border-radius: var(--zd-radius);
 }
@@ -109,9 +120,9 @@
 .zd-button__search-input {
   width: 100%;
   max-width: 100%;
+  padding: 2px 5px;
   border: none;
   background: transparent;
-  padding: 2px 5px;
 }
 
 .zd-button__search-input:focus {
@@ -124,8 +135,6 @@
   background: transparent;
   border: none;
   cursor: pointer;
-  font-size: 12px;
-  color: var(--zd-color-primary);
 }
 
 :where(.zd-button__search-clear-btn-icon) {
@@ -163,9 +172,12 @@
 .zd-button__list {
   width: 100%;
   min-width: 100%;
-  border-radius: var(--zd-radius);
   list-style: none;
   overflow-y: auto;
+}
+
+:where(.zd-button__list) {
+  border-radius: var(--zd-radius);
 }
 
 .zd-button__list-item {
@@ -174,36 +186,48 @@
   align-items: center;
   width: 100%;
   padding: 3px 5px;
+  cursor: pointer;
+}
+
+:where(.zd-button__list-item) {
   background-color: var(--zd-color-background-transp);
   color: var(--zd-color-primary);
   transition: background-color 0.2s linear;
-  cursor: pointer;
+}
 
-  &--active {
-    background-color: var(--zd-color-secondary-transp);
-  }
+:where(.zd-button__list-item):focus {
+  outline: none;
+}
 
-  &:hover {
-    background-color: var(--zd-color-secondary-transp);
-  }
+:where(.zd-button__list-item):hover,
+:where(.zd-button__list-item):focus {
+  background-color: var(--zd-color-secondary-transp);
+}
+
+:where(.zd-button__list-item--active) {
+  color: var(--zd-color-secondary);
+  background-color: var(--zd-color-secondary-transp);
 }
 
 .zd-button__list-item-icon {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
   margin-right: 10px;
-
-  img,
-  svg {
-    width: 100%;
-    height: 100%;
-  }
 }
 
-.zd-button__list-item-title {
+:where(.zd-button__list-item-icon) {
+  width: 40px;
+  height: 40px;
+}
+
+.zd-button__list-item-icon img,
+.zd-button__list-item-icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+:where(.zd-button__list-item-title) {
   font-size: 14px;
   font-weight: 500;
 }

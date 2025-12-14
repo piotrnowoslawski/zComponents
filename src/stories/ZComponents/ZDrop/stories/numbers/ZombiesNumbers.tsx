@@ -263,6 +263,14 @@ const ZombiesNumbers: Story = {
       table: { disable: true },
       control: false,
     },
+    isAutoHeightEnabled: {
+      table: { disable: true },
+      control: false,
+    },
+    autoHeightPosition: {
+      table: { disable: true },
+      control: false,
+    },
   },
 };
 

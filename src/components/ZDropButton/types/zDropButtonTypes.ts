@@ -86,4 +86,6 @@ export interface ZDropButtonSearchProps {
   placeholder?: string;
   searchIcon?: ReactElement;
   clearIcon?: ReactElement;
+  searchClassName?: string;
+  shouldFocusOnOpen?: boolean;
 }

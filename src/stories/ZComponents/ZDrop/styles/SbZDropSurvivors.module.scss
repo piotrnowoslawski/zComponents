@@ -1,6 +1,6 @@
 @use "sass:meta";
 @use "sass:map";
-@use "@stories/styles/SbZDropColorsAndGlow.modules.scss" as global;
+@use "@stories/styles/SbZDropColorsAndGlow.module.scss" as global;
 
 @function mget($m, $key) {
   @if meta.function-exists(get, $module: map) {
@@ -9,8 +9,13 @@
   @return map-get($m, $key);
 }
 
-.zDropWeapons {
+.zDropSurvivors {
   &Input {
+    display: flex;
+    align-items: center;
+    height: 120px;
+    min-width: 150px;
+
     &Field {
       border: 2px solid global.$black;
       border-radius: 6px;
@@ -27,29 +32,31 @@
       &:focus-within {
         @include global.glowBorder(mget(global.$neonRed, c0), global.$neonRed);
       }
-
-      input {
-        color: mget(global.$neonRed, c0);
-      }
     }
 
     &Value {
+      font-size: 16px;
+      color: mget(global.$neonRed, c0);
+      font-weight: 500;
+
       &Content {
+        display: flex;
+        align-items: center;
+
         img {
-          width: 40px;
-          height: 40px;
+          width: 120px;
+          height: 120px;
         }
       }
 
       &RemoveButton {
-        margin-left: auto;
         background: none;
         border: none;
         cursor: pointer;
 
         img {
-          width: 40px;
-          height: 40px;
+          width: 60px;
+          height: 60px;
           transition: filter 0.18s ease, opacity 0.18s ease,
             transform 0.3s ease-in-out;
         }
@@ -103,62 +110,42 @@
   }
 
   &ListItem {
-    padding: 2px 8px;
     font-weight: 900;
     color: mget(global.$neonBlack, c0);
     text-transform: capitalize;
-    transition: color 0.25s ease-in-out, background-color 0.25s ease-in-out,
-      font-weight 0.25s ease-in-out;
+    transition: background-color 0.25s ease-in-out, color 0.25s ease-in-out;
 
     div {
+      width: 100%;
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      width: 100%;
+      justify-content: center;
     }
 
     img {
-      width: 80px;
-      height: 80px;
-      transition: filter 0.18s ease, opacity 0.18s ease,
-        transform 0.3s ease-in-out, margin-right 0.25s ease-in-out;
+      width: 120px;
+      height: 120px;
+      transition: all 0.25s ease-in-out;
     }
 
     &:focus {
-      font-weight: 900;
-      background-color: mget(global.$neonBlack, c0);
-      @include global.glowImgTight(global.$neonBlack, xl);
-
-      span {
-        color: mget(global.$neonRed, c0);
-      }
-
-      img {
-        margin-right: 10px;
-        @include global.glowImgTight(global.$neonRed, xl);
-      }
+      background-color: mget(global.$neonBlack, c1);
+      @include global.glowFilter(global.$neonBlack);
     }
 
+    &:focus,
     &:hover {
-      background-color: mget(global.$neonRed, c1);
-
-      span {
-        color: mget(global.$neonBlack, c0);
-      }
+      @include global.glowFilter(global.$neonBlack);
+      color: mget(global.$neonGreen, c0);
 
       img {
         transform: scale(1.1);
-        @include global.glowImgTight(global.$neonBlack, xl);
+        @include global.glowImgTight(global.$neonGreen, xl);
       }
     }
 
     &Selected {
-      font-weight: 900;
-      color: mget(global.$neonBlack, c0);
-
-      img {
-        @include global.glowImgTight(global.$neonRed, xl);
-      }
+      @include global.glowImgTight(global.$neonGreen, xl);
     }
   }
 }

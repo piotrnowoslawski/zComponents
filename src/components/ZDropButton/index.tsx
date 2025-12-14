@@ -3,7 +3,7 @@ import ZDropButtonToggle from "./components/ZDropButtonToggle";
 import ZDropButtonContent from "./components/ZDropButtonContent";
 import ZDropButtonList from "./components/ZDropButtonList";
 import ZDropButtonListItem from "./components/ZDropButtonListItem";
-import ZDropButtonSearch from "./components/ZDropButtonSearch/ZDropButtonSearch";
+import ZDropButtonSearch from "./components/ZDropButtonSearch";
 import styles from "./styles/ZDropButton.module.scss";
 import { classNames } from "../../helpers/classNames";
 import { useOutsideClose } from "../../hooks/useOutsideClose";

@@ -1,0 +1,108 @@
+@use "sass:meta";
+@use "sass:map";
+@use "@stories/styles/SbZDropColorsAndGlow.module.scss" as global;
+
+@function mget($m, $key) {
+  @if meta.function-exists(get, $module: map) {
+    @return map.get($m, $key);
+  }
+  @return map-get($m, $key);
+}
+
+.zDropButton {
+  width: 180px;
+
+  &Toggle {
+    height: 60px;
+    border: 2px solid global.$black;
+    border-radius: 6px;
+
+    div {
+      width: 50px;
+      height: 50px;
+      margin-right: 10px;
+
+      img {
+        width: 50px;
+        height: 50px;
+      }
+    }
+
+    span {
+      font-size: 16px;
+      font-weight: 600;
+      color: mget(global.$neonBlack, c0);
+    }
+
+    &:hover {
+      @include global.glowBorder(
+        mget(global.$neonBlack, c0),
+        global.$neonBlack
+      );
+    }
+  }
+
+  &Search {
+    &:focus-within {
+      @include global.glowBorder(mget(global.$neonRed, c0), global.$neonRed);
+    }
+
+    &ClearIcon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 22px;
+      height: 22px;
+      margin-right: 8px;
+
+      img {
+        width: 22px;
+        height: 22px;
+        transition: transform 0.3s ease-in-out, filter 0.18s ease,
+          opacity 0.18s ease;
+        cursor: pointer;
+      }
+
+      &:hover {
+        transform: scale(1.1);
+        @include global.glowImgTight(global.$neonRed, sm);
+      }
+    }
+  }
+
+  &ListItem {
+    background-color: transparent;
+
+    &.zd-button__list-item--active {
+      @include global.glowImgTight(global.$neonGreen, xl);
+
+      .zd-button__list-item-title {
+        font-weight: 600;
+        color: mget(global.$neonBlack, c0);
+      }
+    }
+
+    &:focus {
+      background-color: mget(global.$neonBlack, c1);
+      @include global.glowFilter(global.$neonBlack);
+    }
+
+    &:focus,
+    &:hover {
+      @include global.glowFilter(global.$neonBlack);
+      color: mget(global.$neonGreen, c0);
+
+      img {
+        transform: scale(1.1);
+        @include global.glowImgTight(global.$neonGreen, xl);
+      }
+    }
+
+    &.zd-button__list-item--active:hover,
+    &.zd-button__list-item--active:focus {
+      .zd-button__list-item-title {
+        color: mget(global.$neonGreen, c0);
+      }
+    }
+  }
+}

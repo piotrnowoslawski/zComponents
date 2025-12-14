@@ -174,13 +174,13 @@
   border-radius: var(--zd-radius);
   background: var(--zd-color-disabled);
   cursor: pointer;
+}
 
-  span {
-    display: flex;
-    width: fit-content;
-    min-width: fit-content;
-    white-space: nowrap;
-  }
+:where(.zd__input-multiple-value) span {
+  display: flex;
+  width: fit-content;
+  min-width: fit-content;
+  white-space: nowrap;
 }
 
 :where(.zd__input-multiple-value-remove-btn) {

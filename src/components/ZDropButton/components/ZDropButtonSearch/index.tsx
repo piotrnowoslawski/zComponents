@@ -2,6 +2,7 @@ import {
   KeyboardEventHandler,
   MouseEventHandler,
   useContext,
+  useEffect,
   useState,
 } from "react";
 import { ZDropButtonContext } from "../../index";
@@ -10,9 +11,15 @@ import { classNames } from "../../../../helpers/classNames";
 import styles from "../../styles/ZDropButton.module.scss";
 
 const ZDropButtonSearch = (props: ZDropButtonSearchProps) => {
-  const { placeholder, searchIcon, clearIcon } = props;
+  const {
+    placeholder,
+    searchIcon,
+    clearIcon,
+    searchClassName,
+    shouldFocusOnOpen = false,
+  } = props;
 
-  const { onSearch, searchInputRef, optionsRef } =
+  const { onSearch, searchInputRef, optionsRef, isOpen } =
     useContext(ZDropButtonContext);
 
   const [isSearchActive, setIsSearchActive] = useState<boolean>(false);
@@ -21,7 +28,8 @@ const ZDropButtonSearch = (props: ZDropButtonSearchProps) => {
 
   const searchInputFieldClasses = classNames(
     styles["zd-button__search-input-field"],
-    { active: isSearchActive }
+    { active: isSearchActive },
+    searchClassName
   );
 
   const onInputChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
@@ -73,6 +81,12 @@ const ZDropButtonSearch = (props: ZDropButtonSearchProps) => {
 
     setIsSearchActive(false);
   };
+
+  useEffect(() => {
+    if (searchInputRef?.current && isOpen && shouldFocusOnOpen) {
+      searchInputRef.current.focus();
+    }
+  }, []);
 
   return (
     <form

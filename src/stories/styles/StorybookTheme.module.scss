@@ -1,15 +1,16 @@
 // StorybookTheme.module.scss (CSS Modules-friendly) — compatible with new and old Sass
 
-@use "./SbZDropColorsAndGlow.modules.scss" as global;
+@use "./SbZDropColorsAndGlow.module.scss" as global;
 
-@use "../ZComponents/ZDrop/styles/SbZDropGlobal.modules.scss";
-@use "../ZComponents/ZDrop/visualComponents/styles/SbVisualComponents.modules.scss";
-@use "../ZComponents/ZDrop/visualComponents/styles/SbSelection.modules.scss";
-@use "../ZComponents/ZDrop/visualComponents/styles/SbPoster.modules.scss";
-@use "../ZComponents/ZDrop/visualComponents/styles/SbNotFound.modules.scss";
-@use "../ZComponents/ZDrop/styles/SbZDropWeapons.modules.scss";
-@use "../ZComponents/ZDrop/styles/SbZDropSurvivors.modules.scss";
-@use "../ZComponents/ZDrop/styles/SbZDropZombies.modules.scss";
-@use "../ZComponents/ZDrop/styles/SbZDropHookForm.modules.scss";
+@use "../ZComponents/ZDrop/styles/SbZDropGlobal.module.scss";
+@use "../ZComponents/ZDrop/visualComponents/styles/SbVisualComponents.module.scss";
+@use "../ZComponents/ZDrop/visualComponents/styles/SbSelection.module.scss";
+@use "../ZComponents/ZDrop/visualComponents/styles/SbPoster.module.scss";
+@use "../ZComponents/ZDrop/visualComponents/styles/SbNotFound.module.scss";
+@use "../ZComponents/ZDrop/styles/SbZDropWeapons.module.scss";
+@use "../ZComponents/ZDrop/styles/SbZDropSurvivors.module.scss";
+@use "../ZComponents/ZDrop/styles/SbZDropZombies.module.scss";
+@use "../ZComponents/ZDrop/styles/SbZDropHookForm.module.scss";
 
-@use "../ZComponents/ZDropButton/styles/SbZDropButtonGlobal.modules.scss";
+@use "../ZComponents/ZDropButton/styles/SbZDropButtonGlobal.module.scss";
+@use "../ZComponents/ZDropButton/styles/SbZDropButton.module.scss";
