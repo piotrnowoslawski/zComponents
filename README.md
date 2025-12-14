@@ -1,7 +1,5 @@
 # 📘 zComponents — Growing React Component Library
 
-**Lightweight, typed, customizable UI building blocks for React.**
-
 ![npm version](<https://img.shields.io/npm/v/zcomponents-ui?color=rgb(25,150,90)&style=flat-square>)
 ![npm downloads](https://img.shields.io/npm/dm/zcomponents-ui?color=blue&style=flat-square)
 ![license](https://img.shields.io/npm/l/zcomponents-ui?style=flat-square)
@@ -9,157 +7,100 @@
 
 ---
 
-# 🎯 ZDrop — Dropdown / Select Component
+**zComponents UI** is a lightweight React component library focused on **flexible dropdowns and selection components**, built with TypeScript and zero external dependencies.
 
-### ✔ Flexible option model
+👉 Full documentation and live examples are available in Storybook.
 
-Support for `string`, `number`, and full `object` entries.
-
-### ✔ Full control over rendering
-
-Perfect for tagging systems, chips, advanced UI states.
-
-### ✔ Flexible behavior and layout adaptation
-
-Boundary detection, list height limit, smart direction switching.
-
-### ✔ Custom search logic
-
-Inject your own filter function with full access to options.
-
----
-
-## 🟩 Zero Dependencies
-
-`zcomponents-ui` is built with **zero external dependencies**.
-
----
-
-## 📚 Storybook Documentation
-
-All components in the **zComponents UI Library** come with interactive examples and full API documentation.
-
-🔗 **Live Storybook:**  
+🔗 **Storybook:**  
 https://piotrnowoslawski.github.io/zComponents
 
-The Storybook is deployed automatically from `main` using GitHub Pages.
+---
+
+## ✨ Features
+
+- ✅ Written in **TypeScript**
+- ✅ **Zero dependencies**
+- ✅ SCSS Modules styling
+- ✅ Type-safe APIs
+- ✅ Designed for advanced UI use cases
+- ✅ Interactive Storybook documentation
 
 ---
 
-# 🚀 Installation
+## 📦 Installation
 
 ```bash
-npm install zcomponents
+npm install zcomponents-ui
+# or
+yarn add zcomponents-ui
+# or
+pnpm add zcomponents-ui
 ```
 
 ---
 
-# 📦 Quick Usage
+## 🎯 Components Overview
 
-```tsx
-import { ZDrop } from "zcomponents-ui";
+### ZDrop
 
-const options = ["Hiroshi", "Harper", "Karl"];
+Advanced dropdown / select component with full control over behavior and rendering.
 
-export default () => (
-  <ZDrop
-    name="survivor"
-    options={options}
-    placeholder="Pick someone"
-    onChange={(val) => console.log(val)}
-  />
-);
-```
+**What it does:**
 
----
+- Single & multiple select
+- Searchable options
+- Supports primitive and object-based options
+- Smart dropdown positioning (top / bottom)
+- Automatic list height adjustment
+- Custom renderers for options, values, and toggle
+- Type-safe value handling
 
-# 🔍 Search
-
-### Built-in search
-
-```tsx
-isSearchable;
-```
-
-### Custom search
-
-```tsx
-searchFilter={({ options, currentValue, labelKey }) =>
-  options.filter((o) =>
-    String(o[labelKey]).toLowerCase().includes(currentValue.toLowerCase())
-  )
-}
-```
+👉 Best for forms, filters, and complex selects.
 
 ---
 
-# 🧠 Object Options Example
+### ZDropButton
 
-```tsx
-<ZDrop
-  name="survivor"
-  options={[{ id: 1, name: "Hiroshi" }]}
-  valueKey="id" // default: "value"
-  labelKey="name" // default: "label"
-  shouldReturnObjectOnChange
-/>
-```
+Button-based dropdown built with the **Compound Components** pattern.
 
----
+**What it does:**
 
-# 🎨 Customize Everything
+- Dropdown menu triggered by button
+- Supports title and/or icon as toggle
+- Custom dropdown content structure
+- Optional search input
+- Flexible content positioning
+- List items as actions or links
+- Fully controlled selection logic
 
-```tsx
-optionRenderer={(option, isSelected) => (
-  <div className={isSelected ? "selected" : ""}>{option}</div>
-)}
-```
-
-```tsx
-valueRenderer={({option, onRemove }) => (
-  <span onClick={onRemove} style={{ marginRight: 8 }}>
-    ❌ {option}
-  </span>
-)};
-```
+👉 Best for menus, navigation, and action selectors.
 
 ---
 
-# 📚 Props (Short)
+## 🎨 Styling
+
+Default styles are provided as a single CSS file:
 
 ```ts
-valueKey?: string; // default: "value"
-labelKey?: string; // default: "label"
-isSearchable?: boolean;
-searchFilter?: SearchFilter;
-isMultiple?: boolean;
-isDisabled?: boolean;
-valueRenderer?: ValueRenderer;
-optionRenderer?: OptionRenderer;
-expandToggleRenderer?: ExpandToggleRenderer;
+import "zcomponents-ui/styles.css";
 ```
+
+Styles are intentionally minimal and easy to override using:
+
+- custom CSS
+- SCSS Modules
+- utility frameworks (e.g. Tailwind)
 
 ---
 
-# 🔌 React Hook Form Integration (Short Note)
+## 📚 Documentation
 
-## Features
+Full API documentation, examples, and usage patterns are available in Storybook:
 
-- Full compatibility with rules, mode, reValidateMode
+🔗 **https://piotrnowoslawski.github.io/zComponents**
 
-- Works with Yup / Zod through RHF resolvers
+---
 
-- Supports value mapping via
-
-- onChangeTransform (ZDrop → RHF)
-
-- valueSelector (RHF → ZDrop)
-
-- Customizable error rendering
-
-📌 Use ZDropField when working with forms.
-📌 Use ZDrop standalone for uncontrolled usage.
-
-# 📄 License
+## 📄 License
 
 MIT © Piotr Nowosławski

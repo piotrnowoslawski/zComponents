@@ -22,14 +22,6 @@ This package will grow over time, adding new UI building blocks with unified sty
 
 ---
 
-The first component included in the library is:
-
-# 🎯 **ZDrop — Advanced Dropdown / Select Component**
-
-This README describes the **ZDrop** component inside the **zComponents** package.
-
----
-
 # 📚 Storybook Documentation
 
 All components in the **zComponents UI Library** come with interactive examples and full API documentation.
@@ -41,39 +33,63 @@ The Storybook is deployed automatically from `main` using GitHub Pages.
 
 ---
 
-# 📚 Table of Contents
+# 📦 Components:
+
+## **ZDrop — Advanced Dropdown / Select Component**
+
+## **ZDropButton — Advanced Select / Nav Button**
+
+# 📌 Table of Contents
+
+# 📌 Table of Contents
 
 - 📘 [zComponents — Growing React Component Library](#-zcomponents--growing-ui-react-component-library)
-- 🎯 [ZDrop — Advanced Dropdown / Select Component](#-zdrop--advanced-dropdown--select-component)
 - 🚀 [Installation](#-installation)
-- ✨ [Features (ZDrop)](#-features-zdrop)
-- 📦 [Basic Usage (ZDrop)](#-basic-usage-zdrop)
-- 🧩 [Multiple Select Example](#-multiple-select-example)
-- 🎨 [Custom Rendering](#-custom-rendering)
-  - [Custom Option Renderer](#custom-option-renderer)
-  - [Custom Value Renderer](#custom-value-renderer)
-  - [Custom Expand Toggle](#custom-expand-toggle)
-- 🧠 [Object Options Example](#-object-options-example)
-- 🔍 [Search Features](#-search-features)
-- 📦 [Additional Behaviors & Notes](#-additional-behaviors--notes)
-  - [Flexible Option Types](#flexible-option-types)
-  - [valueKey — Underlying Value Extraction](#valuekey--underlying-value-extraction)
-  - [labelKey — Display Label](#labelkey--display-label)
-  - [referenceElementClassName — Boundary Handling](#referenceelementclassname--boundary-handling)
-  - [Clear Behavior (`clear` prop)](#-clear-behavior-clear-prop)
-  - [noDataContent](#-nodatacontent)
-- 📌 [Dropdown Positioning & Max Height](#-dropdown-positioning--max-height)
-- 🎛 [Props Reference](#-props-reference)
-- 🎨 [Styling Reference](#-styling-reference)
-- 📤 [Events](#-events)
-- 🔌 [Integrations](#-integrations)
-  - [Integrations React Hook Form](#-react-hook-form)
-    - 🔌 [Installation & Import](#-installation--import)
-    - 🧱 [ZDropField API](#-zdropfield-api)
-    - 🔄 [Value Mapping: onChangeTransform & valueSelector](#-value-mapping-onchangetransform--valueselector)
-    - 🧪 [Validation](#-validation)
-    - 🧩 [Yup / Zod Example](#-yup--zod-validation)
-- 🏗 [Build Outputs](#-build-outputs)
+- 📦 Components:
+
+  - 🎯 [ZDrop](#-zdrop)
+
+    - ✨ [Features (ZDrop)](#-features-zdrop)
+    - 📦 [Basic Usage (ZDrop)](#-basic-usage-zdrop)
+    - 🧩 [Multiple Select Example](#-multiple-select-example)
+    - 🎨 [Custom Rendering](#-custom-rendering)
+      - [Custom Option Renderer](#custom-option-renderer)
+      - [Custom Value Renderer](#custom-value-renderer)
+      - [Custom Expand Toggle](#custom-expand-toggle)
+    - 🧠 [Object Options Example](#-object-options-example)
+    - 🔍 [Search Features](#-search-features)
+    - 📦 [Additional Behaviors & Notes](#-additional-behaviors--notes)
+      - [Flexible Option Types](#flexible-option-types)
+      - [valueKey — Underlying Value Extraction](#valuekey--underlying-value-extraction)
+      - [labelKey — Display Label](#labelkey--display-label)
+      - [referenceElementClassName — Boundary Handling](#referenceelementclassname--boundary-handling)
+      - [Clear Behavior (`clear` prop)](#-clear-behavior-clear-prop)
+      - [noDataContent](#-nodatacontent)
+    - 📌 [Dropdown Positioning & Height Management](#-dropdown-positioning--height-management)
+    - 🎛 [Props Reference](#-props-reference)
+    - 🎨 [Styling Reference](#-styling-reference)
+    - 📤 [Events](#-events)
+    - 🔌 [Integrations](#-integrations)
+      - [Integrations React Hook Form](#-react-hook-form)
+        - 🔌 [Installation & Import](#-installation--import)
+        - 🧱 [ZDropField API](#-zdropfield-api)
+        - 🔄 [Value Mapping: onChangeTransform & valueSelector](#-value-mapping-onchangetransform--valueselector)
+        - 🧪 [Validation](#-validation)
+        - 🧩 [Yup / Zod Example](#-yup--zod-validation)
+
+  - 🎯 [ZDropButton](#-zdropbutton)
+    - ✨ [Features (ZDropButton)](#-features-zdropbutton)
+    - 🧩 [Compound Components Architecture](#-compound-components-architecture)
+    - 📦 [Basic Usage (ZDropButton)](#-basic-usage-1)
+    - ✅ [Toggle Requirements](#-toggle-requirements)
+    - 🔍 [Search — ZDropButton.Search](#-search--zdropbuttonsearch)
+    - 📌 [Dropdown Content & Positioning](#-dropdown-content--positioning)
+    - 📃 [List & Items](#-list--items)
+    - 🧼 [Outside Click Handling](#-outside-click-handling)
+    - 🎛 [Props Reference (ZDropButton)](#-zdropbutton-props-reference)
+    - 📤 [Events (ZDropButton)](#-events-1)
+    - 🧭 [Summary (ZDropButton)](#-summary-1)
+
 - 📄 [License](#-license)
 
 ---
@@ -90,7 +106,9 @@ pnpm add zcomponents
 
 ---
 
-# ✨ Features (ZDrop)
+# 🎯 ZDrop
+
+## ✨ Features (ZDrop)
 
 - ✔ Single or multiple selection
 - ✔ Searchable dropdown
@@ -101,7 +119,7 @@ pnpm add zcomponents
 - ✔ Debounced search
 - ✔ Boundary detection via reference element
 - ✔ Top/bottom smart dropdown positioning
-- ✔ **Dynamic list height limiting (`listMaxHeightLimiter`)**
+- ✔ **Two interchangeable positioning & height strategies**
 - ✔ Full styling override via `styleClasses`
 - ✔ Returns raw values or full objects
 - ✔ Lightweight Rollup bundle
@@ -109,7 +127,7 @@ pnpm add zcomponents
 
 ---
 
-# 📦 Basic Usage (ZDrop)
+## 📦 Basic Usage (ZDrop)
 
 ```tsx
 import { ZDrop } from "zcomponents-ui";
@@ -130,7 +148,7 @@ export default function App() {
 
 ---
 
-# 🧩 Multiple Select Example
+## 🧩 Multiple Select Example
 
 ```tsx
 <ZDrop
@@ -144,7 +162,7 @@ export default function App() {
 
 ---
 
-# 🎨 Custom Rendering
+## 🎨 Custom Rendering
 
 ### Custom Option Renderer
 
@@ -182,7 +200,7 @@ const toggleRenderer = (isOpen) => <span>{isOpen ? "▲" : "▼"}</span>;
 
 ---
 
-# 🧠 Object Options Example
+## 🧠 Object Options Example
 
 ```tsx
 const options = [
@@ -203,7 +221,7 @@ const options = [
 
 ---
 
-# 🔍 Search Features
+## 🔍 Search Features
 
 ### Built-in search
 
@@ -225,7 +243,7 @@ searchFilterDelay={200}
 
 ---
 
-# 📦 Additional Behaviors & Notes
+## 📦 Additional Behaviors & Notes
 
 ### Flexible Option Types
 
@@ -263,19 +281,110 @@ Defines which object field is displayed inside the dropdown list.
 
 ---
 
-## referenceElementClassName — Boundary Handling
+---
 
-```tsx
-referenceElementClassName = "container";
-```
+## 📌 Dropdown Positioning & Height Management
 
-- Not required to be a direct parent
-- Dropdown will never overflow outside this element
-- Useful in scrollable or constrained layouts
+ZDrop supports **two interchangeable strategies** for determining dropdown position and list height.
+
+> ⚠️ These strategies are **mutually exclusive** — use **only one at a time**.
 
 ---
 
-# 🧼 Clear Behavior (`clear` prop)
+### 🧱 Strategy A — Reference Element Based (Container-aware)
+
+#### `referenceElementClassName`
+
+#### `positionToReferenceElement`
+
+This strategy constrains the dropdown to a specific **DOM container**.
+
+```tsx
+<ZDrop
+  referenceElementClassName="container"
+  positionToReferenceElement="bottom"
+/>
+```
+
+##### How it works
+
+- Dropdown measures available space **inside the reference element**
+- Prevents overflow outside scrollable or clipped containers
+- Automatically switches top / bottom if space is insufficient
+
+##### When to use
+
+- Scrollable layouts
+- Modals
+- Side panels
+- Any constrained container
+
+---
+
+### 🌍 Strategy B — Auto Height (Viewport-based)
+
+#### `isAutoHeightEnabled`
+
+#### `autoHeightPosition`
+
+This strategy uses the **browser viewport** as the reference.
+
+```tsx
+<ZDrop isAutoHeightEnabled autoHeightPosition="bottom" />
+```
+
+##### How it works
+
+- On open, ZDrop checks available space:
+  - above the control
+  - below the control
+- Chooses the best direction (`top` / `bottom`)
+- Automatically **limits list height** to fit the visible viewport
+- Enables scrolling when needed
+
+##### When to use
+
+- Standard page layouts
+- Fullscreen views
+- No specific container boundaries
+
+---
+
+### 🔁 Strategy Comparison
+
+| Feature                     | Reference Element | Auto Height |
+| --------------------------- | ----------------- | ----------- |
+| Context                     | Custom container  | Viewport    |
+| Prevents container overflow | ✅                | ❌          |
+| Auto height adjustment      | ✅                | ✅          |
+| Requires DOM class          | ✅                | ❌          |
+| Best for                    | Modals, panels    | Pages       |
+
+---
+
+### 📐 listMaxHeightLimiter
+
+```tsx
+listMaxHeightLimiter={300}
+```
+
+- Applies to **both strategies**
+- Maximum list height in pixels
+- Enables scroll if exceeded
+- Minimum enforced: `50px`
+
+### ⚠️ Important Rules
+
+- ❌ Do NOT combine:
+  - `referenceElementClassName` with `isAutoHeightEnabled`
+  - `positionToReferenceElement` with `autoHeightPosition`
+- ✔ Only **one strategy** should be active
+
+---
+
+---
+
+## 🧼 Clear Behavior (`clear` prop)
 
 The `clear` prop controls how and when the clear button becomes visible.
 
@@ -317,7 +426,7 @@ Example:
 
 ---
 
-# 📭 `noDataContent`
+## 📭 `noDataContent`
 
 The `noDataContent` prop allows you to customize what is displayed when the dropdown has **no matching options** after applying the search filter.
 
@@ -344,7 +453,7 @@ Use this prop to create a more user‑friendly “empty state” when the list b
 
 ---
 
-# 📌 Dropdown Positioning & Max Height
+## 📌 Dropdown Positioning & Max Height
 
 ### `positionToReferenceElement`
 
@@ -389,7 +498,7 @@ Example:
 
 ---
 
-# 🎛 Props Reference
+## 🎛 Props Reference
 
 ```ts
 export interface ZDropProps {
@@ -408,14 +517,22 @@ export interface ZDropProps {
   searchFilter?: SearchFilter;
   shouldReturnObjectOnChange?: boolean;
   onChange?: Function;
+  onBlur?: FocusEventHandler<HTMLDivElement>;
   onClear?: Function;
   valueRenderer?: ValueRenderer;
   optionRenderer?: OptionRenderer;
   expandToggleRenderer?: ExpandToggleRenderer;
   clearIcon?: ReactElement;
   noDataContent?: string | ReactElement;
+
+  // Strategy A
   referenceElementClassName?: string;
   positionToReferenceElement?: "top" | "bottom";
+
+  // Strategy B
+  isAutoHeightEnabled?: boolean;
+  autoHeightPosition?: "top" | "bottom";
+
   listMaxHeightLimiter?: number;
   styleClasses?: StyleClasses;
 }
@@ -423,7 +540,7 @@ export interface ZDropProps {
 
 ---
 
-# 🎨 Styling Reference
+## 🎨 Styling Reference
 
 zcomponents-ui ships with a compiled CSS file containing all default styles.
 You need to import it once in your application (usually in your main entry file).
@@ -456,7 +573,7 @@ export interface StyleClasses {
 
 ---
 
-# 📤 Events
+## 📤 Events
 
 ### onChange
 
@@ -470,7 +587,7 @@ Triggered when the clear button is pressed.
 
 ---
 
-# 🔌 Integrations
+## 🔌 Integrations
 
 ## 🧩 React Hook Form
 
@@ -525,7 +642,7 @@ export function ExampleForm() {
 
 ---
 
-## 🧱 ZDropField API
+### 🧱 ZDropField API
 
 `ZDropField` accepts nearly all props of `ZDrop`, except for:
 
@@ -575,7 +692,7 @@ Custom renderer for validation messages.
 
 ---
 
-## 🔄 Value Mapping: `onChangeTransform` & `valueSelector`
+### 🔄 Value Mapping: `onChangeTransform` & `valueSelector`
 
 These two functions give complete control over how data flows.
 
@@ -607,15 +724,15 @@ These two functions give complete control over how data flows.
 
 ---
 
-## 🧪 Validation
+### 🧪 Validation
 
-### Built-in RHF rules
+#### Built-in RHF rules
 
 ```tsx
 <ZDropField name="survivor" rules={{ required: "Survivor is required" }} />
 ```
 
-### Validate only on submit
+#### Validate only on submit
 
 ```tsx
 useForm({
@@ -626,7 +743,7 @@ useForm({
 
 ---
 
-## 🧩 Yup / Zod Validation
+### 🧩 Yup / Zod Validation
 
 ```ts
 const schema = z.object({
@@ -653,18 +770,274 @@ const { control } = useForm({
 
 ---
 
-## 🧭 Summary
+### 🧭 Summary
 
 - 🔌 Easy integration with react-hook-form
 - 🔄 Full control over value mapping
 - ✔ Supports Yup/Zod
 - 🎨 Customizable error rendering
 
-# 🏗 Build Outputs
+---
 
-- **ESM:** `dist/index.esm.js`
-- **CJS:** `dist/index.cjs.js`
-- **Types:** `dist/index.d.ts`
+# 🎯 ZDropButton
+
+**ZDropButton** is an advanced button-based dropdown built using the **Compound Components** pattern.  
+It provides full control over the dropdown structure: toggle, search, content positioning, list, and list items.
+
+The component is designed for:
+
+- action menus
+- icon-based selectors
+- navigation dropdowns
+- highly customized UIs (e.g. game, admin, dashboard)
+
+---
+
+## ✨ Features (ZDropButton)
+
+- ✔ Compound Components API
+- ✔ `title` **or** `toggleIcon` as trigger (at least one required)
+- ✔ Callbacks: `onToggle`, `onSelect`, `onHide`, `onSearch`
+- ✔ Optional outside click handling
+- ✔ Flexible dropdown positioning
+- ✔ List items as actions or links
+- ✔ Active item state support (`isActive`)
+
+---
+
+## 🧩 Compound Components Architecture
+
+ZDropButton works using a **shared internal context** that is consumed by all child components.
+
+Available components:
+
+- `ZDropButton`
+- `ZDropButton.Toggle`
+- `ZDropButton.Search`
+- `ZDropButton.Content`
+- `ZDropButton.List`
+- `ZDropButton.Item`
+
+This approach allows you to freely compose the dropdown structure without manually passing props down the tree.
+
+---
+
+## 📦 Basic Usage
+
+```tsx
+<ZDropButton
+  title="Select option"
+  options={options}
+  onSelect={(index) => console.log(index)}
+>
+  <ZDropButton.Content position="bottom left">
+    <ZDropButton.List>
+      {options.map((o, index) => (
+        <ZDropButton.Item key={o.id} index={index} title={o.label} />
+      ))}
+    </ZDropButton.List>
+  </ZDropButton.Content>
+</ZDropButton>
+```
+
+---
+
+## ✅ Toggle Requirements
+
+ZDropButton **requires at least one** of the following props:
+
+- `title: string | number`
+- `toggleIcon: ReactElement`
+
+Valid configurations:
+
+```tsx
+<ZDropButton title="Menu" options={options} />
+```
+
+```tsx
+<ZDropButton toggleIcon={<Icon />} options={options} />
+```
+
+```tsx
+<ZDropButton title="Profile" toggleIcon={<Avatar />} options={options} />
+```
+
+This rule is enforced at **TypeScript compile-time**.
+
+---
+
+## 🔍 Search — `ZDropButton.Search`
+
+Search is optional and works in a **controlled mode** — filtering logic is handled by the consumer.
+
+```tsx
+<ZDropButton onSearch={handleSearch} ...>
+  <ZDropButton.Search
+    placeholder="Search..."
+    clearIcon={<ClearIcon />}
+    shouldFocusOnOpen
+  />
+</ZDropButton>
+```
+
+### Props
+
+```ts
+export interface ZDropButtonSearchProps {
+  placeholder?: string;
+  searchIcon?: ReactElement;
+  clearIcon?: ReactElement;
+  searchClassName?: string;
+  shouldFocusOnOpen?: boolean;
+}
+```
+
+---
+
+## 📌 Dropdown Content & Positioning
+
+The dropdown panel is rendered using `ZDropButton.Content`.
+
+```tsx
+<ZDropButton.Content position="bottom right">...</ZDropButton.Content>
+```
+
+### Available positions
+
+- `left`
+- `right`
+- `top`
+- `bottom`
+- `top left`
+- `top right`
+- `bottom left`
+- `bottom right`
+
+---
+
+## 📃 List & Items
+
+### ZDropButton.List
+
+Wrapper component for list items.
+
+```tsx
+<ZDropButton.List>...</ZDropButton.List>
+```
+
+---
+
+### ZDropButton.Item
+
+```tsx
+<ZDropButton.Item
+  index={index}
+  title="Settings"
+  Icon={<SettingsIcon />}
+  isActive={isSelected}
+/>
+```
+
+#### Props
+
+```ts
+export interface ZDropButtonListItemProps {
+  index: number;
+  title: string | number;
+  Icon?: JSX.Element;
+  urlPath?: string;
+  className?: string;
+  linkAs?: "a" | React.ComponentType;
+  isActive?: boolean;
+}
+```
+
+---
+
+### 🔗 Link Mode
+
+If `urlPath` is provided, the list item behaves like a link.  
+You can override the underlying element using `linkAs` (e.g. React Router `Link`).
+
+```tsx
+<ZDropButton.Item
+  index={0}
+  title="Settings"
+  urlPath="/settings"
+  linkAs={Link}
+/>
+```
+
+---
+
+## 🧼 Outside Click Handling
+
+```ts
+isOutsideClickActive?: boolean;
+```
+
+- `true` — dropdown closes when clicking outside
+- `false` — full manual control
+
+---
+
+## 🎛 ZDropButton Props Reference
+
+```ts
+export interface ZDropButtonBaseProps {
+  options: any[];
+  className?: string;
+  toggleClassName?: string;
+  children: ReactNode;
+
+  onToggle?: Function;
+  onSelect?: (selectedItemIndex: number) => void;
+  onHide?: Function;
+
+  onSearch?: (e: ChangeEvent<HTMLInputElement>) => void;
+  isOutsideClickActive?: boolean;
+}
+
+export type ZDropButtonProps =
+  | {
+      title: string | number;
+      toggleIcon?: ReactElement;
+    }
+  | {
+      title?: string | number;
+      toggleIcon: ReactElement;
+    };
+```
+
+---
+
+## 📤 Events
+
+### `onToggle`
+
+Triggered when the dropdown is opened or closed.
+
+### `onSelect(index)`
+
+Triggered when a list item is selected.
+
+### `onHide`
+
+Triggered when the dropdown is closed.
+
+### `onSearch(event)`
+
+Triggered on search input change.
+
+---
+
+## 🧭 Summary
+
+- ZDropButton is a **highly flexible dropdown-button**
+- Compound Components provide full structural control
+- Type-safe API (`title` OR `toggleIcon`)
+- Ideal for advanced and custom UI scenarios
 
 ---
 

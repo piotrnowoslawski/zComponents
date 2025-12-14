@@ -119,7 +119,7 @@ export interface ZDropWithReferenceElementProps extends ZDropBaseProps {
 export interface ZDropWithAutoHeightProps extends ZDropBaseProps {
   referenceElementClassName?: never;
   positionToReferenceElement?: never;
-  isAutoHeightEnabled?: boolean;
+  isAutoHeightEnabled?: true;
   autoHeightPosition?: "top" | "bottom";
 }
 
