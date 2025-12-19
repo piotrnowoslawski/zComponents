@@ -59,7 +59,7 @@ export interface ListStyleClasses {
   noData?: string;
 }
 
-export interface StyleClasses
+export interface ZDropStyleClasses
   extends InputStyleClasses,
     ToggleStyleClasses,
     ListStyleClasses {
@@ -106,7 +106,7 @@ export interface ZDropBaseProps {
   isAutoHeightEnabled?: boolean;
   autoHeightPosition?: "top" | "bottom";
   listMaxHeightLimiter?: number;
-  styleClasses?: StyleClasses;
+  styleClasses?: ZDropStyleClasses;
 }
 
 export interface ZDropWithReferenceElementProps extends ZDropBaseProps {

@@ -1,11 +1,10 @@
-.zDrop {
+.zRange {
   &StorybookWrapper {
-    display: flex;
     height: 100vh;
     padding: 10px;
     background-repeat: no-repeat;
     background-size: cover;
-    background-image: url("/backgrounds/main/z-city-1.webp");
+    background-image: url("/backgrounds/main/z-city-3.webp");
 
     @media (max-width: 390px) {
       padding: 5px;
@@ -25,7 +24,6 @@
 
     @media (max-width: 999px) {
       display: block;
-      max-width: 100%;
 
       & > div:last-child {
         margin: 20px 0 0 0;

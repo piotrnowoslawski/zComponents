@@ -84,3 +84,32 @@ import { ZDropField } from "zcomponents-ui/react-hook-form";
   - ZDropButton examples
   - Advanced positioning demos
   - Compound components usage patterns
+
+---
+
+## 1.3.0 – ZRange Component
+
+### ✨ New Features
+
+- Added **`ZRange`** — advanced dual-thumb range slider component
+- Supports:
+  - Min / max range selection with two thumbs
+  - Fully controlled value handling
+  - Step-based snapping
+  - Optional non-linear scaling via custom scale expression
+  - Mouse and touch interactions
+  - Dynamic value indicator for active thumb
+  - Optional units with automatic formatting (divisors + precision)
+  - Custom icons for thumbs and value indicators
+  - Extensive style overrides via class-based API
+- Designed for advanced numeric filters and interval selection use cases
+
+### 🔧 Internal Improvements
+
+- Introduced internal `ZRangeValue` model for consistent value handling
+- Added swap-safe thumb logic to prevent invalid min/max crossover
+- Optimized resize handling with `ResizeObserver`
+- Modularized range internals (inputs, track, indicator, labels)
+- Fully typed public API with strict TypeScript definitions
+
+---

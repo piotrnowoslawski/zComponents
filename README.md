@@ -77,6 +77,26 @@ Button-based dropdown built with the **Compound Components** pattern.
 
 ---
 
+### ZRange
+
+Advanced **range slider** component for selecting numeric intervals with full control over behavior and formatting.
+
+**What it does:**
+
+- Dual-thumb range selection (min / max)
+- Fully controlled value state
+- Step-based snapping
+- Optional non-linear scaling
+- Dynamic value indicator for active thumb
+- Optional units with automatic formatting
+- Mouse & touch interaction support
+- Custom icons for thumbs and indicators
+- Fully stylable internal structure
+
+👉 Best for numeric filters, price ranges, metrics selection, and advanced sliders.
+
+---
+
 ## 🎨 Styling
 
 Default styles are provided as a single CSS file:

@@ -32,8 +32,6 @@ export const ZDropList = (props: ZDropListProps) => {
     listStyleClasses?.list
   );
 
-  console.log("render list", dropdownListClasses, isAutoHeightEnabled);
-
   const getListItemClasses = (
     option: ZDropOption,
     isOptionSelected: boolean

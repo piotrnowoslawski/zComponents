@@ -8,7 +8,7 @@ import {
   ZDropButtonSearchProps,
 } from "@components/ZDropButton/types/zDropButtonTypes";
 import { survivorOptions } from "../../staticData/zDropObjectsData";
-import { useState } from "react";
+import { ChangeEventHandler, useState } from "react";
 
 type ZDropButtonStoryProps = ZDropButtonProps &
   ZDropButtonContentProps &
@@ -56,7 +56,7 @@ const ObjectsCustomSurvivors: Story = {
       });
     };
 
-    const onSearch: React.ChangeEventHandler<HTMLInputElement> = (e) => {
+    const onSearch: ChangeEventHandler<HTMLInputElement> = (e) => {
       const searchedValue = e.target.value.toLowerCase();
 
       if (searchedValue === "") {

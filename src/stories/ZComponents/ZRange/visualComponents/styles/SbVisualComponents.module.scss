@@ -1,0 +1,69 @@
+@use "sass:meta";
+@use "sass:map";
+@use "@stories/styles/SbZDropColorsAndGlow.module.scss" as global;
+
+@function mget($m, $key) {
+  @if meta.function-exists(get, $module: map) {
+    @return map.get($m, $key);
+  }
+  @return map-get($m, $key);
+}
+
+.sbZRangeVisualComponents {
+  .unitsRangeTable {
+    table-layout: fixed;
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+    border-collapse: collapse;
+    margin-top: 16px;
+    background-color: mget(global.$neonWhite, c1);
+
+    &HeaderRow {
+      th {
+        padding: 8px;
+        text-align: left;
+        border: 1px solid global.$black;
+      }
+    }
+
+    &Basic {
+      .unitsRangeTableHeaderRow {
+        background-color: mget(global.$neonBlack, c0);
+        color: mget(global.$neonWhite, c0);
+      }
+    }
+
+    &Zombies {
+      .unitsRangeTable {
+        &HeaderRow {
+          background-color: mget(global.$neonBlack, c0);
+          color: mget(global.$neonRed, c0);
+        }
+      }
+    }
+
+    &Survivors {
+      .unitsRangeTable {
+        &HeaderRow {
+          background-color: mget(global.$neonBlack, c0);
+          color: mget(global.$neonGreen, c0);
+        }
+      }
+    }
+
+    &Row {
+      td {
+        color: mget(global.$neonBlack, c0);
+        border: 1px solid global.$grey;
+        padding: 8px;
+        text-align: left;
+        font-weight: 500;
+      }
+
+      td:first-child {
+        max-width: 184px;
+      }
+    }
+  }
+}

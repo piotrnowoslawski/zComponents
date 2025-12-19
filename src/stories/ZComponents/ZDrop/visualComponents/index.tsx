@@ -1,18 +1,13 @@
 import SbSelection from "@stories/ZComponents/ZDrop/visualComponents/SbSelection";
 import SbPoster from "@stories/ZComponents/ZDrop/visualComponents/SbPoster";
-import { SelectType, StoryType } from "@stories/types/visualComponentsTypes";
-import styles from "@stories/styles/StorybookTheme.module.scss";
+import { StoriesZDropVisualComponentsProps } from "@stories/types/visualComponentsTypes";
+import styles from "./styles/SbVisualComponents.module.scss";
 
-interface Props {
-  storyType: StoryType;
-  posterType: SelectType;
-}
-
-const StoriesVisualComponents = (props: Props) => {
+const StoriesVisualComponents = (props: StoriesZDropVisualComponentsProps) => {
   const { storyType, posterType } = props;
 
   return (
-    <div className={styles.sbVisualComponents}>
+    <div className={styles.sbZDropVisualComponents}>
       <SbSelection storyType={storyType} />
       <SbPoster
         posterType={posterType}

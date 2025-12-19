@@ -1,0 +1,71 @@
+@use "sass:meta";
+@use "sass:map";
+@use "@stories/styles/SbZDropColorsAndGlow.module.scss" as global;
+
+@function mget($m, $key) {
+  @if meta.function-exists(get, $module: map) {
+    @return map.get($m, $key);
+  }
+  @return map-get($m, $key);
+}
+
+.zRange {
+  &ZombiesInput {
+    &::-webkit-slider-thumb {
+      border-radius: 4px;
+      box-shadow: 0 0 4px 0 rgba(0, 0, 0, 1);
+      background-color: mget(global.$neonRed, c0);
+    }
+
+    &::-moz-range-thumb {
+      border-radius: 4px;
+      box-shadow: 0 0 4px 0 rgba(0, 0, 0, 1);
+      background-color: mget(global.$neonRed, c0);
+    }
+  }
+
+  &Track {
+    &ZombiesSelected {
+      background-color: mget(global.$neonRed, c0);
+    }
+  }
+
+  &Indicator {
+    &ZombiesMin {
+      img {
+        transform: scaleX(-1);
+        transform-style: preserve-3d;
+        animation: flipYMirror 0.5s ease-out forwards;
+      }
+    }
+
+    &ZombiesMax {
+      img {
+        transform-style: preserve-3d;
+        animation: flipY 0.5s ease-out forwards;
+      }
+    }
+  }
+}
+
+@keyframes flipY {
+  from {
+    transform: rotateY(90deg);
+    opacity: 0;
+  }
+  to {
+    transform: rotateY(0deg);
+    opacity: 1;
+  }
+}
+
+@keyframes flipYMirror {
+  from {
+    transform: scaleX(-1) rotateY(90deg);
+    opacity: 0;
+  }
+  to {
+    transform: scaleX(-1) rotateY(0deg);
+    opacity: 1;
+  }
+}

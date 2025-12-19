@@ -39,6 +39,8 @@ The Storybook is deployed automatically from `main` using GitHub Pages.
 
 ## **ZDropButton — Advanced Select / Nav Button**
 
+## **ZRange — Advanced Range Slider**
+
 # 📌 Table of Contents
 
 - 📘 [zComponents — Growing React Component Library](#-zcomponents--growing-ui-react-component-library)
@@ -76,6 +78,7 @@ The Storybook is deployed automatically from `main` using GitHub Pages.
         - 🧩 [Yup / Zod Example](#-yup--zod-validation)
 
   - 🎯 [ZDropButton](#-zdropbutton)
+
     - ✨ [Features (ZDropButton)](#-features-zdropbutton)
     - 🧩 [Compound Components Architecture](#-compound-components-architecture)
     - 📦 [Basic Usage (ZDropButton)](#-basic-usage-1)
@@ -87,6 +90,16 @@ The Storybook is deployed automatically from `main` using GitHub Pages.
     - 🎛 [Props Reference (ZDropButton)](#-zdropbutton-props-reference)
     - 📤 [Events (ZDropButton)](#-events-1)
     - 🧭 [Summary (ZDropButton)](#-summary-1)
+
+  - 🎚 [ZRange](#-zrange)
+
+    - ✨ [Features (ZRange)](#-features-zrange)
+    - 📦 [Basic Usage (ZRange)](#-basic-usage-zrange)
+    - 📐 [Range Logic & Behavior](#-range-logic--behavior)
+    - 📊 [Scaling & Units](#-scaling--units)
+    - 🎨 [Styling (ZRange)](#-styling-zrange)
+    - 🎛 [Props Reference (ZRange)](#-props-reference-zrange)
+    - 🧭 [Summary (ZRange)](#-summary-zrange)
 
 - 📄 [License](#-license)
 
@@ -419,7 +432,7 @@ Example:
   name="countries"
   clear="whenChanged"
   onClear={() => console.log("Cleared!")}
-/>
+///>
 ```
 
 ---
@@ -540,14 +553,14 @@ export interface ZDropProps {
 
 ## 🎨 Styling Reference
 
-zcomponents-ui ships with a compiled CSS file containing all default styles.
+zcomponents-ui ships with a compiled CSS file containing all default styles.  
 You need to import it once in your application (usually in your main entry file).
 
 ```ts
 import "zcomponents-ui/styles.css";
 ```
 
-The default styles are intentionally minimal and unobtrusive — the component does not impose a visual identity.
+The default styles are intentionally minimal and unobtrusive — the component does not impose a visual identity.  
 The goal of ZDrop is to stay out of the way and give you full freedom in shaping your own look & feel, whether through custom CSS, SCSS Modules, Tailwind, or the styleClasses override system.
 
 ```ts
@@ -799,7 +812,8 @@ The component is designed for:
 - ✔ Optional outside click handling
 - ✔ Flexible dropdown positioning
 - ✔ List items as actions or links
-- ✔ Active item state support (`isActive`)
+- ✔ Active item state handling
+- ✔ Type-safe API with compile-time enforcement
 
 ---
 
@@ -1010,7 +1024,7 @@ export type ZDropButtonProps =
 
 ---
 
-## 📤 Events
+## 📤 Events (ZDropButton)
 
 ### `onToggle`
 
@@ -1030,12 +1044,198 @@ Triggered on search input change.
 
 ---
 
-## 🧭 Summary
+## 🧭 Summary (ZDropButton)
 
 - ZDropButton is a **highly flexible dropdown-button**
 - Compound Components provide full structural control
 - Type-safe API (`title` OR `toggleIcon`)
 - Ideal for advanced and custom UI scenarios
+
+---
+
+# 🎚 ZRange
+
+**ZRange** is an advanced **dual-thumb range slider** designed for selecting numeric intervals with high precision and full control.
+
+It is built for use cases where a simple input is not enough:
+filters, price ranges, metrics, performance tuning, dashboards, and data-heavy UIs.
+
+---
+
+## ✨ Features (ZRange)
+
+- ✔ Dual-thumb range selection (min / max)
+- ✔ Fully controlled value model
+- ✔ Step-based snapping
+- ✔ Safe min/max swapping logic
+- ✔ Optional non-linear scaling
+- ✔ Dynamic indicator for active thumb
+- ✔ Optional units with automatic formatting
+- ✔ Mouse & touch support
+- ✔ Custom icons for thumbs and indicators
+- ✔ Resize-aware layout (ResizeObserver)
+- ✔ Modular internal architecture
+- ✔ Full styling control via class overrides
+- ✔ Zero external dependencies
+
+---
+
+## 📦 Basic Usage (ZRange)
+
+```tsx
+import { ZRange } from "zcomponents-ui";
+
+<ZRange
+  name="price"
+  min={0}
+  max={1000}
+  step={10}
+  value={{ min: 100, max: 700 }}
+  onChange={(value) => console.log(value)}
+/>;
+```
+
+---
+
+## 📐 Range Logic & Behavior
+
+### Dual input model
+
+ZRange internally manages **two synchronized inputs**:
+
+- minimum value
+- maximum value
+
+The component automatically:
+
+- prevents invalid ranges
+- swaps active thumb when crossing occurs
+- normalizes output values (`min ≤ max`)
+
+### Controlled updates
+
+- `onChange` → fired **during interaction**
+- `onSelect` → fired **after interaction ends**
+
+This allows:
+
+- live UI updates
+- deferred filtering / API calls
+
+---
+
+## 📊 Scaling & Units
+
+### Non-linear scaling
+
+ZRange supports custom **non-linear scales** via a string-based function schema.
+
+```tsx
+scale = "Math.log10(x + 1)";
+```
+
+The scale is applied only to **display & indicator logic** —  
+raw values remain linear and predictable.
+
+---
+
+### Units & formatting
+
+```tsx
+unitDivisors={[1, 1000, 1000000]}
+unitList={[
+  { unit: "H/s", fractionDigits: 0 },
+  { unit: "kH/s", fractionDigits: 1 },
+  { unit: "MH/s", fractionDigits: 2 },
+]}
+```
+
+ZRange automatically selects the best unit
+and formats values accordingly.
+
+---
+
+## 🎨 Styling (ZRange)
+
+ZRange exposes **class-based overrides** for every internal element.
+
+```ts
+export interface ZRangeStyleClasses {
+  container?: string;
+  label?: string;
+
+  input?: string;
+  inputActive?: string;
+
+  trackContainer?: string;
+  trackRange?: string;
+  trackSelected?: string;
+
+  indicator?: string;
+  indicatorMin?: string;
+  indicatorMax?: string;
+  indicatorValue?: string;
+  indicatorIcon?: string;
+
+  sliderValue?: string;
+}
+```
+
+Default styles are included via:
+
+```ts
+import "zcomponents-ui/styles.css";
+```
+
+---
+
+## 🎛 Props Reference (ZRange)
+
+```ts
+export interface ZRangeProps {
+  value: { min: number; max: number };
+  name: string;
+
+  min: number;
+  max: number;
+  step?: number;
+
+  scale?: string;
+
+  unitDivisors?: number[];
+  unitList?: {
+    unit: string;
+    fractionDigits: number;
+  }[];
+
+  label?: string | ReactNode;
+
+  onChange?: Function;
+  onSelect?: Function;
+
+  icons?: {
+    thumbMin?: ReactNode;
+    thumbMax?: ReactNode;
+    indicatorMin?: ReactNode;
+    indicatorMax?: ReactNode;
+  };
+
+  stylesClasses?: ZRangeStyleClasses;
+
+  isIndicatorUnitHidden?: boolean;
+}
+```
+
+---
+
+## 🧭 Summary (ZRange)
+
+- 🎚 Designed for **advanced numeric ranges**
+- 📐 Safe and predictable min/max behavior
+- 📊 Supports non-linear scales & units
+- 🎨 Fully stylable without breaking internals
+- 🧩 Modular, typed, zero-dependency design
+- 📚 Fully documented in Storybook
 
 ---
 

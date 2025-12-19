@@ -19,8 +19,6 @@ const ZDropListAutoHeightWrapper = (props: ZDropListAutoHeightWrapperProps) => {
   >();
   const [contentHeightValue, setContentHeightValue] = useState<number>();
 
-  console.log(contentHeightValue);
-
   const positionStyles: CSSProperties = {
     position: "absolute" as const,
     ...(position.includes("top") ? { bottom: "100%" } : { top: "100%" }),
@@ -31,8 +29,6 @@ const ZDropListAutoHeightWrapper = (props: ZDropListAutoHeightWrapperProps) => {
   const calculateContentHeight = useCallback(() => {
     if (contentRef?.current && containerRef?.current) {
       const { top, bottom } = getAvailableSpace(containerRef.current);
-
-      console.log({ position, top, bottom });
 
       const availableTop = Math.max(0, top);
       const availableBottom = Math.max(0, bottom);
@@ -64,8 +60,6 @@ const ZDropListAutoHeightWrapper = (props: ZDropListAutoHeightWrapperProps) => {
       if (position.includes("bottom") && availableBottom > approvedHeight) {
         setContentHeightValue(availableBottom);
 
-        console.log("bottom available");
-
         return;
       }
 
@@ -90,13 +84,9 @@ const ZDropListAutoHeightWrapper = (props: ZDropListAutoHeightWrapperProps) => {
 
     const isOverFlowTop = dropdownPositionY < contentRef.current.scrollHeight;
 
-    console.log({ dropdownPositionY, dropdownHeight, viewportHeight });
-
     const isOverFlowBottom =
       dropdownPositionY + dropdownHeight + contentRef.current.clientHeight >
       viewportHeight;
-
-    console.log({ isOverFlowTop, isOverFlowBottom });
 
     if (!isOverFlowTop && !isOverFlowBottom) {
       setForcedPositionY(undefined);

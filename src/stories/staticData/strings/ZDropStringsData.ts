@@ -1,4 +1,4 @@
-import { ZDropOption } from "../../../../../components/ZDrop/types/zDropTypes";
+import { ZDropOption } from "components/ZDrop/types/zDropTypes";
 
 export const survivorOptionsStrings: ZDropOption[] = [
   "hiroshi",

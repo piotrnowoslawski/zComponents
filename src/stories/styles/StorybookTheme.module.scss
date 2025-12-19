@@ -14,3 +14,8 @@
 
 @use "../ZComponents/ZDropButton/styles/SbZDropButtonGlobal.module.scss";
 @use "../ZComponents/ZDropButton/styles/SbZDropButton.module.scss";
+
+@use "../ZComponents/ZRange/styles/SbZRangeGlobal.module.scss";
+@use "../ZComponents/ZRange/styles/SbZRange.module.scss";
+@use "../ZComponents/ZRange/styles/SbZRangeSurvivors.module.scss";
+@use "../ZComponents/ZRange/styles/SbZRangeZombies.module.scss";

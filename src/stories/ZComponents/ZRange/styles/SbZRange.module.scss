@@ -1,0 +1,77 @@
+@use "sass:meta";
+@use "sass:map";
+@use "@stories/styles/SbZDropColorsAndGlow.module.scss" as global;
+
+@function mget($m, $key) {
+  @if meta.function-exists(get, $module: map) {
+    @return map.get($m, $key);
+  }
+  @return map-get($m, $key);
+}
+
+.zRange {
+  margin: 100px auto 0 auto;
+  padding: 0 20px;
+  max-width: 600px;
+
+  &Input {
+    &Active::-webkit-slider-thumb {
+      outline: 2px solid mget(global.$neonBlack, c0);
+      @include global.glowImgTight(global.$neonBlack, xl);
+    }
+  }
+
+  &Track {
+    &Range {
+      background-color: mget(global.$neonBlack, c0);
+    }
+  }
+
+  &Indicator {
+    min-width: fit-content;
+    width: 140px;
+    height: 90px;
+
+    @media (max-width: 890px) {
+      width: fit-content;
+      height: 20px;
+    }
+
+    &Icon {
+      @media (max-width: 890px) {
+        display: none;
+      }
+    }
+
+    &SurvivorsMin,
+    &ZombiesMin,
+    &SurvivorsMax,
+    &ZombiesMax {
+      background-color: mget(global.$neonWhite, c1);
+      border: 2px solid mget(global.$neonBlack, c0);
+      color: mget(global.$neonBlack, c0);
+
+      &::before {
+        border-color: mget(global.$neonBlack, c0) transparent transparent
+          transparent;
+      }
+    }
+
+    &Icon {
+      width: 80px;
+      height: 80px;
+
+      @media (max-width: 890px) {
+        display: none;
+      }
+    }
+
+    &Value {
+      min-width: fit-content;
+
+      @media (max-width: 890px) {
+        width: 100%;
+      }
+    }
+  }
+}
