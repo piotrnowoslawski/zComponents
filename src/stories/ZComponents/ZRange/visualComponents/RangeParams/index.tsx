@@ -7,11 +7,15 @@ const RangeParams = (props: RangeParamsProps) => {
 
   const { step, min, max, scale } = rangeParams;
 
-  const tableClasses = classNames(styles.unitsRangeTable, {
-    [styles.unitsRangeTableZombies]: title === "Zombies",
-    [styles.unitsRangeTableSurvivors]: title === "Survivors",
-    [styles.unitsRangeTableBasic]: !["Zombies", "Survivors"].includes(title),
-  });
+  const tableClasses = classNames(
+    styles.unitsRangeTable,
+    styles.unitsRangeTableParams,
+    {
+      [styles.unitsRangeTableZombies]: title === "Zombies",
+      [styles.unitsRangeTableSurvivors]: title === "Survivors",
+      [styles.unitsRangeTableBasic]: !["Zombies", "Survivors"].includes(title),
+    }
+  );
 
   return (
     <table className={tableClasses}>
