@@ -4,6 +4,15 @@ zComponents ships with **minimal, behavior-focused default styles**.
 They handle layout, positioning, interaction states and accessibility,
 but intentionally **do not impose a visual identity**.
 
+> ⚠️ **Styling Notes**
+>
+> All default styles are **purely conventional** and serve only as a structural scaffold for the components.  
+> Their color system is based on **`:where(...)` selectors**, giving them **zero specificity**.  
+> This is intentional: the library provides **behavior and layout**, not a visual identity.
+>
+> Style components **exactly as you want, exactly as you need**, without fighting selector overrides or relying on `!important`.  
+> The defaults cover what truly matters — **positioning, layout, and internal element cooperation** — while all visual aspects are entirely up to you.
+
 You are expected to either:
 
 - use the provided styles as a baseline and override them, or
