@@ -16,6 +16,8 @@
   --zd-radius: 3px;
   --zd-border: 1px solid var(--zd-color-primary);
   --zd-focus-ring: 0 0 0 0.2rem var(--zd-color-secondary-transp);
+  --thumb-size: 8px;
+  --track-height: 4px;
 }
 
 .zr {
@@ -223,6 +225,9 @@
 
 .zr__slider-track-selected-range {
   position: relative;
+  //   top: 0;
+  //   left: 0;
+  //   right: auto;
   height: var(--track-height);
   pointer-events: none;
 }
