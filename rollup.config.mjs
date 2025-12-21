@@ -3,7 +3,7 @@ import resolve from "@rollup/plugin-node-resolve";
 import commonjs from "@rollup/plugin-commonjs";
 import typescript from "@rollup/plugin-typescript";
 import postcss from "rollup-plugin-postcss";
-import postcssScss from "postcss-scss";
+import sass from "sass";
 import dts from "rollup-plugin-dts";
 
 const sassConfig = [
@@ -17,7 +17,6 @@ const sassConfig = [
 
 const postcssBase = {
   modules: true,
-  parser: postcssScss, // ✅ IMPORTANT: parse SCSS correctly
   use: sassConfig,
   minimize: true,
   sourceMap: true,
@@ -34,11 +33,25 @@ const makeCssOnlyBuild = ({ input, cssFileName, jsEntryFileName }) => ({
     },
   ],
   plugins: [
-    // CSS-only builds do not need peerDepsExternal/resolve/commonjs/typescript,
-    // because they only import SCSS modules.
     postcss({
-      ...postcssBase,
+      extensions: [".css", ".scss"],
       extract: cssFileName,
+      modules: true,
+      minimize: true,
+      sourceMap: true,
+      inject: false,
+
+      preprocess: (content, id) => {
+        if (!id.endsWith(".scss")) return content;
+        return sass
+          .renderSync({
+            file: id,
+            data: content,
+            includePaths: ["src", "node_modules"],
+            silenceDeprecations: ["legacy-js-api"],
+          })
+          .css.toString();
+      },
     }),
   ],
 });
