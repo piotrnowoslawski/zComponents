@@ -15,11 +15,8 @@ const sassConfig = [
   ],
 ];
 
-const postcssBase = {
-  modules: true,
-  use: sassConfig,
-  minimize: true,
-  sourceMap: true,
+const cssModulesNoHash = {
+  generateScopedName: "[local]", // ✅ NO hashing, keep developer class names
 };
 
 const makeCssOnlyBuild = ({ input, cssFileName, jsEntryFileName }) => ({
@@ -36,11 +33,15 @@ const makeCssOnlyBuild = ({ input, cssFileName, jsEntryFileName }) => ({
     postcss({
       extensions: [".css", ".scss"],
       extract: cssFileName,
-      modules: true,
+
+      // ✅ keep CSS Modules mapping BUT without hashing
+      modules: cssModulesNoHash,
+
       minimize: true,
       sourceMap: true,
       inject: false,
 
+      // ✅ force SCSS -> CSS compilation for CSS-only builds
       preprocess: (content, id) => {
         if (!id.endsWith(".scss")) return content;
         return sass
@@ -87,11 +88,18 @@ export default [
       commonjs(),
       typescript({ tsconfig: "./tsconfig.build.json" }),
       postcss({
-        ...postcssBase,
         extract: "zcomponents-ui.css",
+
+        // keep class names as-authored / NO hashing
+        modules: cssModulesNoHash,
+
+        use: sassConfig,
+        minimize: true,
+        sourceMap: true,
       }),
     ],
   },
+
   // --------------------------------------------
   // 2) Per-component CSS outputs
   // --------------------------------------------
@@ -112,6 +120,7 @@ export default [
     cssFileName: "zrange.css",
     jsEntryFileName: "zrange.css-entry.js",
   }),
+
   // --------------------------------------------
   // 3) Type declarations
   // --------------------------------------------
