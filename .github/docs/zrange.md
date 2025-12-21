@@ -287,3 +287,17 @@ Keep state predictable and formatting isolated to UI.
 ---
 
 ZRange is designed to keep range logic **safe and predictable**, even in complex interactions.
+
+## Styling
+
+ZRange exposes class overrides via `stylesClasses`.
+
+Default styles:
+
+```ts
+import "zcomponents-ui/styles.css";
+```
+
+See:
+
+- [Styling & theming](styling.md)

@@ -13,10 +13,12 @@ Interactive examples and full API details live in Storybook.
 This repository uses a layered documentation approach.
 
 ### Start here
+
 - [Mental model](docs/mental-model.md)  
   Design principles, architectural decisions, and common pitfalls.
 
 ### Component guides
+
 - [ZDrop](docs/zdrop.md)  
   Advanced select usage, positioning strategies, controlled behavior.
 
@@ -26,11 +28,16 @@ This repository uses a layered documentation approach.
 - [ZRange](docs/zrange.md)  
   Range logic, performance considerations, scaling, and units.
 
+- [Styling & theming](docs/styling.md)  
+  How to import default CSS and override component classes safely.
+
 ### Integrations
+
 - [React Hook Form](docs/react-hook-form.md)  
   Controlled wrappers, value mapping, and validation notes.
 
 ### Interactive documentation
+
 - Storybook: https://piotrnowoslawski.github.io/zComponents
 
 ---

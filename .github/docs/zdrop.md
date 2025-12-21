@@ -241,3 +241,16 @@ Fix:
 - Memoize renderers
 - Keep `onChange` lightweight
 - Filter large datasets upstream
+
+## Styling
+
+ZDrop uses minimal default styles.
+You must import:
+
+```ts
+import "zcomponents-ui/styles.css";
+```
+
+For detailed theming and overrides, see:
+
+- [Styling & theming](styling.md)

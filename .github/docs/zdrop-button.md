@@ -151,3 +151,18 @@ Navigation may not automatically close the dropdown.
 
 - Expecting `options` to auto-render items
 - Indices out of sync with rendered order
+
+## Styling
+
+ZDropButton is composition-first.
+Styling is handled by your own classes and structure.
+
+Default styles:
+
+```ts
+import "zcomponents-ui/styles.css";
+```
+
+See:
+
+- [Styling & theming](styling.md)
