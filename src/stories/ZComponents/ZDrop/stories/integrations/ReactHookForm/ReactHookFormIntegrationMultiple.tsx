@@ -117,11 +117,11 @@ const ReactHookFormIntegrationMultiple: Story = {
   },
   args: {
     options: zombieOptionsObjects,
-    label: "Survivor:",
+    label: "Zombies:",
     isMultiple: true,
     isDisabled: false,
     isSearchable: true,
-    placeholder: "select a survivor...",
+    placeholder: "select zombies...",
     shouldReturnObjectOnChange: true,
     clear: "always",
     styleClasses: {
