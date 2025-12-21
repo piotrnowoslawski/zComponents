@@ -1,6 +1,6 @@
 {
   "name": "zcomponents-ui",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "description": "Customizable React dropdown component (TypeScript + SCSS Modules).",
   "author": "Piotr Nowosławski",
   "license": "MIT",
