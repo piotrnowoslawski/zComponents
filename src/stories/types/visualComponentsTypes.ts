@@ -25,7 +25,8 @@ export type RangeTableTitle =
   | "Zombies"
   | "Survivors"
   | "Distance"
-  | "Disk / Memory";
+  | "Disk / Memory"
+  | "Price";
 
 export interface StoriesZRangeVisualComponentsProps {
   units: UnitList[];

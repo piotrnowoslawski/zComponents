@@ -1,26 +1,8 @@
-import {
-  Control,
-  Controller,
-  ControllerFieldState,
-  FieldValues,
-  Path,
-  type RegisterOptions,
-} from "react-hook-form";
+import { Controller, ControllerFieldState, FieldValues } from "react-hook-form";
 import ZDrop from "../../../../ZDrop";
-import type { ZDropProps } from "../../../types/zDropTypes";
-import styles from "../../../styles/ZDrop.module.scss";
+import { ZDropFieldProps } from "./types/zDropFieldTypes";
 import { classNames } from "@helpers/classNames";
-
-export type ZDropFieldProps<TFieldValues extends FieldValues = FieldValues> =
-  Omit<ZDropProps, "value" | "onChange" | "name"> & {
-    control: Control<TFieldValues>;
-    name: Path<TFieldValues>;
-    rules?: RegisterOptions<TFieldValues, Path<TFieldValues>>;
-    onChangeTransform?: (zDropValue: unknown) => unknown;
-    valueSelector?: (fieldValue: unknown) => unknown;
-    errorClassName?: string;
-    errorRenderer?: (message: string) => React.ReactNode;
-  };
+import styles from "../../../styles/ZDrop.module.scss";
 
 interface ControllerRenderFieldProps {
   onChange: (value: unknown) => void;
@@ -34,9 +16,9 @@ interface ControllerRenderProps {
   fieldState: ControllerFieldState;
 }
 
-export function ZDropField<TFieldValues extends FieldValues = FieldValues>(
+export const ZDropField = <TFieldValues extends FieldValues = FieldValues>(
   props: ZDropFieldProps<TFieldValues>
-) {
+) => {
   const {
     control,
     name,
@@ -104,6 +86,6 @@ export function ZDropField<TFieldValues extends FieldValues = FieldValues>(
       }}
     />
   );
-}
+};
 
 export default ZDropField;

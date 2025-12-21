@@ -12,11 +12,11 @@ const ZRangeTrack = (props: ZRangeTrackProps) => {
   const { trackContainer, trackRange, trackSelected }: TrackStylesClasses =
     trackStyles;
 
-  const trackClasses = classNames(styles["z-range__slider"], trackContainer);
-  const rangeClasses = classNames(styles["z-range__slider-track"], trackRange);
+  const trackClasses = classNames(styles["zr__slider"], trackContainer);
+  const rangeClasses = classNames(styles["zr__slider-track"], trackRange);
 
   const selectedRangeClasses = classNames(
-    styles["z-range__slider-track-selected-range"],
+    styles["zr__slider-track-selected-range"],
     trackSelected
   );
 

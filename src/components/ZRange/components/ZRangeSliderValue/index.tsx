@@ -6,8 +6,8 @@ const ZRangeSliderValue = (props: ZRangeThumbProps) => {
   const { value, icon, sliderValueClassName } = props;
 
   const thumbClasses = classNames(
-    styles["z-range__slider-value"],
-    styles["z-range__slider-first-value"],
+    styles["zr__slider-value"],
+    styles["zr__slider-first-value"],
     sliderValueClassName
   );
 

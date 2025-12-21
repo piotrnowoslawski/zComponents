@@ -113,3 +113,18 @@ import { ZDropField } from "zcomponents-ui/react-hook-form";
 - Fully typed public API with strict TypeScript definitions
 
 ---
+
+## 1.4.0 – ZRange React Hook Form Integration
+
+### ✨ New Features
+
+- Added **`ZRangeField`** — official **React Hook Form** integration for `ZRange`
+- Controlled form value stored as `{ min: number; max: number }`
+- Supports RHF `rules` validation, custom error rendering (`errorRenderer`, `errorClassName`), and external callbacks (`onValueChange`, `onValueSelect`)
+- Fully compatible with **Yup**, **Zod**, and all RHF resolvers
+
+### 🔧 Internal Improvements
+
+- Normalized range output before committing to form state
+- Unified step-based snapping for drag and track click interactions
+- Strengthened TypeScript typings for form integration

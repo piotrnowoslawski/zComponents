@@ -28,9 +28,9 @@ const ZRangeIndicator = (props: ZRangeIndicatorProps) => {
     useState<React.CSSProperties>({});
 
   const indicatorClasses = classNames(
-    "z-range__value-indicator",
+    "zr__value-indicator",
     {
-      "z-range__value-indicator--active":
+      "zr__value-indicator--active":
         typeof indicatorValue === "number" && isHighlighted,
     },
     indicatorStyles?.indicator,
@@ -45,12 +45,12 @@ const ZRangeIndicator = (props: ZRangeIndicatorProps) => {
   );
 
   const indicatorIconClasses = classNames(
-    styles["z-range__value-indicator-icon"],
+    styles["zr__value-indicator-icon"],
     indicatorStyles?.indicatorIcon
   );
 
   const indicatorValueClasses = classNames(
-    "z-range__value-indicator-value",
+    "zr__value-indicator-value",
     indicatorStyles?.indicatorValue
   );
 

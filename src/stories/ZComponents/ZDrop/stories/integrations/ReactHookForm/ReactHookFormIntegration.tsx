@@ -1,13 +1,15 @@
 import type { StoryObj } from "@storybook/react";
 import { ZDropProps, ZDropValue } from "@components/ZDrop/types/zDropTypes";
-import styles from "@stories/styles/StorybookTheme.module.scss";
+import { useEffect, useState } from "react";
+import { useForm, SubmitHandler } from "react-hook-form";
 import { useZDropStore, zDropStore } from "@stories/store/zDropStore";
 import { survivorOptionsObjects } from "@stories/staticData/objects/zDropObjectsData";
 import { ZDropField } from "@components/ZDrop/integrations/react-hook-form/ZDropField";
-
-import { useForm, SubmitHandler } from "react-hook-form";
 import SbSelectionElement from "@stories/ZComponents/ZDrop/visualComponents/SbSelection/SbSelectionElement";
-import { useEffect, useState } from "react";
+import styles from "@stories/styles/StorybookTheme.module.scss";
+import SaveButton from "@stories/ZComponents/Integrations/ReactHookForm/SaveButton";
+import ValuePreview from "@stories/ZComponents/Integrations/ReactHookForm/ValuePreview";
+import SubmittedMessage from "@stories/ZComponents/Integrations/ReactHookForm/SubmittedMessage";
 
 interface FormValues {
   survivor: ZDropValue | null;
@@ -99,14 +101,13 @@ const ReactHookFormIntegration: Story = {
                 }}
                 {...args}
               />
-
-              <button className={styles.zDropHookFormSaveButton} type="submit">
-                Save
-              </button>
+              <SaveButton className={styles.zDropHookFormSaveButton} />
             </form>
-            <div className={styles.zDropHookFormValuePreview}>
-              <pre>{JSON.stringify(preparePreviewValue(values), null, 2)}</pre>
-            </div>
+            <ValuePreview
+              className={styles.zDropHookFormValuePreview}
+              values={values}
+              preparePreviewValue={preparePreviewValue}
+            />
             <div className={styles.zDropHookFormSelectionPreview}>
               <SbSelectionElement
                 selected={survivor?.object?.value}
@@ -117,9 +118,9 @@ const ReactHookFormIntegration: Story = {
                 })}
               />
               {isSubmitted && (
-                <p className={styles.zDropHookFormSubmittedMessage}>
-                  Form submitted!
-                </p>
+                <SubmittedMessage
+                  className={styles.zDropHookFormSubmittedMessage}
+                />
               )}
             </div>
           </div>

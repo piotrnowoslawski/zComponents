@@ -1,0 +1,58 @@
+@use "sass:meta";
+@use "sass:map";
+@use "@stories/styles/SbZDropColorsAndGlow.module.scss" as global;
+
+@function mget($m, $key) {
+  @if meta.function-exists(get, $module: map) {
+    @return map.get($m, $key);
+  }
+  @return map-get($m, $key);
+}
+
+.zRange {
+  &HookForm {
+    max-width: 600px;
+    margin: 0 auto;
+
+    &SaveButton {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 10px 0 0 auto;
+      height: 33px;
+      padding: 4px 12px;
+      color: var(--zd-color-primary);
+      border: var(--zd-border);
+      border-radius: var(--zd-radius);
+      transition: border-color 0.15s ease-in-out;
+
+      &:hover {
+        border-color: var(--zd-color-secondary);
+        cursor: pointer;
+      }
+    }
+
+    &ValuePreview {
+      box-sizing: border-box;
+      height: fit-content;
+      max-width: 600px;
+      margin: 10px auto;
+      padding: 10px;
+      color: var(--zd-color-primary);
+      border: var(--zd-border);
+      border-radius: var(--zd-radius);
+    }
+
+    &Submitted {
+      transform: scale(1.1);
+      @include global.glowImgTight(global.$neonRed, xl);
+
+      &Message {
+        max-width: 600px;
+        margin: 0 auto;
+        color: mget(global.$neonRed, c0);
+        font-weight: 700;
+      }
+    }
+  }
+}

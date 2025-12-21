@@ -7,6 +7,9 @@ import { ZDropField } from "@components/ZDrop/integrations/react-hook-form/ZDrop
 
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useEffect, useState } from "react";
+import SaveButton from "@stories/ZComponents/Integrations/ReactHookForm/SaveButton";
+import ValuePreview from "@stories/ZComponents/Integrations/ReactHookForm/ValuePreview";
+import SubmittedMessage from "@stories/ZComponents/Integrations/ReactHookForm/SubmittedMessage";
 
 interface FormValues {
   zombies: ZDropValue[] | null;
@@ -93,21 +96,18 @@ const ReactHookFormIntegrationMultiple: Story = {
                 }}
                 {...args}
               />
-
-              <button className={styles.zDropHookFormSaveButton} type="submit">
-                Save
-              </button>
+              <SaveButton className={styles.zDropHookFormSaveButton} />
             </form>
-            <div className={styles.zDropHookFormValuePreview}>
-              <pre>
-                {JSON.stringify(preparePreviewValue(values?.zombies), null, 2)}
-              </pre>
-            </div>
+            <ValuePreview
+              className={styles.zDropHookFormValuePreview}
+              values={values?.zombies}
+              preparePreviewValue={preparePreviewValue}
+            />
             <div className={styles.zDropHookFormSelectionPreview}>
               {isSubmitted && (
-                <p className={styles.zDropHookFormSubmittedMessage}>
-                  Form submitted!
-                </p>
+                <SubmittedMessage
+                  className={styles.zDropHookFormSubmittedMessage}
+                />
               )}
             </div>
           </div>

@@ -5,6 +5,7 @@ import ZombiesRange from "./ZComponents/ZRange/stories/custom/ZombiesRange";
 import BasicDistance from "./ZComponents/ZRange/stories/basic/BasicDistance";
 import BasicDiskSize from "./ZComponents/ZRange/stories/basic/BasicDiskSize";
 import BasicMemorySize from "./ZComponents/ZRange/stories/basic/BasicMemorySize";
+import ReactHookFormIntegration from "./ZComponents/ZRange/stories/integrations/ReactHookForm/ReactHookFormIntegration";
 
 const meta: Meta<typeof ZRange> = {
   title: "Components/ZRange",
@@ -39,4 +40,9 @@ export const BasicDiskSizeRangeStory = {
 export const BasicMemorySizeRangeStory = {
   ...BasicMemorySize,
   name: "Basic memory size range selector",
+};
+
+export const ReactHookFormIntegrationStory = {
+  ...ReactHookFormIntegration,
+  name: "Integration - React Hook Form",
 };

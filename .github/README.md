@@ -69,8 +69,9 @@ The Storybook is deployed automatically from `main` using GitHub Pages.
     - 🎛 [Props Reference](#-props-reference)
     - 🎨 [Styling Reference](#-styling-reference)
     - 📤 [Events](#-events)
-    - 🔌 [Integrations](#-integrations)
-      - [Integrations React Hook Form](#-react-hook-form)
+    - 🔌 [Integrations](#-zdrop-integrations)
+
+      - [React Hook Form](#-react-hook-form)
         - 🔌 [Installation & Import](#-installation--import)
         - 🧱 [ZDropField API](#-zdropfield-api)
         - 🔄 [Value Mapping: onChangeTransform & valueSelector](#-value-mapping-onchangetransform--valueselector)
@@ -99,6 +100,18 @@ The Storybook is deployed automatically from `main` using GitHub Pages.
     - 📊 [Scaling & Units](#-scaling--units)
     - 🎨 [Styling (ZRange)](#-styling-zrange)
     - 🎛 [Props Reference (ZRange)](#-props-reference-zrange)
+    - 🔌 [Integrations](#-zrange-integrations)
+
+      - 🧩 [React Hook Form](#-react-hook-form-1)
+        - 🔌 [Installation & Import](#-installation--import-1)
+        - 📦 [Basic Example](#-basic-example)
+        - 🧱 [ZRangeField API](#-zrangefield-api)
+        - 🔄 [Update Behavior (`updateTiming`)](#-update-behavior-updatetiming)
+        - 🧪 [Validation](#-validation-1)
+        - 🧩 [Yup / Zod Validation](#-yup--zod-validation-1)
+        - 🎨 [Error Rendering](#-error-rendering)
+        - 🧭 [Summary (ZRange + RHF)](#-summary-zrange--rhf)
+
     - 🧭 [Summary (ZRange)](#-summary-zrange)
 
 - 📄 [License](#-license)
@@ -598,7 +611,7 @@ Triggered when the clear button is pressed.
 
 ---
 
-## 🔌 Integrations
+## 🔌 ZDrop Integrations
 
 ## 🧩 React Hook Form
 
@@ -1228,6 +1241,175 @@ export interface ZRangeProps {
 
 ---
 
+## 🔌 ZRange Integrations
+
+## 🧩 React Hook Form
+
+`ZRange` can be used standalone, but it also supports **react-hook-form** via a dedicated wrapper: **`ZRangeField`**.
+
+`ZRangeField`:
+
+- manages `value` internally through RHF
+- updates form state on change and/or on select (configurable)
+- displays validation errors (built-in RHF rules + Yup/Zod resolvers)
+- ensures the form always receives a normalized `{ min, max }` object
+
+---
+
+### 🔌 Installation & Import
+
+```bash
+npm install zcomponents-ui react-hook-form
+```
+
+```tsx
+import { ZRangeField } from "zcomponents-ui/react-hook-form";
+```
+
+---
+
+### 📦 Basic Example
+
+```tsx
+import { useForm } from "react-hook-form";
+import { ZRangeField } from "zcomponents-ui/react-hook-form";
+
+type FormValues = {
+  price: { min: number; max: number };
+};
+
+export function ExampleForm() {
+  const { control, handleSubmit, watch } = useForm<FormValues>({
+    defaultValues: {
+      price: { min: 100, max: 700 },
+    },
+  });
+
+  const price = watch("price");
+
+  return (
+    <form onSubmit={handleSubmit(console.log)}>
+      <ZRangeField<FormValues>
+        control={control}
+        name="price"
+        min={0}
+        max={1000}
+        step={10}
+        label="Price range"
+      />
+
+      <pre>{JSON.stringify(price, null, 2)}</pre>
+
+      <button type="submit">Submit</button>
+    </form>
+  );
+}
+```
+
+---
+
+### 🧱 ZRangeField API
+
+`ZRangeField` accepts nearly all props of `ZRange`, except for:
+
+| Removed from ZRangeField | Why                       |
+| ------------------------ | ------------------------- |
+| `value`                  | Managed internally by RHF |
+| `onChange`               | Controlled by RHF         |
+| `onSelect`               | Controlled by RHF         |
+| `name` (ZRange prop)     | Must match RHF schema     |
+
+Instead, it adds RHF-specific props and error UI configuration.
+
+```ts
+import type {
+  Control,
+  FieldValues,
+  FieldPath,
+  RegisterOptions,
+} from "react-hook-form";
+import type { ZRangeProps, ZRangeRangeValue } from "zcomponents-ui";
+
+export type ZRangeFieldProps<
+  TFieldValues extends FieldValues = FieldValues,
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+> = Omit<ZRangeProps, "value" | "onChange" | "onSelect" | "name"> & {
+  control: Control<TFieldValues>;
+  name: TName;
+
+  rules?: RegisterOptions<TFieldValues, TName>;
+  defaultValue?: ZRangeRangeValue;
+  shouldUnregister?: boolean;
+
+  updateTiming?: "onChange" | "onSelect";
+
+  onValueChange?: (value: ZRangeRangeValue, fieldName: string) => void;
+  onValueSelect?: (value: ZRangeRangeValue, fieldName: string) => void;
+
+  hideError?: boolean;
+  errorClassName?: string;
+  errorRenderer?: (message: string) => React.ReactNode;
+};
+```
+
+---
+
+### 🔄 Update Behavior: `updateTiming`
+
+- `onChange` → update RHF during interaction
+- `onSelect` → update RHF when interaction ends
+
+```tsx
+<ZRangeField<FormValues>
+  control={control}
+  name="price"
+  min={0}
+  max={1000}
+  step={10}
+  updateTiming="onSelect"
+/>
+```
+
+---
+
+### 🧪 Validation
+
+```tsx
+<ZRangeField<FormValues>
+  control={control}
+  name="price"
+  min={0}
+  max={1000}
+  step={10}
+  rules={{
+    validate: (v) => v.min <= v.max || "Min must be <= max",
+  }}
+/>
+```
+
+---
+
+### 🧩 Yup / Zod Validation
+
+Zod and Yup resolvers are fully supported.
+
+---
+
+### 🎨 Error Rendering
+
+```tsx
+<ZRangeField<FormValues>
+  control={control}
+  name="price"
+  min={0}
+  max={1000}
+  step={10}
+  errorRenderer={(message) => <div style={{ color: "crimson" }}>{message}</div>}
+/>
+```
+
+---
+
 ## 🧭 Summary (ZRange)
 
 - 🎚 Designed for **advanced numeric ranges**
@@ -1236,6 +1418,10 @@ export interface ZRangeProps {
 - 🎨 Fully stylable without breaking internals
 - 🧩 Modular, typed, zero-dependency design
 - 📚 Fully documented in Storybook
+- Easy RHF integration via `ZRangeField`
+- Predictable `{ min, max }` form value
+- Supports Yup / Zod
+- Customizable validation UI
 
 ---
 

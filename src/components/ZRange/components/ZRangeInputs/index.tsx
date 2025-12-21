@@ -18,15 +18,14 @@ const ZRangeInputs = (props: ZRangeInputsProps) => {
     onTouchEnd,
   } = props;
   return (
-    <div className={styles["z-range__inputs-wrapper"]}>
+    <div className={styles["zr__inputs-wrapper"]}>
       <input
         ref={rangeValue.min.inputRef}
         name={"0"}
         type="range"
         min={min}
         max={max}
-        // step={step || 1}
-        step="any"
+        step={typeof step === "number" ? step : "any"}
         value={rangeValue.min.value}
         className={inputMinClasses}
         onInput={onInputChange}
@@ -43,8 +42,7 @@ const ZRangeInputs = (props: ZRangeInputsProps) => {
         type="range"
         min={min}
         max={max}
-        // step={step || 1}
-        step="any"
+        step={typeof step === "number" ? step : "any"}
         value={rangeValue.max.value}
         className={inputMaxClasses}
         onInput={onInputChange}

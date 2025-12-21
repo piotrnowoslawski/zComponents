@@ -20,10 +20,17 @@ import ZRangeIndicator from "./components/ZRangeIndicator";
 import ZRangeTrack from "./components/ZRangeTrack";
 import ZRangeInputs from "./components/ZRangeInputs";
 import ZRangeLabel from "./components/ZRangeLabel";
+import { getFractionDigitsFromStep } from "./helpers/getFractionDigitsFromStep";
 
 const clamp01 = (v: number) => Math.min(1, Math.max(0, v));
 const clamp = (v: number, lo: number, hi: number) =>
   Math.min(hi, Math.max(lo, v));
+
+const normalizeToStep = (value: number, step: number) => {
+  const digits = getFractionDigitsFromStep(step);
+
+  return Number(value.toFixed(digits));
+};
 
 const ZRange = (props: ZRangeProps) => {
   const {
@@ -126,15 +133,15 @@ const ZRange = (props: ZRangeProps) => {
   ]);
 
   const containerClasses = classNames(
-    styles["z-range__container"],
+    styles["zr__container"],
     stylesClasses?.container
   );
 
   const inputMinClasses = classNames(
-    "z-range__input",
-    "z-range__input-first",
+    "zr__input",
+    "zr__input-first",
     {
-      "z-range__input--active": activeInputIndex === 0 && isHighlighted,
+      "zr__input--active": activeInputIndex === 0 && isHighlighted,
     },
     stylesClasses?.input,
     activeInputIndex === 0 && isHighlighted && stylesClasses?.inputActive
@@ -143,9 +150,9 @@ const ZRange = (props: ZRangeProps) => {
   );
 
   const inputMaxClasses = classNames(
-    "z-range__input",
-    "z-range__input-second",
-    { "z-range__input--active": activeInputIndex === 1 && isHighlighted },
+    "zr__input",
+    "zr__input-second",
+    { "zr__input--active": activeInputIndex === 1 && isHighlighted },
     stylesClasses?.input,
     activeInputIndex === 1 && isHighlighted && stylesClasses?.inputActive
       ? stylesClasses?.inputActive
@@ -237,16 +244,18 @@ const ZRange = (props: ZRangeProps) => {
   };
 
   const updateRangeValues = (currentValueReal: number, inputIndex: number) => {
+    const normalizedValue = normalizeToStep(currentValueReal, stepValue);
+
     const updatedRangeValue = new ZRangeValue(
       {
         ...(inputIndex === 0
-          ? { ...rangeValue.min, value: currentValueReal }
+          ? { ...rangeValue.min, value: normalizedValue }
           : rangeValue.min),
       },
       {
         ...(inputIndex === 0
           ? rangeValue.max
-          : { ...rangeValue.max, value: currentValueReal }),
+          : { ...rangeValue.max, value: normalizedValue }),
       },
       rangeValue.unitDivisors,
       rangeValue.unitList,
@@ -254,7 +263,8 @@ const ZRange = (props: ZRangeProps) => {
     );
 
     setRangeValue(updatedRangeValue);
-    setIndicatorValue(currentValueReal);
+
+    setIndicatorValue(normalizedValue);
 
     if (!onChange) return;
 
@@ -282,7 +292,12 @@ const ZRange = (props: ZRangeProps) => {
       return;
     }
 
-    const currentValue = mapInputRangeToValue(Number(e.target.value));
+    const rawValue = mapInputRangeToValue(Number(e.target.value));
+
+    const snappedValue =
+      Math.round((rawValue - min) / stepValue) * stepValue + min;
+
+    const currentValue = clamp(snappedValue, min, max);
 
     const rangeTrackRect = rangeTrackRef.current.getBoundingClientRect();
     const clientPositionOnTrack =
@@ -688,7 +703,7 @@ const ZRange = (props: ZRangeProps) => {
       {label && (
         <ZRangeLabel label={label} labelClassName={stylesClasses?.label} />
       )}
-      <div ref={containerRef} className={styles["z-range"]}>
+      <div ref={containerRef} className={styles["zr"]}>
         <ZRangeInputs
           rangeValue={rangeValueForInput}
           min={min}
@@ -741,7 +756,7 @@ const ZRange = (props: ZRangeProps) => {
           isIndicatorUnitHidden={isIndicatorUnitHidden}
         />
       </div>
-      <div className={styles["z-range__slider-values-wrapper"]}>
+      <div className={styles["zr__slider-values-wrapper"]}>
         <ZRangeSliderValue
           sliderValueClassName={stylesClasses?.sliderValue}
           value={rangeValue.getValueLabel("min")}
