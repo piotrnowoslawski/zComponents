@@ -59,7 +59,9 @@ const ReactHookFormIntegration: Story = {
           onSubmit={handleSubmit(onSubmit)}
         >
           <ZRangeField control={control} name="price" {...args} />
-          <SaveButton className={styles.zRangeHookFormSaveButton} />
+          <div className={styles.zRangeHookFormSaveButtonWrapper}>
+            <SaveButton className={styles.zRangeHookFormSaveButton} />
+          </div>
         </form>
         <ValuePreview
           className={styles.zRangeHookFormValuePreview}

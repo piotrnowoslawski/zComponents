@@ -16,7 +16,7 @@ const sassConfig = [
 ];
 
 const cssModulesNoHash = {
-  generateScopedName: "[local]", // ✅ NO hashing, keep developer class names
+  generateScopedName: "[local]",
 };
 
 const makeCssOnlyBuild = ({ input, cssFileName, jsEntryFileName }) => ({
@@ -34,14 +34,14 @@ const makeCssOnlyBuild = ({ input, cssFileName, jsEntryFileName }) => ({
       extensions: [".css", ".scss"],
       extract: cssFileName,
 
-      // ✅ keep CSS Modules mapping BUT without hashing
+      // CSS Modules mapping without hashing
       modules: cssModulesNoHash,
 
       minimize: true,
       sourceMap: true,
       inject: false,
 
-      // ✅ force SCSS -> CSS compilation for CSS-only builds
+      // force SCSS -> CSS compilation for CSS-only builds
       preprocess: (content, id) => {
         if (!id.endsWith(".scss")) return content;
         return sass
