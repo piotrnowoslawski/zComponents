@@ -68,9 +68,10 @@ const BasicSurvivors: Story = {
           toggleIcon={
             <img
               src={
-                typeof selectedSurvivorIndex === "number"
+                typeof selectedSurvivorIndex === "number" &&
+                selectedSurvivorIndex !== -1
                   ? survivorOptions[selectedSurvivorIndex]?.iconPath
-                  : "/icons/survivors/z-stranger.webp"
+                  : "icons/survivors/z-stranger.webp"
               }
               alt="Selected Survivor"
             />

@@ -74,15 +74,23 @@ const ObjectsCustomSurvivors: Story = {
     const { searchClassName, shouldFocusOnOpen, position, ...zDropButtonArgs } =
       args;
 
+    console.log(
+      selectedSurvivorIndex,
+      typeof selectedSurvivorIndex === "number"
+        ? survivorOptions[selectedSurvivorIndex]?.iconPath
+        : "icons/survivors/z-stranger.webp"
+    );
+
     return (
       <div className={styles.zDropButtonStorybookWrapper}>
         <ZDropButton
           toggleIcon={
             <img
               src={
-                typeof selectedSurvivorIndex === "number"
+                typeof selectedSurvivorIndex === "number" &&
+                selectedSurvivorIndex !== -1
                   ? survivorOptions[selectedSurvivorIndex]?.iconPath
-                  : "/icons/survivors/z-stranger.webp"
+                  : "icons/survivors/z-stranger.webp"
               }
               alt="Selected Survivor"
             />
