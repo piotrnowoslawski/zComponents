@@ -244,13 +244,33 @@ Fix:
 
 ## Styling
 
-ZDrop uses minimal default styles.
-You must import:
+ZDrop ships with **minimal, behavior-focused default styles**.
+They handle layout, positioning and interaction logic, but do not impose a visual identity.
+
+### Import styles
+
+You can choose **one of two approaches**:
+
+#### Option A — Import all styles (simplest)
 
 ```ts
 import "zcomponents-ui/styles.css";
 ```
 
-For detailed theming and overrides, see:
+This loads styles for **all zComponents** and is recommended if you use multiple components.
 
-- [Styling & theming](styling.md)
+#### Option B — Import only ZDrop styles (recommended)
+
+```ts
+import "zcomponents-ui/styles/zdrop";
+```
+
+This loads **only ZDrop styles** and gives you better control over CSS size and scope.
+
+> ⚠️ If no styles are imported, the component will render without proper layout and interaction behavior.
+
+---
+
+For advanced theming, per-component imports, and override strategies, see:
+
+- [Styling & Theming](styling.md)

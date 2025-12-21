@@ -154,15 +154,36 @@ Navigation may not automatically close the dropdown.
 
 ## Styling
 
-ZDropButton is composition-first.
-Styling is handled by your own classes and structure.
+ZDropButton is **composition-first**.
+It does not enforce a rigid visual structure and is designed to be styled
+primarily through your own layout and class names.
 
-Default styles:
+Default styles provide positioning, interaction states and basic layout helpers.
+
+### Import styles
+
+You can choose **one of two approaches**:
+
+#### Option A — Import all styles (simplest)
 
 ```ts
 import "zcomponents-ui/styles.css";
 ```
 
-See:
+This loads styles for **all zComponents** and works out of the box.
 
-- [Styling & theming](styling.md)
+#### Option B — Import only ZDropButton styles (recommended)
+
+```ts
+import "zcomponents-ui/styles/zdropbutton";
+```
+
+This loads **only ZDropButton styles** and gives you full control over CSS scope.
+
+> ⚠️ If no styles are imported, dropdown positioning and interaction behavior will not work correctly.
+
+---
+
+For advanced theming, per-component imports, and override strategies, see:
+
+- [Styling & Theming](styling.md)

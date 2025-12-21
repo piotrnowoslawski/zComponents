@@ -290,14 +290,35 @@ ZRange is designed to keep range logic **safe and predictable**, even in complex
 
 ## Styling
 
-ZRange exposes class overrides via `stylesClasses`.
+ZRange exposes **explicit class overrides** via the `stylesClasses` prop.
+This allows you to customize every internal element without relying on fragile selectors.
 
-Default styles:
+Default styles provide layout, thumb positioning, indicator behavior and interaction states.
+
+### Import styles
+
+You can choose **one of two approaches**:
+
+#### Option A — Import all styles (simplest)
 
 ```ts
 import "zcomponents-ui/styles.css";
 ```
 
-See:
+This loads styles for **all zComponents** and works out of the box.
 
-- [Styling & theming](styling.md)
+#### Option B — Import only ZRange styles (recommended)
+
+```ts
+import "zcomponents-ui/styles/zrange";
+```
+
+This loads **only ZRange styles** and gives you precise control over CSS scope.
+
+> ⚠️ If no styles are imported, thumbs, indicators and track positioning will not work correctly.
+
+---
+
+For advanced theming, per-component imports, and override strategies, see:
+
+- [Styling & Theming](styling.md)

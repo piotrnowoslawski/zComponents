@@ -128,3 +128,26 @@ import { ZDropField } from "zcomponents-ui/react-hook-form";
 - Normalized range output before committing to form state
 - Unified step-based snapping for drag and track click interactions
 - Strengthened TypeScript typings for form integration
+
+## 1.5.0 – Styling Improvements & Per-Component CSS
+
+### ✨ New
+
+- Added **per-component CSS imports**:
+  - `zcomponents-ui/styles/zdrop`
+  - `zcomponents-ui/styles/zdropbutton`
+  - `zcomponents-ui/styles/zrange`
+- Users can now choose between:
+  - importing **all styles at once**, or
+  - importing **only styles for used components**
+
+### 🧹 Improvements
+
+- Styling documentation updated to reflect the new import model
+- Clear guidance for global vs per-component styling
+- Improved DX for library consumers and design-system integrations
+
+### 🔧 Internal
+
+- CSS build pipeline adjusted to support per-component outputs
+- Package exports updated for explicit style entry points

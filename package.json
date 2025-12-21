@@ -1,7 +1,33 @@
 {
   "name": "zcomponents-ui",
   "version": "1.4.1",
-  "description": "Customizable React dropdown component (TypeScript + SCSS Modules).",
+  "description": "Zero-dependency React UI components library with dropdowns and a dual-thumb range slider. Written in TypeScript, styled with SCSS, fully customizable and React Hook Form ready.",
+  "keywords": [
+    "react",
+    "react-components",
+    "ui",
+    "ui-library",
+    "component-library",
+    "dropdown",
+    "select",
+    "range-slider",
+    "dual-thumb-slider",
+    "price-range",
+    "filter-ui",
+    "typescript",
+    "scss",
+    "css",
+    "customizable",
+    "react-hook-form",
+    "zod",
+    "yup",
+    "zero-dependency",
+    "zcomponents",
+    "zcomponents-ui",
+    "zdrop",
+    "zdropbutton",
+    "zrange"
+  ],
   "author": "Piotr Nowosławski",
   "license": "MIT",
   "type": "module",
@@ -19,7 +45,13 @@
       "import": "./dist/react-hook-form.esm.js",
       "require": "./dist/react-hook-form.cjs.js"
     },
-    "./styles.css": "./dist/zcomponents-ui.css"
+    "./styles.css": "./dist/zcomponents-ui.css",
+    "./zdrop.css": "./dist/zdrop.css",
+    "./zdropbutton.css": "./dist/zdropbutton.css",
+    "./zrange.css": "./dist/zrange.css",
+    "./styles/zdrop": "./dist/zdrop.css",
+    "./styles/zdropbutton": "./dist/zdropbutton.css",
+    "./styles/zrange": "./dist/zrange.css"
   },
   "files": [
     "dist/**/*",
@@ -38,17 +70,8 @@
     "url": "https://github.com/piotrnowoslawski/zComponents/issues"
   },
   "homepage": "https://piotrnowoslawski.github.io/zComponents",
-  "keywords": [
-    "react",
-    "dropdown",
-    "select",
-    "typescript",
-    "scss-modules",
-    "zcomponents-ui",
-    "zdrop"
-  ],
   "scripts": {
-    "build": "rimraf dist && rollup -c",
+    "build": "rimraf dist && rollup -c && rimraf dist/*css-entry*",
     "prepublishOnly": "npm run build",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build -o storybook-static",
@@ -75,6 +98,7 @@
     "cssnano": "^7.1.1",
     "gh-pages": "^6.3.0",
     "postcss": "^8.5.6",
+    "postcss-scss": "^4.0.9",
     "react-hook-form": "^7.66.1",
     "rimraf": "^5.0.0",
     "rollup": "^4.52.5",
@@ -86,5 +110,10 @@
     "tslib": "^2.8.1",
     "typescript": "^5.9.3",
     "vite": "^7.2.2"
+  },
+  "peerDependenciesMeta": {
+    "react-hook-form": {
+      "optional": true
+    }
   }
 }
