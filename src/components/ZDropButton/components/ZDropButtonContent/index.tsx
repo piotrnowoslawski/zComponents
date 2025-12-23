@@ -18,6 +18,7 @@ const ZDropButtonContent = (props: ZDropButtonContentProps) => {
     useContext(ZDropButtonContext);
 
   const contentRef = useRef<HTMLDivElement>(null);
+  const liHeightRef = useRef<number | null>(null);
 
   const [forcedPositionX, setForcedPositionX] = useState<
     CSSProperties | undefined
@@ -33,7 +34,10 @@ const ZDropButtonContent = (props: ZDropButtonContentProps) => {
     ...(position.includes("left") ? { left: 0 } : { right: 0 }),
     ...(forcedPositionX && { ...forcedPositionX }),
     ...(forcedPositionY && { ...forcedPositionY }),
-    ...(contentHeightValue && { maxHeight: contentHeightValue + "px" }),
+    ...(contentHeightValue && {
+      maxHeight: contentHeightValue + "px",
+      height: contentHeightValue + "px",
+    }),
   };
 
   const calculateContentHeight = useCallback(() => {
@@ -45,39 +49,44 @@ const ZDropButtonContent = (props: ZDropButtonContentProps) => {
       const availableTop = Math.max(0, top - searchInputHeight);
       const availableBottom = Math.max(0, bottom - searchInputHeight);
 
-      const liElementHeight = contentRef?.current
-        ?.querySelector("li")
-        ?.getBoundingClientRect().height;
+      let liElementHeight = liHeightRef.current;
 
       if (!liElementHeight) {
-        return;
+        liElementHeight =
+          contentRef.current?.querySelector("li")?.getBoundingClientRect()
+            .height || null;
+
+        if (!liElementHeight) {
+          return;
+        }
+
+        liHeightRef.current = liElementHeight;
       }
 
       const approvedHeight = liElementHeight * 2;
 
+      if (availableTop < approvedHeight && availableBottom < approvedHeight) {
+        return;
+      }
+
       if (position.includes("top") && availableTop > approvedHeight) {
         setContentHeightValue(availableTop);
-
         return;
       }
 
       if (position.includes("top") && availableTop <= approvedHeight) {
         setContentHeightValue(availableBottom);
-
         setForcedPositionY({ top: "100%", bottom: "auto" });
-
         return;
       }
 
       if (position.includes("bottom") && availableBottom > approvedHeight) {
         setContentHeightValue(availableBottom);
-
         return;
       }
 
       if (position.includes("bottom") && availableBottom <= approvedHeight) {
         setContentHeightValue(availableTop);
-
         setForcedPositionY({ top: "auto", bottom: "100%" });
       }
     }
@@ -129,43 +138,44 @@ const ZDropButtonContent = (props: ZDropButtonContentProps) => {
         contentRef.current.clientHeight >
       viewportHeight;
 
-    if (!isOverFlowTop && !isOverFlowBottom) {
-      setForcedPositionY(undefined);
-      setContentHeightValue(undefined);
+    if (!isOverFlowTop && !isOverFlowBottom && !contentHeightValue) {
+      calculateContentHeight();
       return;
     }
 
     if (!isOverFlowTop && isOverFlowBottom) {
       setForcedPositionY({ top: "auto", bottom: "100%" });
-      setContentHeightValue(undefined);
 
+      calculateContentHeight();
       return;
     }
 
     if (isOverFlowTop && !isOverFlowBottom) {
       setForcedPositionY({ top: "100%", bottom: "auto" });
-      setContentHeightValue(undefined);
 
+      calculateContentHeight();
       return;
     }
 
     if (isOverFlowTop && isOverFlowBottom) {
       calculateContentHeight();
     }
-  }, [buttonContainerRef, calculateContentHeight]);
+  }, [buttonContainerRef, calculateContentHeight, contentHeightValue]);
 
   useLayoutEffect(() => {
     if (isOpen) {
       preventFromOverflowX();
       preventFromOverflowY();
     }
-  }, [isOpen]);
+  }, [isOpen, preventFromOverflowX, preventFromOverflowY]);
 
   useLayoutEffect(() => {
     if (isOpen) {
       let timeId: ReturnType<typeof setTimeout>;
 
       const onResize = () => {
+        liHeightRef.current = null;
+
         clearTimeout(timeId);
         timeId = setTimeout(() => {
           preventFromOverflowX();

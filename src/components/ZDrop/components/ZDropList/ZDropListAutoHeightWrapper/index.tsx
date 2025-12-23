@@ -13,6 +13,7 @@ const ZDropListAutoHeightWrapper = (props: ZDropListAutoHeightWrapperProps) => {
   const { containerRef, position = "bottom", children } = props;
 
   const contentRef = useRef<HTMLDivElement>(null);
+  const liHeightRef = useRef<number | null>(null);
 
   const [forcedPositionY, setForcedPositionY] = useState<
     CSSProperties | undefined
@@ -23,7 +24,10 @@ const ZDropListAutoHeightWrapper = (props: ZDropListAutoHeightWrapperProps) => {
     position: "absolute" as const,
     ...(position.includes("top") ? { bottom: "100%" } : { top: "100%" }),
     ...(forcedPositionY && { ...forcedPositionY }),
-    ...(contentHeightValue && { maxHeight: contentHeightValue + "px" }),
+    ...(contentHeightValue && {
+      maxHeight: contentHeightValue + "px",
+      height: contentHeightValue + "px",
+    }),
   };
 
   const calculateContentHeight = useCallback(() => {
@@ -33,39 +37,44 @@ const ZDropListAutoHeightWrapper = (props: ZDropListAutoHeightWrapperProps) => {
       const availableTop = Math.max(0, top);
       const availableBottom = Math.max(0, bottom);
 
-      const liElementHeight = contentRef?.current
-        ?.querySelector("li")
-        ?.getBoundingClientRect().height;
+      let liElementHeight = liHeightRef.current;
 
       if (!liElementHeight) {
-        return;
+        liElementHeight =
+          contentRef.current?.querySelector("li")?.getBoundingClientRect()
+            .height || null;
+
+        if (!liElementHeight) {
+          return;
+        }
+
+        liHeightRef.current = liElementHeight;
       }
 
       const approvedHeight = liElementHeight * 2;
 
+      if (availableTop < approvedHeight && availableBottom < approvedHeight) {
+        return;
+      }
+
       if (position.includes("top") && availableTop > approvedHeight) {
         setContentHeightValue(availableTop);
-
         return;
       }
 
       if (position.includes("top") && availableTop <= approvedHeight) {
         setContentHeightValue(availableBottom);
-
         setForcedPositionY({ top: "100%", bottom: "auto" });
-
         return;
       }
 
       if (position.includes("bottom") && availableBottom > approvedHeight) {
         setContentHeightValue(availableBottom);
-
         return;
       }
 
       if (position.includes("bottom") && availableBottom <= approvedHeight) {
         setContentHeightValue(availableTop);
-
         setForcedPositionY({ top: "auto", bottom: "100%" });
       }
     }
@@ -88,23 +97,22 @@ const ZDropListAutoHeightWrapper = (props: ZDropListAutoHeightWrapperProps) => {
       dropdownPositionY + dropdownHeight + contentRef.current.clientHeight >
       viewportHeight;
 
-    if (!isOverFlowTop && !isOverFlowBottom) {
-      setForcedPositionY(undefined);
-      setContentHeightValue(undefined);
+    if (!isOverFlowTop && !isOverFlowBottom && !contentHeightValue) {
+      calculateContentHeight();
       return;
     }
 
     if (!isOverFlowTop && isOverFlowBottom) {
       setForcedPositionY({ top: "auto", bottom: "100%" });
-      setContentHeightValue(undefined);
 
+      calculateContentHeight();
       return;
     }
 
     if (isOverFlowTop && !isOverFlowBottom) {
       setForcedPositionY({ top: "100%", bottom: "auto" });
-      setContentHeightValue(undefined);
 
+      calculateContentHeight();
       return;
     }
 
@@ -115,12 +123,14 @@ const ZDropListAutoHeightWrapper = (props: ZDropListAutoHeightWrapperProps) => {
 
   useLayoutEffect(() => {
     preventFromOverflowY();
-  }, [containerRef]);
+  }, [preventFromOverflowY]);
 
   useLayoutEffect(() => {
     let timeId: ReturnType<typeof setTimeout>;
 
     const onResize = () => {
+      liHeightRef.current = null;
+
       clearTimeout(timeId);
       timeId = setTimeout(() => {
         preventFromOverflowY();

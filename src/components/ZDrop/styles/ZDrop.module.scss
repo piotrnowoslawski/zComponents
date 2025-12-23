@@ -346,6 +346,7 @@
 :where(.zd__list-wrapper) {
   border-radius: var(--zd-radius);
   border: var(--zd-border);
+  transition: max-height 200ms ease, height 200ms ease;
 }
 
 .zd__list-auto-height-wrapper {
@@ -353,6 +354,7 @@
   height: auto;
   overflow: auto;
   margin-top: 5px;
+  transition: max-height 200ms ease, height 200ms ease;
 }
 
 :where(.zd__list-auto-height-wrapper) {
