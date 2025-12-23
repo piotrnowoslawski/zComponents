@@ -180,6 +180,8 @@ const ZombiesStrings: Story = {
       inputMultipleSearch: styles.zDropZombiesInputSearch,
       clearButton: styles.zDropZombiesClearButton,
       expandToggle: styles.zDropZombiesExpandToggle,
+      listWrapper: styles.zDropZombiesListWrapper,
+      list: styles.zDropZombiesList,
       listItem: styles.zDropZombiesListItem,
       noData: styles.sbNotFoundWrapper,
     },

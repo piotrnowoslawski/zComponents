@@ -40,7 +40,6 @@ export type ZDropButtonContextType = {
 };
 
 export interface ZDropButtonContentProps {
-  children: ReactNode;
   position?:
     | "left"
     | "right"
@@ -50,6 +49,8 @@ export interface ZDropButtonContentProps {
     | "top right"
     | "bottom left"
     | "bottom right";
+  className?: string;
+  children: ReactNode;
 }
 
 export interface ZDropButtonToggleProps {
@@ -61,6 +62,7 @@ export interface ZDropButtonToggleProps {
 }
 
 export interface ZDropButtonListProps {
+  className?: string;
   children: ReactNode;
 }
 
@@ -86,6 +88,6 @@ export interface ZDropButtonSearchProps {
   placeholder?: string;
   searchIcon?: ReactElement;
   clearIcon?: ReactElement;
-  searchClassName?: string;
+  className?: string;
   shouldFocusOnOpen?: boolean;
 }

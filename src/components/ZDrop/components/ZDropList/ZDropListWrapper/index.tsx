@@ -5,6 +5,7 @@ import {
 } from "../../../helpers/getElementOffsetTop";
 import styles from "../../../styles/ZDrop.module.scss";
 import { ZDropListWrapperProps } from "integrations-react-hook-form";
+import { classNames } from "@helpers/classNames";
 
 const distanceGap = 0;
 const marginTop = 10;
@@ -29,6 +30,7 @@ const ZDropListWrapper = (props: ZDropListWrapperProps) => {
     positionToReferenceElement = "bottom",
     listMaxHeightLimiter,
     children,
+    className,
   } = props;
 
   const [maxSpaceAbove, setMaxSpaceAbove] = useState<number>(0);
@@ -65,6 +67,8 @@ const ZDropListWrapper = (props: ZDropListWrapperProps) => {
   );
 
   const finalHeight = finalPosition === "top" ? heightForTop : heightForBottom;
+
+  const wrapperClasses = classNames(styles["zd__list-wrapper"], className);
 
   const wrapperStyle: CSSProperties = {
     position: "absolute",
@@ -117,11 +121,7 @@ const ZDropListWrapper = (props: ZDropListWrapperProps) => {
   ]);
 
   return (
-    <div
-      className={styles["zd__list-wrapper"]}
-      ref={listWrapperRef}
-      style={wrapperStyle}
-    >
+    <div className={wrapperClasses} ref={listWrapperRef} style={wrapperStyle}>
       {children}
     </div>
   );

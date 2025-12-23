@@ -1,10 +1,13 @@
 import { ZDropButtonListProps } from "components/ZDropButton/types/zDropButtonTypes";
 import styles from "../../styles/ZDropButton.module.scss";
+import { classNames } from "@helpers/classNames";
 
 const ZDropButtonList = (props: ZDropButtonListProps) => {
-  const { children } = props;
+  const { children, className } = props;
 
-  return <ul className={styles["zd-button__list"]}>{children}</ul>;
+  const listClasses = classNames(styles["zd-button__list"], className);
+
+  return <ul className={listClasses}>{children}</ul>;
 };
 
 export default ZDropButtonList;

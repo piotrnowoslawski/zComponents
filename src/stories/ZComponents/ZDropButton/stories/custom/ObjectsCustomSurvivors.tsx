@@ -71,8 +71,7 @@ const ObjectsCustomSurvivors: Story = {
       setOptions(filteredOptions);
     };
 
-    const { searchClassName, shouldFocusOnOpen, position, ...zDropButtonArgs } =
-      args;
+    const { shouldFocusOnOpen, position, ...zDropButtonArgs } = args;
 
     console.log(
       selectedSurvivorIndex,
@@ -101,11 +100,14 @@ const ObjectsCustomSurvivors: Story = {
         >
           <ZDropButton.Search
             placeholder="Search survivor..."
-            searchClassName={styles.zDropButtonSearch}
+            className={styles.zDropButtonSearch}
             clearIcon={clearIcon}
             shouldFocusOnOpen={shouldFocusOnOpen}
           />
-          <ZDropButton.Content position={position}>
+          <ZDropButton.Content
+            position={position}
+            className={styles.zDropButtonContent}
+          >
             <ZDropButton.List>
               {options?.map((option, index) => (
                 <ZDropButton.Item
@@ -128,7 +130,6 @@ const ObjectsCustomSurvivors: Story = {
     title: "Select Survivor",
     className: styles.zDropButton,
     toggleClassName: styles.zDropButtonToggle,
-    searchClassName: styles.zDropButtonSearch,
     position: "bottom left",
     shouldFocusOnOpen: false,
   },

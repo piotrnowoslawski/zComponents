@@ -43,6 +43,9 @@
   }
 
   &Search {
+    border-radius: 6px;
+    border: solid 2px mget(global.$neonBlack, c0);
+
     &:focus-within {
       @include global.glowBorder(mget(global.$neonRed, c0), global.$neonRed);
     }
@@ -68,6 +71,11 @@
         @include global.glowImgTight(global.$neonRed, sm);
       }
     }
+  }
+
+  &Content {
+    border-radius: 6px;
+    border: solid 2px mget(global.$neonBlack, c0);
   }
 
   &ListItem {

@@ -589,6 +589,7 @@ const ZDrop = (props: ZDropProps) => {
           referenceElementClassName={referenceElementClassName}
           positionToReferenceElement={positionToReferenceElement}
           listMaxHeightLimiter={listMaxHeightLimiter}
+          className={styleClasses?.listWrapper}
         >
           {zDropList}
         </ZDropListWrapper>
@@ -597,6 +598,7 @@ const ZDrop = (props: ZDropProps) => {
         <ZDropListAutoHeightWrapper
           containerRef={containerRef}
           position={autoHeightPosition}
+          className={styleClasses?.listWrapper}
         >
           {zDropList}
         </ZDropListAutoHeightWrapper>

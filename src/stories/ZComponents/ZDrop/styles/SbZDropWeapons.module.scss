@@ -102,62 +102,71 @@
     }
   }
 
-  &ListItem {
-    padding: 2px 8px;
-    font-weight: 900;
-    color: mget(global.$neonBlack, c0);
-    text-transform: capitalize;
-    transition: color 0.25s ease-in-out, background-color 0.25s ease-in-out,
-      font-weight 0.25s ease-in-out;
+  &List {
+    border: none;
 
-    div {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      width: 100%;
+    &Wrapper {
+      border: solid 2px mget(global.$neonBlack, c0);
+      border-radius: 6px;
     }
 
-    img {
-      width: 80px;
-      height: 80px;
-      transition: filter 0.18s ease, opacity 0.18s ease,
-        transform 0.3s ease-in-out, margin-right 0.25s ease-in-out;
-    }
-
-    &:focus {
-      font-weight: 900;
-      background-color: mget(global.$neonBlack, c0);
-      @include global.glowImgTight(global.$neonBlack, xl);
-
-      span {
-        color: mget(global.$neonRed, c0);
-      }
-
-      img {
-        margin-right: 10px;
-        @include global.glowImgTight(global.$neonRed, xl);
-      }
-    }
-
-    &:hover {
-      background-color: mget(global.$neonRed, c1);
-
-      span {
-        color: mget(global.$neonBlack, c0);
-      }
-
-      img {
-        transform: scale(1.1);
-        @include global.glowImgTight(global.$neonBlack, xl);
-      }
-    }
-
-    &Selected {
+    &Item {
+      padding: 2px 8px;
       font-weight: 900;
       color: mget(global.$neonBlack, c0);
+      text-transform: capitalize;
+      transition: color 0.25s ease-in-out, background-color 0.25s ease-in-out,
+        font-weight 0.25s ease-in-out;
+
+      div {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+      }
 
       img {
-        @include global.glowImgTight(global.$neonRed, xl);
+        width: 80px;
+        height: 80px;
+        transition: filter 0.18s ease, opacity 0.18s ease,
+          transform 0.3s ease-in-out, margin-right 0.25s ease-in-out;
+      }
+
+      &:focus {
+        font-weight: 900;
+        background-color: mget(global.$neonBlack, c0);
+        @include global.glowImgTight(global.$neonBlack, xl);
+
+        span {
+          color: mget(global.$neonRed, c0);
+        }
+
+        img {
+          margin-right: 10px;
+          @include global.glowImgTight(global.$neonRed, xl);
+        }
+      }
+
+      &:hover {
+        background-color: mget(global.$neonRed, c1);
+
+        span {
+          color: mget(global.$neonBlack, c0);
+        }
+
+        img {
+          transform: scale(1.1);
+          @include global.glowImgTight(global.$neonBlack, xl);
+        }
+      }
+
+      &Selected {
+        font-weight: 900;
+        color: mget(global.$neonBlack, c0);
+
+        img {
+          @include global.glowImgTight(global.$neonRed, xl);
+        }
       }
     }
   }

@@ -15,7 +15,7 @@ const ZDropButtonSearch = (props: ZDropButtonSearchProps) => {
     placeholder,
     searchIcon,
     clearIcon,
-    searchClassName,
+    className,
     shouldFocusOnOpen = false,
   } = props;
 
@@ -29,7 +29,7 @@ const ZDropButtonSearch = (props: ZDropButtonSearchProps) => {
   const searchInputFieldClasses = classNames(
     styles["zd-button__search-input-field"],
     { active: isSearchActive },
-    searchClassName
+    className
   );
 
   const onInputChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {

@@ -10,9 +10,12 @@ import { ZDropButtonContext } from "../../index";
 import { ZDropButtonContentProps } from "components/ZDropButton/types/zDropButtonTypes";
 import styles from "../../styles/ZDropButton.module.scss";
 import { getAvailableSpace } from "../../../../helpers/getAvailableSpace";
+import { classNames } from "@helpers/classNames";
+
+const edgeDistance = 10;
 
 const ZDropButtonContent = (props: ZDropButtonContentProps) => {
-  const { children, position = "bottom-left" } = props;
+  const { position = "bottom-left", className, children } = props;
 
   const { isOpen, buttonContainerRef, searchInputRef } =
     useContext(ZDropButtonContext);
@@ -27,6 +30,8 @@ const ZDropButtonContent = (props: ZDropButtonContentProps) => {
     CSSProperties | undefined
   >();
   const [contentHeightValue, setContentHeightValue] = useState<number>();
+
+  const contentClasses = classNames(styles["zd-button__content"], className);
 
   const positionStyles: CSSProperties = {
     position: "absolute" as const,
@@ -46,8 +51,11 @@ const ZDropButtonContent = (props: ZDropButtonContentProps) => {
 
       const { top, bottom } = getAvailableSpace(buttonContainerRef.current);
 
-      const availableTop = Math.max(0, top - searchInputHeight);
-      const availableBottom = Math.max(0, bottom - searchInputHeight);
+      const availableTop = Math.max(0, top - searchInputHeight || edgeDistance);
+      const availableBottom = Math.max(
+        0,
+        bottom - searchInputHeight || edgeDistance
+      );
 
       let liElementHeight = liHeightRef.current;
 
@@ -65,28 +73,46 @@ const ZDropButtonContent = (props: ZDropButtonContentProps) => {
 
       const approvedHeight = liElementHeight * 2;
 
+      const contentCurrentHeight = contentRef.current.scrollHeight;
+
       if (availableTop < approvedHeight && availableBottom < approvedHeight) {
         return;
       }
 
       if (position.includes("top") && availableTop > approvedHeight) {
-        setContentHeightValue(availableTop);
+        setContentHeightValue(
+          availableTop < contentCurrentHeight
+            ? availableTop
+            : contentCurrentHeight
+        );
         return;
       }
 
       if (position.includes("top") && availableTop <= approvedHeight) {
-        setContentHeightValue(availableBottom);
+        setContentHeightValue(
+          availableBottom < contentCurrentHeight
+            ? availableBottom
+            : contentCurrentHeight
+        );
         setForcedPositionY({ top: "100%", bottom: "auto" });
         return;
       }
 
       if (position.includes("bottom") && availableBottom > approvedHeight) {
-        setContentHeightValue(availableBottom);
+        setContentHeightValue(
+          availableBottom < contentCurrentHeight
+            ? availableBottom
+            : contentCurrentHeight
+        );
         return;
       }
 
       if (position.includes("bottom") && availableBottom <= approvedHeight) {
-        setContentHeightValue(availableTop);
+        setContentHeightValue(
+          availableTop < contentCurrentHeight
+            ? availableTop
+            : contentCurrentHeight
+        );
         setForcedPositionY({ top: "auto", bottom: "100%" });
       }
     }
@@ -197,11 +223,7 @@ const ZDropButtonContent = (props: ZDropButtonContentProps) => {
   }
 
   return (
-    <div
-      className={styles["zd-button__content"]}
-      style={positionStyles}
-      ref={contentRef}
-    >
+    <div className={contentClasses} style={positionStyles} ref={contentRef}>
       {children}
     </div>
   );

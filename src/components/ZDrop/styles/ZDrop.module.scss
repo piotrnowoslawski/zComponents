@@ -335,6 +335,11 @@
   overflow: auto;
 }
 
+:where(.zd__list) {
+  border-radius: var(--zd-radius);
+  border: var(--zd-border);
+}
+
 .zd__list-wrapper {
   z-index: 2;
   position: absolute;
@@ -351,15 +356,15 @@
 
 .zd__list-auto-height-wrapper {
   width: 100%;
-  height: auto;
+  height: 0;
   overflow: auto;
   margin-top: 5px;
-  transition: max-height 200ms ease, height 200ms ease;
 }
 
 :where(.zd__list-auto-height-wrapper) {
   border-radius: var(--zd-radius);
   border: var(--zd-border);
+  transition: max-height 200ms ease, height 200ms ease;
 }
 
 .zd__list--auto-height-enabled,

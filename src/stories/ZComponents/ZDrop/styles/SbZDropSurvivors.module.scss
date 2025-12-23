@@ -109,43 +109,52 @@
     }
   }
 
-  &ListItem {
-    font-weight: 900;
-    color: mget(global.$neonBlack, c0);
-    text-transform: capitalize;
-    transition: background-color 0.25s ease-in-out, color 0.25s ease-in-out;
+  &List {
+    border: none;
 
-    div {
-      width: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+    &Wrapper {
+      border: solid 2px mget(global.$neonBlack, c0);
+      border-radius: 6px;
     }
 
-    img {
-      width: 120px;
-      height: 120px;
-      transition: all 0.25s ease-in-out;
-    }
+    &Item {
+      font-weight: 900;
+      color: mget(global.$neonBlack, c0);
+      text-transform: capitalize;
+      transition: background-color 0.25s ease-in-out, color 0.25s ease-in-out;
 
-    &:focus {
-      background-color: mget(global.$neonBlack, c1);
-      @include global.glowFilter(global.$neonBlack);
-    }
-
-    &:focus,
-    &:hover {
-      @include global.glowFilter(global.$neonBlack);
-      color: mget(global.$neonGreen, c0);
+      div {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
 
       img {
-        transform: scale(1.1);
+        width: 120px;
+        height: 120px;
+        transition: all 0.25s ease-in-out;
+      }
+
+      &:focus {
+        background-color: mget(global.$neonBlack, c1);
+        @include global.glowFilter(global.$neonBlack);
+      }
+
+      &:focus,
+      &:hover {
+        @include global.glowFilter(global.$neonBlack);
+        color: mget(global.$neonGreen, c0);
+
+        img {
+          transform: scale(1.1);
+          @include global.glowImgTight(global.$neonGreen, xl);
+        }
+      }
+
+      &Selected {
         @include global.glowImgTight(global.$neonGreen, xl);
       }
-    }
-
-    &Selected {
-      @include global.glowImgTight(global.$neonGreen, xl);
     }
   }
 }

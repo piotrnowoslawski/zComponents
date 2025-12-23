@@ -117,6 +117,8 @@ const WeaponsObjects: Story = {
       inputValue: styles.zDropWeaponsInputValue,
       clearButton: styles.zDropWeaponsClearButton,
       expandToggle: styles.zDropWeaponsExpandToggle,
+      listWrapper: styles.zDropWeaponsListWrapper,
+      list: styles.zDropWeaponsList,
       listItem: styles.zDropWeaponsListItem,
       noData: styles.sbNotFoundWrapper,
     },

@@ -117,6 +117,13 @@
   }
 
   &List {
+    border: none;
+
+    &Wrapper {
+      border: solid 2px mget(global.$neonBlack, c0);
+      border-radius: 6px;
+    }
+
     &Item {
       position: relative;
       overflow: hidden;

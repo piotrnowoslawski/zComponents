@@ -126,6 +126,7 @@ const SurvivorsNumbers: Story = {
       clearButton: styles.zDropSurvivorsClearButton,
       expandToggle: styles.zDropSurvivorsExpandToggle,
       removeButton: styles.zDropSurvivorsRemoveButton,
+      listWrapper: styles.zDropSurvivorsListWrapper,
       list: styles.zDropSurvivorsList,
       listItem: styles.zDropSurvivorsListItem,
       noData: styles.sbNotFoundWrapper,

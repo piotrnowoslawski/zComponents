@@ -8,9 +8,12 @@ import {
 import { getAvailableSpace } from "../../../../../helpers/getAvailableSpace";
 import { ZDropListAutoHeightWrapperProps } from "../../../types/zDropTypes";
 import styles from "../../../styles/ZDrop.module.scss";
+import { classNames } from "@helpers/classNames";
+
+const edgeDistance = 10;
 
 const ZDropListAutoHeightWrapper = (props: ZDropListAutoHeightWrapperProps) => {
-  const { containerRef, position = "bottom", children } = props;
+  const { containerRef, position = "bottom", className, children } = props;
 
   const contentRef = useRef<HTMLDivElement>(null);
   const liHeightRef = useRef<number | null>(null);
@@ -18,7 +21,12 @@ const ZDropListAutoHeightWrapper = (props: ZDropListAutoHeightWrapperProps) => {
   const [forcedPositionY, setForcedPositionY] = useState<
     CSSProperties | undefined
   >();
-  const [contentHeightValue, setContentHeightValue] = useState<number>();
+  const [contentHeightValue, setContentHeightValue] = useState<number>(0);
+
+  const wrapperClasses = classNames(
+    styles["zd__list-auto-height-wrapper"],
+    className
+  );
 
   const positionStyles: CSSProperties = {
     position: "absolute" as const,
@@ -34,8 +42,8 @@ const ZDropListAutoHeightWrapper = (props: ZDropListAutoHeightWrapperProps) => {
     if (contentRef?.current && containerRef?.current) {
       const { top, bottom } = getAvailableSpace(containerRef.current);
 
-      const availableTop = Math.max(0, top);
-      const availableBottom = Math.max(0, bottom);
+      const availableTop = Math.max(0, top - edgeDistance);
+      const availableBottom = Math.max(0, bottom - edgeDistance);
 
       let liElementHeight = liHeightRef.current;
 
@@ -53,28 +61,46 @@ const ZDropListAutoHeightWrapper = (props: ZDropListAutoHeightWrapperProps) => {
 
       const approvedHeight = liElementHeight * 2;
 
+      const contentCurrentHeight = contentRef.current.scrollHeight;
+
       if (availableTop < approvedHeight && availableBottom < approvedHeight) {
         return;
       }
 
       if (position.includes("top") && availableTop > approvedHeight) {
-        setContentHeightValue(availableTop);
+        setContentHeightValue(
+          availableTop < contentCurrentHeight
+            ? availableTop
+            : contentCurrentHeight
+        );
         return;
       }
 
       if (position.includes("top") && availableTop <= approvedHeight) {
-        setContentHeightValue(availableBottom);
+        setContentHeightValue(
+          availableBottom < contentCurrentHeight
+            ? availableBottom
+            : contentCurrentHeight
+        );
         setForcedPositionY({ top: "100%", bottom: "auto" });
         return;
       }
 
       if (position.includes("bottom") && availableBottom > approvedHeight) {
-        setContentHeightValue(availableBottom);
+        setContentHeightValue(
+          availableBottom < contentCurrentHeight
+            ? availableBottom
+            : contentCurrentHeight
+        );
         return;
       }
 
       if (position.includes("bottom") && availableBottom <= approvedHeight) {
-        setContentHeightValue(availableTop);
+        setContentHeightValue(
+          availableTop < contentCurrentHeight
+            ? availableTop
+            : contentCurrentHeight
+        );
         setForcedPositionY({ top: "auto", bottom: "100%" });
       }
     }
@@ -146,11 +172,7 @@ const ZDropListAutoHeightWrapper = (props: ZDropListAutoHeightWrapperProps) => {
   }, [preventFromOverflowY]);
 
   return (
-    <div
-      className={styles["zd__list-auto-height-wrapper"]}
-      style={positionStyles}
-      ref={contentRef}
-    >
+    <div className={wrapperClasses} style={positionStyles} ref={contentRef}>
       {children}
     </div>
   );

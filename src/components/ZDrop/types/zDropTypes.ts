@@ -54,6 +54,7 @@ export interface ToggleStyleClasses {
 }
 
 export interface ListStyleClasses {
+  listWrapper?: string;
   list?: string;
   listItem?: string;
   noData?: string;
@@ -136,6 +137,7 @@ export interface ZDropLabelProps {
 export interface ZDropListAutoHeightWrapperProps {
   containerRef: RefObject<HTMLDivElement | null>;
   position?: "top" | "bottom";
+  className?: string;
   children: ReactNode;
 }
 
@@ -143,6 +145,7 @@ export interface ZDropListWrapperProps {
   referenceElementClassName: string;
   positionToReferenceElement?: "top" | "bottom";
   listMaxHeightLimiter?: number;
+  className?: string;
   children: ReactNode;
 }
 export interface ZDropListProps {
