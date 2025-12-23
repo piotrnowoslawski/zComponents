@@ -73,43 +73,43 @@
     }
   }
 
-  &Content {
+  &List {
     border-radius: 6px;
     border: solid 2px mget(global.$neonBlack, c0);
-  }
 
-  &ListItem {
-    background-color: transparent;
+    &Item {
+      background-color: transparent;
 
-    &.zd-button__list-item--active {
-      @include global.glowImgTight(global.$neonGreen, xl);
-
-      .zd-button__list-item-title {
-        font-weight: 600;
-        color: mget(global.$neonBlack, c0);
-      }
-    }
-
-    &:focus {
-      background-color: mget(global.$neonBlack, c1);
-      @include global.glowFilter(global.$neonBlack);
-    }
-
-    &:focus,
-    &:hover {
-      @include global.glowFilter(global.$neonBlack);
-      color: mget(global.$neonGreen, c0);
-
-      img {
-        transform: scale(1.1);
+      &.zd-button__list-item--active {
         @include global.glowImgTight(global.$neonGreen, xl);
-      }
-    }
 
-    &.zd-button__list-item--active:hover,
-    &.zd-button__list-item--active:focus {
-      .zd-button__list-item-title {
+        .zd-button__list-item-title {
+          font-weight: 600;
+          color: mget(global.$neonBlack, c0);
+        }
+      }
+
+      &:focus {
+        background-color: mget(global.$neonBlack, c1);
+        @include global.glowFilter(global.$neonBlack);
+      }
+
+      &:focus,
+      &:hover {
+        @include global.glowFilter(global.$neonBlack);
         color: mget(global.$neonGreen, c0);
+
+        img {
+          transform: scale(1.1);
+          @include global.glowImgTight(global.$neonGreen, xl);
+        }
+      }
+
+      &.zd-button__list-item--active:hover,
+      &.zd-button__list-item--active:focus {
+        .zd-button__list-item-title {
+          color: mget(global.$neonGreen, c0);
+        }
       }
     }
   }

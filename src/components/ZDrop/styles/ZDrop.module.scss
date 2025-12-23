@@ -355,6 +355,7 @@
 }
 
 .zd__list-auto-height-wrapper {
+  display: flex;
   width: 100%;
   height: 0;
   overflow: auto;
@@ -370,6 +371,7 @@
 .zd__list--auto-height-enabled,
 .zd__list--reference-wrapper-enabled {
   position: relative;
+  min-width: 100%;
 }
 
 :where(.zd__option, .zd__no-data) {

@@ -73,13 +73,6 @@ const ObjectsCustomSurvivors: Story = {
 
     const { shouldFocusOnOpen, position, ...zDropButtonArgs } = args;
 
-    console.log(
-      selectedSurvivorIndex,
-      typeof selectedSurvivorIndex === "number"
-        ? survivorOptions[selectedSurvivorIndex]?.iconPath
-        : "icons/survivors/z-stranger.webp"
-    );
-
     return (
       <div className={styles.zDropButtonStorybookWrapper}>
         <ZDropButton
@@ -104,11 +97,8 @@ const ObjectsCustomSurvivors: Story = {
             clearIcon={clearIcon}
             shouldFocusOnOpen={shouldFocusOnOpen}
           />
-          <ZDropButton.Content
-            position={position}
-            className={styles.zDropButtonContent}
-          >
-            <ZDropButton.List>
+          <ZDropButton.Content position={position}>
+            <ZDropButton.List className={styles.zDropButtonList}>
               {options?.map((option, index) => (
                 <ZDropButton.Item
                   key={option.id}

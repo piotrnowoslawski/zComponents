@@ -9,6 +9,7 @@ import { getAvailableSpace } from "../../../../../helpers/getAvailableSpace";
 import { ZDropListAutoHeightWrapperProps } from "../../../types/zDropTypes";
 import styles from "../../../styles/ZDrop.module.scss";
 import { classNames } from "@helpers/classNames";
+import { getElementVerticalBorders } from "../../../../../helpers/getElementVerticalBorders";
 
 const edgeDistance = 10;
 
@@ -24,21 +25,42 @@ const ZDropListAutoHeightWrapper = (props: ZDropListAutoHeightWrapperProps) => {
   const [contentHeightValue, setContentHeightValue] = useState<number>(0);
 
   const wrapperClasses = classNames(
+    styles["zd__list"],
     styles["zd__list-auto-height-wrapper"],
     className
   );
 
+  const contentInnerHeightPx = (() => {
+    const el = contentRef.current;
+    if (!el) {
+      return undefined;
+    }
+
+    const firstChild = el.firstElementChild as HTMLElement | null;
+
+    if (!firstChild) {
+      return undefined;
+    }
+
+    const borders = getElementVerticalBorders(el);
+    const h = firstChild.scrollHeight + borders;
+
+    return Number.isFinite(h) ? `${h}px` : undefined;
+  })();
+
   const positionStyles: CSSProperties = {
-    position: "absolute" as const,
+    position: "absolute",
     ...(position.includes("top") ? { bottom: "100%" } : { top: "100%" }),
     ...(forcedPositionY && { ...forcedPositionY }),
     ...(contentHeightValue && {
-      maxHeight: contentHeightValue + "px",
-      height: contentHeightValue + "px",
+      maxHeight: `${contentHeightValue}px`,
+      ...(contentInnerHeightPx && { height: contentInnerHeightPx }),
     }),
   };
 
   const calculateContentHeight = useCallback(() => {
+    setForcedPositionY(undefined);
+
     if (contentRef?.current && containerRef?.current) {
       const { top, bottom } = getAvailableSpace(containerRef.current);
 
@@ -61,48 +83,37 @@ const ZDropListAutoHeightWrapper = (props: ZDropListAutoHeightWrapperProps) => {
 
       const approvedHeight = liElementHeight * 2;
 
-      const contentCurrentHeight = contentRef.current.scrollHeight;
-
       if (availableTop < approvedHeight && availableBottom < approvedHeight) {
         return;
       }
 
       if (position.includes("top") && availableTop > approvedHeight) {
-        setContentHeightValue(
-          availableTop < contentCurrentHeight || !contentCurrentHeight
-            ? availableTop
-            : contentCurrentHeight
-        );
+        setContentHeightValue(availableTop);
+
         return;
       }
 
       if (position.includes("top") && availableTop <= approvedHeight) {
-        setContentHeightValue(
-          availableBottom < contentCurrentHeight || !contentCurrentHeight
-            ? availableBottom
-            : contentCurrentHeight
-        );
+        setContentHeightValue(availableBottom);
         setForcedPositionY({ top: "100%", bottom: "auto" });
+
         return;
       }
 
       if (position.includes("bottom") && availableBottom > approvedHeight) {
-        setContentHeightValue(
-          availableBottom < contentCurrentHeight || !contentCurrentHeight
-            ? availableBottom
-            : contentCurrentHeight
-        );
+        setContentHeightValue(availableBottom);
+
         return;
       }
 
       if (position.includes("bottom") && availableBottom <= approvedHeight) {
-        setContentHeightValue(
-          availableTop < contentCurrentHeight || !contentCurrentHeight
-            ? availableTop
-            : contentCurrentHeight
-        );
+        setContentHeightValue(availableTop);
         setForcedPositionY({ top: "auto", bottom: "100%" });
+
+        return;
       }
+
+      setForcedPositionY(undefined);
     }
   }, [containerRef, position]);
 
@@ -132,6 +143,7 @@ const ZDropListAutoHeightWrapper = (props: ZDropListAutoHeightWrapperProps) => {
       setForcedPositionY({ top: "auto", bottom: "100%" });
 
       calculateContentHeight();
+
       return;
     }
 
@@ -139,6 +151,7 @@ const ZDropListAutoHeightWrapper = (props: ZDropListAutoHeightWrapperProps) => {
       setForcedPositionY({ top: "100%", bottom: "auto" });
 
       calculateContentHeight();
+
       return;
     }
 
@@ -156,6 +169,7 @@ const ZDropListAutoHeightWrapper = (props: ZDropListAutoHeightWrapperProps) => {
 
     const onResize = () => {
       liHeightRef.current = null;
+      setForcedPositionY(undefined);
 
       clearTimeout(timeId);
       timeId = setTimeout(() => {

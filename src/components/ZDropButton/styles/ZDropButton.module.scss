@@ -80,6 +80,7 @@
 
 .zd-button__content {
   position: absolute;
+  display: flex;
   width: 100%;
   min-width: 100%;
   height: 0;
@@ -88,8 +89,6 @@
 }
 
 :where(.zd-button__content) {
-  border-radius: var(--zd-radius);
-  border: 1px solid var(--zd-color-primary);
   transition: max-height 200ms ease, height 200ms ease;
 }
 
@@ -180,6 +179,7 @@
 
 :where(.zd-button__list) {
   border-radius: var(--zd-radius);
+  border: 1px solid var(--zd-color-primary);
 }
 
 .zd-button__list-item {
