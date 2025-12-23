@@ -29,7 +29,7 @@ const ZDropButtonContent = (props: ZDropButtonContentProps) => {
   const [forcedPositionY, setForcedPositionY] = useState<
     CSSProperties | undefined
   >();
-  const [contentHeightValue, setContentHeightValue] = useState<number>();
+  const [contentHeightValue, setContentHeightValue] = useState<number>(0);
 
   const contentClasses = classNames(styles["zd-button__content"], className);
 
@@ -51,10 +51,10 @@ const ZDropButtonContent = (props: ZDropButtonContentProps) => {
 
       const { top, bottom } = getAvailableSpace(buttonContainerRef.current);
 
-      const availableTop = Math.max(0, top - searchInputHeight || edgeDistance);
+      const availableTop = Math.max(0, top - searchInputHeight - edgeDistance);
       const availableBottom = Math.max(
         0,
-        bottom - searchInputHeight || edgeDistance
+        bottom - searchInputHeight - edgeDistance
       );
 
       let liElementHeight = liHeightRef.current;
@@ -81,38 +81,48 @@ const ZDropButtonContent = (props: ZDropButtonContentProps) => {
 
       if (position.includes("top") && availableTop > approvedHeight) {
         setContentHeightValue(
-          availableTop < contentCurrentHeight
+          availableTop < contentCurrentHeight || !contentCurrentHeight
             ? availableTop
             : contentCurrentHeight
         );
+
         return;
       }
 
       if (position.includes("top") && availableTop <= approvedHeight) {
         setContentHeightValue(
-          availableBottom < contentCurrentHeight
+          availableBottom < contentCurrentHeight || !contentCurrentHeight
             ? availableBottom
             : contentCurrentHeight
         );
         setForcedPositionY({ top: "100%", bottom: "auto" });
+
         return;
       }
 
       if (position.includes("bottom") && availableBottom > approvedHeight) {
         setContentHeightValue(
-          availableBottom < contentCurrentHeight
+          availableBottom < contentCurrentHeight || !contentCurrentHeight
             ? availableBottom
             : contentCurrentHeight
         );
+
+        console.log(
+          availableTop < contentCurrentHeight || !contentCurrentHeight
+            ? availableTop
+            : contentCurrentHeight
+        );
+
         return;
       }
 
       if (position.includes("bottom") && availableBottom <= approvedHeight) {
         setContentHeightValue(
-          availableTop < contentCurrentHeight
+          availableTop < contentCurrentHeight || !contentCurrentHeight
             ? availableTop
             : contentCurrentHeight
         );
+
         setForcedPositionY({ top: "auto", bottom: "100%" });
       }
     }

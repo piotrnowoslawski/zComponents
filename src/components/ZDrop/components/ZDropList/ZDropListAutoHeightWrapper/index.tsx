@@ -69,7 +69,7 @@ const ZDropListAutoHeightWrapper = (props: ZDropListAutoHeightWrapperProps) => {
 
       if (position.includes("top") && availableTop > approvedHeight) {
         setContentHeightValue(
-          availableTop < contentCurrentHeight
+          availableTop < contentCurrentHeight || !contentCurrentHeight
             ? availableTop
             : contentCurrentHeight
         );
@@ -78,7 +78,7 @@ const ZDropListAutoHeightWrapper = (props: ZDropListAutoHeightWrapperProps) => {
 
       if (position.includes("top") && availableTop <= approvedHeight) {
         setContentHeightValue(
-          availableBottom < contentCurrentHeight
+          availableBottom < contentCurrentHeight || !contentCurrentHeight
             ? availableBottom
             : contentCurrentHeight
         );
@@ -88,7 +88,7 @@ const ZDropListAutoHeightWrapper = (props: ZDropListAutoHeightWrapperProps) => {
 
       if (position.includes("bottom") && availableBottom > approvedHeight) {
         setContentHeightValue(
-          availableBottom < contentCurrentHeight
+          availableBottom < contentCurrentHeight || !contentCurrentHeight
             ? availableBottom
             : contentCurrentHeight
         );
@@ -97,7 +97,7 @@ const ZDropListAutoHeightWrapper = (props: ZDropListAutoHeightWrapperProps) => {
 
       if (position.includes("bottom") && availableBottom <= approvedHeight) {
         setContentHeightValue(
-          availableTop < contentCurrentHeight
+          availableTop < contentCurrentHeight || !contentCurrentHeight
             ? availableTop
             : contentCurrentHeight
         );
