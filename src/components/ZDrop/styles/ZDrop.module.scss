@@ -343,14 +343,13 @@
 .zd__list-wrapper {
   z-index: 2;
   position: absolute;
+  display: flex;
   min-width: 100%;
   margin-top: 5px;
   overflow: auto;
 }
 
 :where(.zd__list-wrapper) {
-  border-radius: var(--zd-radius);
-  border: var(--zd-border);
   transition: max-height 200ms ease, height 200ms ease;
 }
 
@@ -363,8 +362,6 @@
 }
 
 :where(.zd__list-auto-height-wrapper) {
-  border-radius: var(--zd-radius);
-  border: var(--zd-border);
   transition: max-height 200ms ease, height 200ms ease;
 }
 
