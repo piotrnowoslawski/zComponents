@@ -59,7 +59,7 @@ const BasicDistance: Story = {
     ],
     unitDivisors: [1, 1000],
     isIndicatorUnitHidden: true,
-    stylesClasses: {
+    styleClasses: {
       container: styles.zRange,
     },
     label: "Distance range:",

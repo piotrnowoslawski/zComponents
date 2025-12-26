@@ -1,5 +1,5 @@
 import {
-  TrackStylesClasses,
+  TrackStyleClasses,
   ZRangeTrackProps,
 } from "@components/ZRange/types/zRangeTypes";
 import styles from "../../styles/ZRange.module.scss";
@@ -9,7 +9,7 @@ const ZRangeTrack = (props: ZRangeTrackProps) => {
   const { rangeTrackRef, selectedRangeRef, selectedRangeStyle, trackStyles } =
     props;
 
-  const { trackContainer, trackRange, trackSelected }: TrackStylesClasses =
+  const { trackContainer, trackRange, trackSelected }: TrackStyleClasses =
     trackStyles;
 
   const trackClasses = classNames(styles["zr__slider"], trackContainer);

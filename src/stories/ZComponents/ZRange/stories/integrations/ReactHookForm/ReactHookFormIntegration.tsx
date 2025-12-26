@@ -95,7 +95,7 @@ const ReactHookFormIntegration: Story = {
     unitList: [{ unit: "$", fractionDigits: 0 }],
     unitDivisors: [1],
     isIndicatorUnitHidden: false,
-    stylesClasses: {
+    styleClasses: {
       container: styles.zRange,
     },
     label: "Price:",

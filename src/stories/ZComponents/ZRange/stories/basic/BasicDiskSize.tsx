@@ -64,7 +64,7 @@ const BasicDiskMemorySize: Story = {
       },
     ],
     unitDivisors: [1, 1024],
-    stylesClasses: {
+    styleClasses: {
       container: styles.zRange,
     },
     label: "Disk size range:",

@@ -46,7 +46,7 @@ const ZRange = (props: ZRangeProps) => {
     onSelect,
     onChange,
     icons,
-    stylesClasses,
+    styleClasses,
     isIndicatorUnitHidden,
   } = props;
 
@@ -134,7 +134,7 @@ const ZRange = (props: ZRangeProps) => {
 
   const containerClasses = classNames(
     styles["zr__container"],
-    stylesClasses?.container
+    styleClasses?.container
   );
 
   const inputMinClasses = classNames(
@@ -143,9 +143,9 @@ const ZRange = (props: ZRangeProps) => {
     {
       "zr__input--active": activeInputIndex === 0 && isHighlighted,
     },
-    stylesClasses?.input,
-    activeInputIndex === 0 && isHighlighted && stylesClasses?.inputActive
-      ? stylesClasses?.inputActive
+    styleClasses?.input,
+    activeInputIndex === 0 && isHighlighted && styleClasses?.inputActive
+      ? styleClasses?.inputActive
       : ""
   );
 
@@ -153,9 +153,9 @@ const ZRange = (props: ZRangeProps) => {
     "zr__input",
     "zr__input-second",
     { "zr__input--active": activeInputIndex === 1 && isHighlighted },
-    stylesClasses?.input,
-    activeInputIndex === 1 && isHighlighted && stylesClasses?.inputActive
-      ? stylesClasses?.inputActive
+    styleClasses?.input,
+    activeInputIndex === 1 && isHighlighted && styleClasses?.inputActive
+      ? styleClasses?.inputActive
       : ""
   );
 
@@ -701,7 +701,7 @@ const ZRange = (props: ZRangeProps) => {
   return (
     <div className={containerClasses}>
       {label && (
-        <ZRangeLabel label={label} labelClassName={stylesClasses?.label} />
+        <ZRangeLabel label={label} labelClassName={styleClasses?.label} />
       )}
       <div ref={containerRef} className={styles["zr"]}>
         <ZRangeInputs
@@ -724,19 +724,19 @@ const ZRange = (props: ZRangeProps) => {
           selectedRangeRef={selectedRangeRef}
           selectedRangeStyle={selectedRangeStyle}
           trackStyles={{
-            trackContainer: stylesClasses?.trackContainer,
-            trackRange: stylesClasses?.trackRange,
-            trackSelected: stylesClasses?.trackSelected,
+            trackContainer: styleClasses?.trackContainer,
+            trackRange: styleClasses?.trackRange,
+            trackSelected: styleClasses?.trackSelected,
           }}
         />
         <ZRangeIndicator
           valueIndicatorRef={valueIndicatorRef}
           indicatorStyles={{
-            indicator: stylesClasses?.indicator,
-            indicatorMin: stylesClasses?.indicatorMin,
-            indicatorMax: stylesClasses?.indicatorMax,
-            indicatorValue: stylesClasses?.indicatorValue,
-            indicatorIcon: stylesClasses?.indicatorIcon,
+            indicator: styleClasses?.indicator,
+            indicatorMin: styleClasses?.indicatorMin,
+            indicatorMax: styleClasses?.indicatorMax,
+            indicatorValue: styleClasses?.indicatorValue,
+            indicatorIcon: styleClasses?.indicatorIcon,
           }}
           indicatorValue={indicatorValue}
           rangeTrackRef={rangeTrackRef}
@@ -758,12 +758,12 @@ const ZRange = (props: ZRangeProps) => {
       </div>
       <div className={styles["zr__slider-values-wrapper"]}>
         <ZRangeSliderValue
-          sliderValueClassName={stylesClasses?.sliderValue}
+          sliderValueClassName={styleClasses?.sliderValue}
           value={rangeValue.getValueLabel("min")}
           icon={icons?.thumbMin}
         />
         <ZRangeSliderValue
-          sliderValueClassName={stylesClasses?.sliderValue}
+          sliderValueClassName={styleClasses?.sliderValue}
           value={rangeValue.getValueLabel("max")}
           icon={icons?.thumbMax}
         />

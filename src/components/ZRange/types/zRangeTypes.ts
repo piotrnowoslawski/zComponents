@@ -31,13 +31,13 @@ export interface ZRangeRangeValue {
   max: number;
 }
 
-export interface TrackStylesClasses {
+export interface TrackStyleClasses {
   trackContainer?: string;
   trackRange?: string;
   trackSelected?: string;
 }
 
-export interface IndicatorStylesClasses {
+export interface IndicatorStyleClasses {
   indicator?: string;
   indicatorMin?: string;
   indicatorMax?: string;
@@ -46,8 +46,8 @@ export interface IndicatorStylesClasses {
 }
 
 export interface ZRangeStyleClasses
-  extends TrackStylesClasses,
-    IndicatorStylesClasses {
+  extends TrackStyleClasses,
+    IndicatorStyleClasses {
   container?: string;
   label?: string;
   input?: string;
@@ -73,7 +73,7 @@ export interface ZRangeProps {
     indicatorMin?: ReactNode;
     indicatorMax?: ReactNode;
   };
-  stylesClasses?: ZRangeStyleClasses;
+  styleClasses?: ZRangeStyleClasses;
   isIndicatorUnitHidden?: boolean;
 }
 
@@ -91,13 +91,13 @@ export interface ZRangeThumbProps {
 export interface ZRangeTrackProps {
   rangeTrackRef?: RefObject<HTMLDivElement | null>;
   selectedRangeStyle?: React.CSSProperties;
-  trackStyles: TrackStylesClasses;
+  trackStyles: TrackStyleClasses;
   selectedRangeRef: RefObject<HTMLDivElement | null>;
 }
 
 export interface ZRangeIndicatorProps {
   valueIndicatorRef: RefObject<HTMLDivElement | null>;
-  indicatorStyles: IndicatorStylesClasses;
+  indicatorStyles: IndicatorStyleClasses;
   indicatorValue?: number | string;
   rangeTrackRef?: RefObject<HTMLDivElement | null>;
   inputElement?: HTMLInputElement | null;

@@ -290,7 +290,7 @@ ZRange is designed to keep range logic **safe and predictable**, even in complex
 
 ## Styling
 
-ZRange exposes **explicit class overrides** via the `stylesClasses` prop.
+ZRange exposes **explicit class overrides** via the `styleClasses` prop.
 This allows you to customize every internal element without relying on fragile selectors.
 
 Default styles provide layout, thumb positioning, indicator behavior and interaction states.

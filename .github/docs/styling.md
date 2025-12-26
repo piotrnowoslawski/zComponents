@@ -77,7 +77,7 @@ Styles must be imported **exactly once**.
 
 ### 1. Class overrides (recommended)
 
-Most zComponents expose a `styleClasses` / `stylesClasses` prop.
+Most zComponents expose a `styleClasses` prop.
 This allows you to override internal elements explicitly without relying on fragile selectors.
 
 This is the **most stable and future‑proof approach**.
@@ -86,7 +86,7 @@ Example:
 
 ```tsx
 <ZRange
-  stylesClasses={{
+  styleClasses={{
     trackSelected: "my-range-track",
     indicator: "my-range-indicator",
   }}

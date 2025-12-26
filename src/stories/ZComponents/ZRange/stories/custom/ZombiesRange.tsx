@@ -76,7 +76,7 @@ const ZombiesRange: Story = {
         />
       ),
     },
-    stylesClasses: {
+    styleClasses: {
       container: styles.zRange,
       input: styles.zRangeZombiesInput,
       inputActive: styles.zRangeInputActive,

@@ -76,7 +76,7 @@ const SurvivorsRange: Story = {
         />
       ),
     },
-    stylesClasses: {
+    styleClasses: {
       container: styles.zRange,
       input: styles.zRangeSurvivorsInput,
       inputActive: styles.zRangeInputActive,
