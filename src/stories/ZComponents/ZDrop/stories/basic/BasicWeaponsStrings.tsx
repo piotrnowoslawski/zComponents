@@ -61,8 +61,7 @@ const BasicWeaponsStrings: Story = {
     isSearchable: true,
     clear: "whenSearched",
     placeholder: "select a weapon...",
-    referenceElementClassName: styles.zDropStorybookWrapper,
-    listMaxHeightLimiter: 350,
+    referenceElementClassName: styles.zDropContent,
     noDataContent: <div>Not found</div>,
   },
   argTypes: {

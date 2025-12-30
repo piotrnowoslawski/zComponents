@@ -16,228 +16,377 @@ import { getElementVerticalBorders } from "../../../../helpers/getElementVertica
 const edgeDistance = 10;
 
 const ZDropButtonContent = (props: ZDropButtonContentProps) => {
-  const { position = "bottom-left", className, children } = props;
+  const {
+    position = "bottom-left",
+    className,
+    optionsCount,
+    children,
+  } = props as ZDropButtonContentProps & { optionsCount?: number };
 
   const { isOpen, buttonContainerRef, searchInputRef } =
     useContext(ZDropButtonContext);
 
-  const contentRef = useRef<HTMLDivElement>(null);
-  const liHeightRef = useRef<number | null>(null);
+  const contentWrapperRef = useRef<HTMLDivElement>(null);
+  const cachedListItemHeightRef = useRef<number | null>(null);
 
-  const [forcedPositionX, setForcedPositionX] = useState<
-    CSSProperties | undefined
-  >();
-  const [forcedPositionY, setForcedPositionY] = useState<
-    CSSProperties | undefined
-  >();
-  const [contentHeightValue, setContentHeightValue] = useState<number>(0);
+  const [forcedHorizontalPositionStyles, setForcedHorizontalPositionStyles] =
+    useState<CSSProperties | undefined>();
+  const [forcedVerticalPositionStyles, setForcedVerticalPositionStyles] =
+    useState<CSSProperties | undefined>();
+
+  const [maxAllowedHeightPx, setMaxAllowedHeightPx] = useState<number>(0);
+  const [measuredContentHeightPx, setMeasuredContentHeightPx] =
+    useState<number>(0);
 
   const contentClasses = classNames(styles["zd-button__content"], className);
 
-  const contentInnerHeightPx = (() => {
-    const el = contentRef.current;
-    if (!el) {
-      return undefined;
+  const calculateMaxAllowedHeight = useCallback(() => {
+    setForcedVerticalPositionStyles(undefined);
+
+    if (contentWrapperRef.current && buttonContainerRef?.current) {
+      const searchInputHeightPx = searchInputRef?.current?.clientHeight ?? 0;
+
+      const { top, bottom } = getAvailableSpace(buttonContainerRef.current);
+
+      const availableTopPx = Math.max(
+        0,
+        top - searchInputHeightPx - edgeDistance
+      );
+      const availableBottomPx = Math.max(
+        0,
+        bottom - searchInputHeightPx - edgeDistance
+      );
+
+      let listItemHeightPx = cachedListItemHeightRef.current;
+
+      if (!listItemHeightPx) {
+        listItemHeightPx =
+          contentWrapperRef.current
+            ?.querySelector("li")
+            ?.getBoundingClientRect().height || null;
+
+        if (!listItemHeightPx) {
+          return;
+        }
+
+        cachedListItemHeightRef.current = listItemHeightPx;
+      }
+
+      const minimumApprovedHeightPx = listItemHeightPx * 2;
+
+      if (
+        availableTopPx < minimumApprovedHeightPx &&
+        availableBottomPx < minimumApprovedHeightPx
+      ) {
+        return;
+      }
+
+      if (
+        position.includes("top") &&
+        availableTopPx > minimumApprovedHeightPx
+      ) {
+        setMaxAllowedHeightPx(availableTopPx);
+        return;
+      }
+
+      if (
+        position.includes("top") &&
+        availableTopPx <= minimumApprovedHeightPx
+      ) {
+        setMaxAllowedHeightPx(availableBottomPx);
+        setForcedVerticalPositionStyles({ top: "100%", bottom: "auto" });
+        return;
+      }
+
+      if (
+        position.includes("bottom") &&
+        availableBottomPx > minimumApprovedHeightPx
+      ) {
+        setMaxAllowedHeightPx(availableBottomPx);
+        return;
+      }
+
+      if (
+        position.includes("bottom") &&
+        availableBottomPx <= minimumApprovedHeightPx
+      ) {
+        setMaxAllowedHeightPx(availableTopPx);
+        setForcedVerticalPositionStyles({ top: "auto", bottom: "100%" });
+        return;
+      }
+
+      setForcedVerticalPositionStyles(undefined);
+    }
+  }, [buttonContainerRef, searchInputRef, position]);
+
+  const preventFromOverflowX = useCallback(() => {
+    if (!buttonContainerRef?.current || !contentWrapperRef.current) {
+      return;
     }
 
-    const firstChild = el.firstElementChild as HTMLElement | null;
+    const buttonRect = buttonContainerRef.current.getBoundingClientRect();
+    const contentWidthPx =
+      contentWrapperRef.current.getBoundingClientRect().width;
+    const viewportWidthPx = window.innerWidth;
 
-    if (!firstChild) {
-      return undefined;
+    const isOverflowingLeft = buttonRect.left - contentWidthPx < 0;
+    const isOverflowingRight =
+      buttonRect.right + contentWidthPx > viewportWidthPx;
+
+    if (isOverflowingRight && !isOverflowingLeft) {
+      setForcedHorizontalPositionStyles({ right: 0, left: "auto" });
+      return;
     }
 
-    const borders = getElementVerticalBorders(el);
-    const h = firstChild.scrollHeight + borders;
+    if (!isOverflowingRight && isOverflowingLeft) {
+      setForcedHorizontalPositionStyles({ left: 0, right: "auto" });
+      return;
+    }
 
-    return Number.isFinite(h) ? `${h}px` : undefined;
-  })();
+    setForcedHorizontalPositionStyles(undefined);
+  }, [buttonContainerRef]);
+
+  const preventFromOverflowY = useCallback(() => {
+    if (!buttonContainerRef?.current || !contentWrapperRef.current) {
+      return;
+    }
+
+    const toggleButtonHeightPx = buttonContainerRef.current.scrollHeight;
+    const buttonDropdownPositionYPx =
+      buttonContainerRef.current.getBoundingClientRect().y;
+
+    const viewportHeightPx =
+      window.innerHeight || document.documentElement.clientHeight;
+
+    const isOverflowingTop =
+      buttonDropdownPositionYPx < contentWrapperRef.current.clientHeight;
+
+    const isOverflowingBottom =
+      buttonDropdownPositionYPx +
+        toggleButtonHeightPx +
+        contentWrapperRef.current.clientHeight >
+      viewportHeightPx;
+
+    if (!isOverflowingTop && !isOverflowingBottom && !maxAllowedHeightPx) {
+      calculateMaxAllowedHeight();
+      return;
+    }
+
+    if (!isOverflowingTop && isOverflowingBottom) {
+      setForcedVerticalPositionStyles({ top: "auto", bottom: "100%" });
+      calculateMaxAllowedHeight();
+      return;
+    }
+
+    if (isOverflowingTop && !isOverflowingBottom) {
+      setForcedVerticalPositionStyles({ top: "100%", bottom: "auto" });
+      calculateMaxAllowedHeight();
+      return;
+    }
+
+    if (isOverflowingTop && isOverflowingBottom) {
+      calculateMaxAllowedHeight();
+    }
+  }, [buttonContainerRef, calculateMaxAllowedHeight, maxAllowedHeightPx]);
+
+  const reCalcMeasuredContentHeight = useCallback(() => {
+    const contentWrapperElement = contentWrapperRef.current;
+    if (!contentWrapperElement) return;
+
+    const wrapperVerticalBordersPx = getElementVerticalBorders(
+      contentWrapperElement
+    );
+
+    const firstListItemElement = contentWrapperElement.querySelector(
+      "li"
+    ) as HTMLElement | null;
+    const isListRenderedInDom = !!firstListItemElement;
+
+    if (!isListRenderedInDom) {
+      cachedListItemHeightRef.current = null;
+    }
+
+    let calculatedContentHeightPx: number;
+
+    if (
+      isListRenderedInDom &&
+      typeof optionsCount === "number" &&
+      optionsCount > 0
+    ) {
+      let listItemHeightPx = cachedListItemHeightRef.current;
+
+      if (!listItemHeightPx) {
+        listItemHeightPx =
+          firstListItemElement.getBoundingClientRect().height || null;
+
+        if (listItemHeightPx) {
+          cachedListItemHeightRef.current = listItemHeightPx;
+        }
+      }
+
+      calculatedContentHeightPx = listItemHeightPx
+        ? listItemHeightPx * optionsCount + wrapperVerticalBordersPx
+        : wrapperVerticalBordersPx;
+    } else {
+      const firstChildElement =
+        contentWrapperElement.firstElementChild as HTMLElement | null;
+
+      if (!firstChildElement) {
+        calculatedContentHeightPx = wrapperVerticalBordersPx;
+      } else {
+        const previousInlineHeight = contentWrapperElement.style.height;
+        const previousInlineMaxHeight = contentWrapperElement.style.maxHeight;
+
+        contentWrapperElement.style.height = "auto";
+        contentWrapperElement.style.maxHeight = "none";
+        contentWrapperElement.offsetHeight;
+
+        const firstChildRectHeightPx =
+          firstChildElement.getBoundingClientRect().height || 0;
+
+        contentWrapperElement.style.height = previousInlineHeight;
+        contentWrapperElement.style.maxHeight = previousInlineMaxHeight;
+
+        const firstChildComputedStyles =
+          window.getComputedStyle(firstChildElement);
+        const marginTopPx =
+          parseFloat(firstChildComputedStyles.marginTop || "0") || 0;
+        const marginBottomPx =
+          parseFloat(firstChildComputedStyles.marginBottom || "0") || 0;
+
+        calculatedContentHeightPx =
+          firstChildRectHeightPx +
+          marginTopPx +
+          marginBottomPx +
+          wrapperVerticalBordersPx;
+      }
+    }
+
+    const firstChild = contentWrapperRef.current
+      ?.firstElementChild as HTMLElement | null;
+
+    const borders = firstChild ? getElementVerticalBorders(firstChild) : 0;
+
+    const clampedContentHeightPx =
+      maxAllowedHeightPx > 0
+        ? Math.min(calculatedContentHeightPx, maxAllowedHeightPx)
+        : calculatedContentHeightPx;
+
+    setMeasuredContentHeightPx(
+      Math.max(0, Math.round(clampedContentHeightPx + borders))
+    );
+  }, [optionsCount, maxAllowedHeightPx]);
+
+  useLayoutEffect(() => {
+    if (!isOpen) return;
+
+    preventFromOverflowX();
+    preventFromOverflowY();
+
+    requestAnimationFrame(() => {
+      preventFromOverflowX();
+      preventFromOverflowY();
+      reCalcMeasuredContentHeight();
+    });
+  }, [
+    isOpen,
+    preventFromOverflowX,
+    preventFromOverflowY,
+    reCalcMeasuredContentHeight,
+  ]);
+
+  useLayoutEffect(() => {
+    if (!isOpen) return;
+
+    cachedListItemHeightRef.current = null;
+    setForcedHorizontalPositionStyles(undefined);
+    setForcedVerticalPositionStyles(undefined);
+
+    let raf1 = 0;
+    let raf2 = 0;
+
+    raf1 = requestAnimationFrame(() => {
+      raf2 = requestAnimationFrame(() => {
+        preventFromOverflowX();
+        preventFromOverflowY();
+        reCalcMeasuredContentHeight();
+      });
+    });
+
+    return () => {
+      cancelAnimationFrame(raf1);
+      cancelAnimationFrame(raf2);
+    };
+  }, [
+    isOpen,
+    optionsCount,
+    preventFromOverflowX,
+    preventFromOverflowY,
+    reCalcMeasuredContentHeight,
+  ]);
+
+  useLayoutEffect(() => {
+    if (!isOpen) return;
+
+    let resizeTimeoutId: ReturnType<typeof setTimeout>;
+
+    const onResize = () => {
+      cachedListItemHeightRef.current = null;
+      setForcedHorizontalPositionStyles(undefined);
+      setForcedVerticalPositionStyles(undefined);
+
+      clearTimeout(resizeTimeoutId);
+      resizeTimeoutId = setTimeout(() => {
+        preventFromOverflowX();
+        preventFromOverflowY();
+        reCalcMeasuredContentHeight();
+      }, 50);
+    };
+
+    window.addEventListener("resize", onResize);
+
+    return () => {
+      clearTimeout(resizeTimeoutId);
+      window.removeEventListener("resize", onResize);
+    };
+  }, [
+    isOpen,
+    preventFromOverflowX,
+    preventFromOverflowY,
+    reCalcMeasuredContentHeight,
+  ]);
+
+  useLayoutEffect(() => {
+    if (!isOpen) return;
+    reCalcMeasuredContentHeight();
+  }, [
+    isOpen,
+    maxAllowedHeightPx,
+    forcedVerticalPositionStyles,
+    reCalcMeasuredContentHeight,
+  ]);
+
+  if (!isOpen) return null;
 
   const positionStyles: CSSProperties = {
     position: "absolute",
     ...(position.includes("top") ? { bottom: "100%" } : { top: "100%" }),
     ...(position.includes("left") ? { left: 0 } : { right: 0 }),
-    ...(forcedPositionX && { ...forcedPositionX }),
-    ...(forcedPositionY && { ...forcedPositionY }),
-    ...(contentHeightValue && {
-      maxHeight: `${contentHeightValue}px`,
-      ...(contentInnerHeightPx && { height: contentInnerHeightPx }),
+    ...(forcedHorizontalPositionStyles && {
+      ...forcedHorizontalPositionStyles,
     }),
+    ...(forcedVerticalPositionStyles && { ...forcedVerticalPositionStyles }),
+    ...(maxAllowedHeightPx && { maxHeight: `${maxAllowedHeightPx}px` }),
+    height: `${measuredContentHeightPx}px`,
+    overflowY: "auto",
   };
 
-  const calculateContentHeight = useCallback(() => {
-    setForcedPositionY(undefined);
-
-    if (contentRef?.current && buttonContainerRef?.current) {
-      const searchInputHeight = searchInputRef?.current?.clientHeight ?? 0;
-
-      const { top, bottom } = getAvailableSpace(buttonContainerRef.current);
-
-      const availableTop = Math.max(0, top - searchInputHeight - edgeDistance);
-      const availableBottom = Math.max(
-        0,
-        bottom - searchInputHeight - edgeDistance
-      );
-
-      let liElementHeight = liHeightRef.current;
-
-      if (!liElementHeight) {
-        liElementHeight =
-          contentRef.current?.querySelector("li")?.getBoundingClientRect()
-            .height || null;
-
-        if (!liElementHeight) {
-          return;
-        }
-
-        liHeightRef.current = liElementHeight;
-      }
-
-      const approvedHeight = liElementHeight * 2;
-
-      if (availableTop < approvedHeight && availableBottom < approvedHeight) {
-        return;
-      }
-
-      if (position.includes("top") && availableTop > approvedHeight) {
-        setContentHeightValue(availableTop);
-
-        return;
-      }
-
-      if (position.includes("top") && availableTop <= approvedHeight) {
-        setContentHeightValue(availableBottom);
-        setForcedPositionY({ top: "100%", bottom: "auto" });
-
-        return;
-      }
-
-      if (position.includes("bottom") && availableBottom > approvedHeight) {
-        setContentHeightValue(availableBottom);
-
-        return;
-      }
-
-      if (position.includes("bottom") && availableBottom <= approvedHeight) {
-        setContentHeightValue(availableTop);
-        setForcedPositionY({ top: "auto", bottom: "100%" });
-
-        return;
-      }
-
-      setForcedPositionY(undefined);
-    }
-  }, [buttonContainerRef, searchInputRef, position]);
-
-  const preventFromOverflowX = useCallback(() => {
-    if (!buttonContainerRef?.current || !contentRef.current) {
-      return;
-    }
-
-    const buttonRect = buttonContainerRef.current.getBoundingClientRect();
-    const contentWidth = contentRef.current.getBoundingClientRect().width;
-    const viewportWidth = window.innerWidth;
-
-    const isOverflowLeft = buttonRect.left - contentWidth < 0;
-    const isOverflowRight = buttonRect.right + contentWidth > viewportWidth;
-
-    if (isOverflowRight && !isOverflowLeft) {
-      setForcedPositionX({ right: 0, left: "auto" });
-
-      return;
-    }
-
-    if (!isOverflowRight && isOverflowLeft) {
-      setForcedPositionX({ left: 0, right: "auto" });
-
-      return;
-    }
-
-    setForcedPositionX(undefined);
-  }, [buttonContainerRef]);
-
-  const preventFromOverflowY = useCallback(() => {
-    if (!buttonContainerRef?.current || !contentRef.current) {
-      return;
-    }
-
-    const toggleButtonHeight = buttonContainerRef.current.scrollHeight;
-    const buttonDropdownPositionY =
-      buttonContainerRef.current.getBoundingClientRect().y;
-
-    const viewportHeight =
-      window.innerHeight || document.documentElement.clientHeight;
-
-    const isOverFlowTop =
-      buttonDropdownPositionY < contentRef.current.clientHeight;
-
-    const isOverFlowBottom =
-      buttonDropdownPositionY +
-        toggleButtonHeight +
-        contentRef.current.clientHeight >
-      viewportHeight;
-
-    if (!isOverFlowTop && !isOverFlowBottom && !contentHeightValue) {
-      calculateContentHeight();
-      return;
-    }
-
-    if (!isOverFlowTop && isOverFlowBottom) {
-      setForcedPositionY({ top: "auto", bottom: "100%" });
-
-      calculateContentHeight();
-      return;
-    }
-
-    if (isOverFlowTop && !isOverFlowBottom) {
-      setForcedPositionY({ top: "100%", bottom: "auto" });
-
-      calculateContentHeight();
-      return;
-    }
-
-    if (isOverFlowTop && isOverFlowBottom) {
-      calculateContentHeight();
-    }
-  }, [buttonContainerRef, calculateContentHeight, contentHeightValue]);
-
-  useLayoutEffect(() => {
-    if (isOpen) {
-      preventFromOverflowX();
-      preventFromOverflowY();
-    }
-  }, [isOpen, preventFromOverflowX, preventFromOverflowY]);
-
-  useLayoutEffect(() => {
-    if (isOpen) {
-      let timeId: ReturnType<typeof setTimeout>;
-
-      const onResize = () => {
-        liHeightRef.current = null;
-        setForcedPositionX(undefined);
-        setForcedPositionY(undefined);
-
-        clearTimeout(timeId);
-        timeId = setTimeout(() => {
-          preventFromOverflowX();
-          preventFromOverflowY();
-        }, 50);
-      };
-
-      window.addEventListener("resize", onResize);
-
-      return () => {
-        clearTimeout(timeId);
-        window.removeEventListener("resize", onResize);
-      };
-    }
-  }, [isOpen, preventFromOverflowX, preventFromOverflowY]);
-
-  if (!isOpen) {
-    return null;
-  }
-
   return (
-    <div className={contentClasses} style={positionStyles} ref={contentRef}>
+    <div
+      className={contentClasses}
+      style={positionStyles}
+      ref={contentWrapperRef}
+    >
       {children}
     </div>
   );

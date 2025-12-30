@@ -8,7 +8,7 @@ export interface ZDropButtonBaseProps {
   onToggle?: Function;
   onSelect?: Function;
   onHide?: Function;
-  onSearch?: (e: ChangeEvent<HTMLInputElement>) => void;
+  onSearch?: (value: string) => void;
   isOutsideClickActive?: boolean;
 }
 
@@ -32,7 +32,7 @@ export type ZDropButtonContextType = {
   isOpen?: boolean;
   onButtonToggleClick?: () => void;
   onItemSelect?: ZDropItemSelectHandler;
-  onSearch?: (e: ChangeEvent<HTMLInputElement>) => void;
+  onSearch?: (value: string) => void;
   buttonContainerRef?: RefObject<HTMLDivElement | null>;
   optionsRef?: RefObject<HTMLLIElement[]>;
   searchInputRef?: RefObject<HTMLInputElement | null>;
@@ -50,6 +50,7 @@ export interface ZDropButtonContentProps {
     | "bottom left"
     | "bottom right";
   className?: string;
+  optionsCount: number;
   children: ReactNode;
 }
 

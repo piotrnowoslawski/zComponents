@@ -138,6 +138,7 @@ export interface ZDropListAutoHeightWrapperProps {
   containerRef: RefObject<HTMLDivElement | null>;
   position?: "top" | "bottom";
   className?: string;
+  optionsCount: number;
   children: ReactNode;
 }
 

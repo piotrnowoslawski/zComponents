@@ -115,8 +115,7 @@ const SurvivorsNumbers: Story = {
     isSearchable: true,
     clear: "whenSearched",
     placeholder: "select a survivor...",
-    referenceElementClassName: styles.zDropStorybookWrapper,
-    listMaxHeightLimiter: 350,
+    referenceElementClassName: styles.zDropContent,
     styleClasses: {
       container: styles.zDropContainer,
       input: styles.zDropSurvivorsInput,

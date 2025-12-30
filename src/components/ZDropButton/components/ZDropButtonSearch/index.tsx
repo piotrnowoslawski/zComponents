@@ -33,7 +33,7 @@ const ZDropButtonSearch = (props: ZDropButtonSearchProps) => {
   );
 
   const onInputChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
-    onSearch?.(e);
+    onSearch?.(e.target.value);
   };
 
   const onSearchMouseEnter = () => {
@@ -75,9 +75,7 @@ const ZDropButtonSearch = (props: ZDropButtonSearchProps) => {
       searchInputRef.current.focus();
     }
 
-    onSearch?.({
-      target: { value: "" },
-    } as React.ChangeEvent<HTMLInputElement>);
+    onSearch?.("");
 
     setIsSearchActive(false);
   };

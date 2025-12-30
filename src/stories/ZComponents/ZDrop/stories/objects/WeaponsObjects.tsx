@@ -109,8 +109,7 @@ const WeaponsObjects: Story = {
     clear: "whenSearched",
     shouldReturnObjectOnChange: true,
     placeholder: "select a weapon...",
-    referenceElementClassName: styles.zDropStorybookWrapper,
-    listMaxHeightLimiter: 350,
+    referenceElementClassName: styles.zDropContent,
     styleClasses: {
       container: styles.zDropContainer,
       inputField: styles.zDropWeaponsInputField,

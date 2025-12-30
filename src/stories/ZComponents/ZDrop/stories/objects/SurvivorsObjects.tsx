@@ -109,8 +109,7 @@ const SurvivorsObjects: Story = {
     clear: "whenSearched",
     placeholder: "select a survivor...",
     shouldReturnObjectOnChange: true,
-    referenceElementClassName: styles.zDropStorybookWrapper,
-    listMaxHeightLimiter: 350,
+    referenceElementClassName: styles.zDropContent,
     styleClasses: {
       container: styles.zDropContainer,
       input: styles.zDropSurvivorsInput,

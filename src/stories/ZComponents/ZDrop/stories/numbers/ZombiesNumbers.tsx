@@ -185,8 +185,7 @@ const ZombiesNumbers: Story = {
     isSearchable: true,
     clear: "whenSearched",
     placeholder: "select a zombie to eliminate...",
-    referenceElementClassName: styles.zDropStorybookWrapper,
-    listMaxHeightLimiter: 350,
+    referenceElementClassName: styles.zDropContent,
     styleClasses: {
       container: styles.zDropContainer,
       inputField: styles.zDropZombiesInputField,

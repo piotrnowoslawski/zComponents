@@ -45,8 +45,8 @@ const BasicSurvivors: Story = {
       });
     };
 
-    const onSearch: ChangeEventHandler<HTMLInputElement> = (e) => {
-      const searchedValue = e.target.value.toLowerCase();
+    const onSearch = (value: string) => {
+      const searchedValue = value.toLowerCase();
 
       if (searchedValue === "") {
         setOptions(survivorOptions);
@@ -81,17 +81,26 @@ const BasicSurvivors: Story = {
           {...zDropButtonArgs}
         >
           <ZDropButton.Search placeholder="Search survivor..." />
-          <ZDropButton.Content position={position}>
+          <ZDropButton.Content
+            position={position}
+            optionsCount={options.length}
+          >
             <ZDropButton.List>
-              {options?.map((option, index) => (
-                <ZDropButton.Item
-                  key={option.id}
-                  title={option.label}
-                  index={index}
-                  Icon={<img src={option.iconPath} alt={option.label} />}
-                  isActive={selectedSurvivorIndex === index}
-                />
-              ))}
+              {options?.length > 0 &&
+                options?.map((option, index) => (
+                  <ZDropButton.Item
+                    key={option.id}
+                    title={option.label}
+                    index={index}
+                    Icon={<img src={option.iconPath} alt={option.label} />}
+                    isActive={selectedSurvivorIndex === index}
+                  />
+                ))}
+              {options?.length === 0 && (
+                <div className={styles.zDropButtonNoDataContent}>
+                  No survivors found.
+                </div>
+              )}
             </ZDropButton.List>
           </ZDropButton.Content>
         </ZDropButton>

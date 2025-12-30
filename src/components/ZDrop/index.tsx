@@ -599,6 +599,7 @@ const ZDrop = (props: ZDropProps) => {
           containerRef={containerRef}
           position={autoHeightPosition}
           className={styleClasses?.listWrapper}
+          optionsCount={optionsData.length}
         >
           {zDropList}
         </ZDropListAutoHeightWrapper>

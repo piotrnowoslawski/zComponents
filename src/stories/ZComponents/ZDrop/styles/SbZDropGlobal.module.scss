@@ -1,7 +1,7 @@
 .zDrop {
   &StorybookWrapper {
     display: flex;
-    height: 100vh;
+    min-height: 100vh;
     padding: 10px;
     background-repeat: no-repeat;
     background-size: cover;
@@ -14,9 +14,12 @@
 
   &Content {
     display: flex;
+    height: fit-content;
 
     @media (max-width: 999px) {
       flex-direction: column;
+      height: 100vh;
+      padding-bottom: 20px;
     }
 
     & > div:last-child {

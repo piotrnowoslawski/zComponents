@@ -62,6 +62,7 @@ const ZDropButton = (props: ZDropButtonProps) => {
       setIsOpen(false);
 
       onHide?.();
+      onSearch?.("");
     },
     {
       isActive: isOpen && isOutsideClickActive,

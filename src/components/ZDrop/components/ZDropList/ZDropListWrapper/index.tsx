@@ -6,9 +6,9 @@ import {
 import styles from "../../../styles/ZDrop.module.scss";
 import { ZDropListWrapperProps } from "integrations-react-hook-form";
 import { classNames } from "@helpers/classNames";
+import { getElementVerticalMargins } from "@helpers/getElementVerticalMargins";
+import { getElementVerticalBorders } from "@helpers/getElementVerticalBorders";
 
-const distanceGap = 0;
-const marginTop = 10;
 const minUsableHeight = 50;
 
 const calculateHeightForTop = (
@@ -70,12 +70,19 @@ const ZDropListWrapper = (props: ZDropListWrapperProps) => {
 
   const wrapperClasses = classNames(styles["zd__list-wrapper"], className);
 
+  const elementVerticalSpacing = listWrapperRef?.current
+    ? getElementVerticalMargins(listWrapperRef.current) +
+      getElementVerticalBorders(listWrapperRef.current)
+    : 0;
+
   const wrapperStyle: CSSProperties = {
     position: "absolute",
     height: `${finalHeight}px`,
     maxHeight: `${finalHeight}px`,
     ...(finalPosition === "top"
-      ? { top: `-${finalHeight + marginTop}px` }
+      ? {
+          top: `-${finalHeight + elementVerticalSpacing}px`,
+        }
       : { top: "100%" }),
   };
 
@@ -94,11 +101,22 @@ const ZDropListWrapper = (props: ZDropListWrapperProps) => {
       return;
     }
 
+    const elementVerticalSpacing = listWrapperRef?.current
+      ? getElementVerticalMargins(listWrapperRef.current) +
+        getElementVerticalBorders(listWrapperRef.current)
+      : 0;
+
     const anchorTop = getElementOffsetTop(anchor);
     const anchorBottom = anchorTop + anchor.offsetHeight;
 
-    const above = Math.max(anchorTop - reference.top - distanceGap, 0);
-    const below = Math.max(reference.bottom - anchorBottom - distanceGap, 0);
+    const above = Math.max(
+      anchorTop - reference.top - elementVerticalSpacing,
+      0
+    );
+    const below = Math.max(
+      reference.bottom - anchorBottom - elementVerticalSpacing,
+      0
+    );
 
     setMaxSpaceAbove(above);
     setMaxSpaceBelow(below);
@@ -111,6 +129,7 @@ const ZDropListWrapper = (props: ZDropListWrapperProps) => {
     if (!listWrapperRef?.current) {
       return;
     }
+
     setWrapperMaxSpaces(listWrapperRef.current, referenceElementClassName);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
