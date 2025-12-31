@@ -5,11 +5,14 @@ import ZDropButton from "@components/ZDropButton";
 import {
   ZDropButtonContentProps,
   ZDropButtonProps,
+  ZDropButtonSearchProps,
 } from "@components/ZDropButton/types/zDropButtonTypes";
 import { survivorOptions } from "../../staticData/zDropObjectsData";
-import { ChangeEventHandler, useState } from "react";
+import { useState } from "react";
 
-type ZDropButtonStoryProps = ZDropButtonProps & ZDropButtonContentProps;
+type ZDropButtonStoryProps = ZDropButtonProps &
+  ZDropButtonContentProps &
+  ZDropButtonSearchProps;
 
 type Story = StoryObj<ZDropButtonStoryProps>;
 
@@ -17,18 +20,25 @@ const BasicSurvivors: Story = {
   render: (args: ZDropButtonStoryProps) => {
     const survivor = useZDropStore((s) => s.selectedSurvivor);
 
-    const defaultSurvivorIndex = survivorOptions.findIndex(
+    const { shouldFocusOnOpen, position, options, ...zDropButtonArgs } = args;
+
+    const defaultSurvivorIndex = options.findIndex(
       (option) => option.stateId === survivor?.object?.stateId
     );
 
-    const [options, setOptions] = useState(survivorOptions);
+    const [optionsToDisplay, setOptionsToDisplay] = useState(options);
     const [selectedSurvivorIndex, setSelectedSurvivorIndex] = useState<any>(
-      defaultSurvivorIndex || null
+      defaultSurvivorIndex ?? null
     );
-    const onSelect = (selectedIndex: number) => {
-      setSelectedSurvivorIndex(selectedIndex);
 
-      const selectedSurvivor = survivorOptions[selectedIndex];
+    const onSelect = (selectedIndex: number) => {
+      const selectedSurvivor = optionsToDisplay[selectedIndex];
+
+      setSelectedSurvivorIndex(
+        options.findIndex(
+          (option) => option.stateId === selectedSurvivor?.stateId
+        )
+      );
 
       zDropStore.setState({
         selectedSurvivor: {
@@ -49,28 +59,27 @@ const BasicSurvivors: Story = {
       const searchedValue = value.toLowerCase();
 
       if (searchedValue === "") {
-        setOptions(survivorOptions);
+        setOptionsToDisplay(options);
         return;
       }
 
-      const filteredOptions = survivorOptions.filter((option) =>
+      const filteredOptions = options.filter((option) =>
         option.label.toLowerCase().includes(searchedValue)
       );
 
-      setOptions(filteredOptions);
+      setOptionsToDisplay(filteredOptions);
     };
-
-    const { position, ...zDropButtonArgs } = args;
 
     return (
       <div className={styles.zDropButtonStorybookWrapper}>
         <ZDropButton
+          options={optionsToDisplay}
           toggleIcon={
             <img
               src={
                 typeof selectedSurvivorIndex === "number" &&
                 selectedSurvivorIndex !== -1
-                  ? survivorOptions[selectedSurvivorIndex]?.iconPath
+                  ? options[selectedSurvivorIndex]?.iconPath
                   : "icons/survivors/z-stranger.webp"
               }
               alt="Selected Survivor"
@@ -80,14 +89,17 @@ const BasicSurvivors: Story = {
           onSearch={onSearch}
           {...zDropButtonArgs}
         >
-          <ZDropButton.Search placeholder="Search survivor..." />
+          <ZDropButton.Search
+            placeholder="Search survivor..."
+            shouldFocusOnOpen={shouldFocusOnOpen}
+          />
           <ZDropButton.Content
             position={position}
-            optionsCount={options.length}
+            optionsCount={optionsToDisplay.length}
           >
             <ZDropButton.List>
-              {options?.length > 0 &&
-                options?.map((option, index) => (
+              {optionsToDisplay?.length > 0 &&
+                optionsToDisplay?.map((option, index) => (
                   <ZDropButton.Item
                     key={option.id}
                     title={option.label}
@@ -96,7 +108,7 @@ const BasicSurvivors: Story = {
                     isActive={selectedSurvivorIndex === index}
                   />
                 ))}
-              {options?.length === 0 && (
+              {optionsToDisplay?.length === 0 && (
                 <div className={styles.zDropButtonNoDataContent}>
                   No survivors found.
                 </div>
@@ -112,6 +124,7 @@ const BasicSurvivors: Story = {
     title: "Select Survivor",
     className: styles.zDropButton,
     position: "bottom left",
+    shouldFocusOnOpen: true,
   },
   argTypes: {
     options: {

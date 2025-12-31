@@ -47,6 +47,7 @@ const ZDropButton = (props: ZDropButtonProps) => {
 
     onHide?.();
     onToggle?.();
+    onSearch?.("");
   };
 
   const onItemSelect: ZDropItemSelectHandler = (selectedItem) => {
@@ -54,6 +55,7 @@ const ZDropButton = (props: ZDropButtonProps) => {
 
     onHide?.();
     onSelect?.(selectedItem);
+    onSearch?.("");
   };
 
   useOutsideClose(

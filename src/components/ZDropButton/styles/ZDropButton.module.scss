@@ -19,8 +19,6 @@
 }
 
 .zd-button * {
-  padding: 0;
-  margin: 0;
   box-sizing: border-box;
 }
 
@@ -173,6 +171,8 @@
 .zd-button__list {
   width: 100%;
   min-width: 100%;
+  padding: 0;
+  margin: 0;
   list-style: none;
   overflow-y: auto;
 }

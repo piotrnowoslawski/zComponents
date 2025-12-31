@@ -113,4 +113,9 @@
       }
     }
   }
+
+  &NoDataContent {
+    padding: 10px 5px;
+    color: mget(global.$neonBlack, c0);
+  }
 }
