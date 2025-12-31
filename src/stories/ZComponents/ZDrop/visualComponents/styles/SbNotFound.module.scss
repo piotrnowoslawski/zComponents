@@ -3,10 +3,9 @@
 .sbNotFound {
   &Wrapper {
     width: 100%;
-    min-width: 316px;
+    min-width: 312px;
     max-width: 500px;
-    margin-top: 15px;
-    padding: 0;
+    padding: 20px;
 
     @media (max-width: 600px) {
       min-width: 100%;

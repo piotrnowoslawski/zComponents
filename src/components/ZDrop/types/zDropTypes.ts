@@ -147,6 +147,7 @@ export interface ZDropListWrapperProps {
   positionToReferenceElement?: "top" | "bottom";
   listMaxHeightLimiter?: number;
   className?: string;
+  optionsCount: number;
   children: ReactNode;
 }
 export interface ZDropListProps {

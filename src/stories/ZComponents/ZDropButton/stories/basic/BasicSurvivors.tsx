@@ -109,9 +109,9 @@ const BasicSurvivors: Story = {
                   />
                 ))}
               {optionsToDisplay?.length === 0 && (
-                <div className={styles.zDropButtonNoDataContent}>
+                <li className={styles.zDropButtonNoDataContent}>
                   No survivors found.
-                </div>
+                </li>
               )}
             </ZDropButton.List>
           </ZDropButton.Content>

@@ -589,6 +589,7 @@ const ZDrop = (props: ZDropProps) => {
           referenceElementClassName={referenceElementClassName}
           positionToReferenceElement={positionToReferenceElement}
           listMaxHeightLimiter={listMaxHeightLimiter}
+          optionsCount={optionsData.length}
           className={styleClasses?.listWrapper}
         >
           {zDropList}
