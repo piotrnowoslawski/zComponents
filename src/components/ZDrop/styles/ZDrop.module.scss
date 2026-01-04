@@ -377,6 +377,10 @@
   list-style: none;
 }
 
+.zd__no-data {
+  width: 100%;
+}
+
 :where(.zd__option) {
   cursor: pointer;
 }

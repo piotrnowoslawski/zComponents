@@ -16,7 +16,6 @@ import { getElementVerticalMargins } from "@helpers/getElementVerticalMargins";
 import { getElementVerticalBorders } from "@helpers/getElementVerticalBorders";
 
 const minUsableHeight = 50;
-const subPixelSafetyBufferPx = 2;
 
 const calculateHeightForTop = (
   scrollHeight: number,
@@ -61,7 +60,10 @@ const ZDropListWrapper = (props: ZDropListWrapperProps) => {
 
   const getWrapperVerticalSpacing = useCallback(() => {
     const wrapper = listWrapperRef.current;
-    if (!wrapper) return 0;
+
+    if (!wrapper) {
+      return 0;
+    }
 
     return (
       getElementVerticalMargins(wrapper) + getElementVerticalBorders(wrapper)
@@ -70,7 +72,10 @@ const ZDropListWrapper = (props: ZDropListWrapperProps) => {
 
   const getWrapperVerticalExtrasPx = useCallback(() => {
     const wrapper = listWrapperRef.current;
-    if (!wrapper) return 0;
+
+    if (!wrapper) {
+      return 0;
+    }
 
     const bordersPx = getElementVerticalBorders(wrapper);
     const cs = window.getComputedStyle(wrapper);
@@ -98,7 +103,10 @@ const ZDropListWrapper = (props: ZDropListWrapperProps) => {
 
   const measureContentHeightPx = useCallback(() => {
     const wrapper = listWrapperRef.current;
-    if (!wrapper) return 0;
+
+    if (!wrapper) {
+      return 0;
+    }
 
     const wrapperVerticalExtrasPx = getWrapperVerticalExtrasPx();
 
@@ -127,6 +135,7 @@ const ZDropListWrapper = (props: ZDropListWrapperProps) => {
     cachedListItemHeightRef.current = null;
 
     const firstChild = wrapper.firstElementChild as HTMLElement | null;
+
     if (!firstChild) {
       return wrapperVerticalExtrasPx;
     }
@@ -163,11 +172,13 @@ const ZDropListWrapper = (props: ZDropListWrapperProps) => {
 
   const updateMaxSpaces = useCallback(() => {
     const wrapper = listWrapperRef.current;
+
     if (!wrapper) {
       return;
     }
 
     const anchor = wrapper.parentElement;
+
     if (!anchor) {
       return;
     }
@@ -229,7 +240,9 @@ const ZDropListWrapper = (props: ZDropListWrapperProps) => {
   }, []);
 
   useLayoutEffect(() => {
-    if (!listWrapperRef.current) return;
+    if (!listWrapperRef.current) {
+      return;
+    }
 
     const previousCount = previousOptionsCountRef.current;
     previousOptionsCountRef.current = optionsCount;
@@ -266,8 +279,13 @@ const ZDropListWrapper = (props: ZDropListWrapperProps) => {
   }, [optionsCount, measureContentHeightPx]);
 
   useLayoutEffect(() => {
-    if (!listWrapperRef.current) return;
-    if (optionsCount > 0) return;
+    if (!listWrapperRef.current) {
+      return;
+    }
+
+    if (optionsCount > 0) {
+      return;
+    }
 
     let raf1 = 0;
     let raf2 = 0;
@@ -318,10 +336,7 @@ const ZDropListWrapper = (props: ZDropListWrapperProps) => {
   const finalHeight = finalPosition === "top" ? heightForTop : heightForBottom;
 
   useLayoutEffect(() => {
-    const nextHeightPx = Math.max(
-      0,
-      Math.ceil(finalHeight + subPixelSafetyBufferPx)
-    );
+    const nextHeightPx = Math.max(0, finalHeight);
 
     if (lastAnimatedHeightRef.current !== nextHeightPx) {
       lastAnimatedHeightRef.current = nextHeightPx;

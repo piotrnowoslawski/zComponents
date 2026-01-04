@@ -5,13 +5,16 @@ import {
   useLayoutEffect,
   CSSProperties,
 } from "react";
-import { getAvailableSpace } from "../../../../../helpers/getAvailableSpace";
 import { ZDropListAutoHeightWrapperProps } from "../../../types/zDropTypes";
 import styles from "../../../styles/ZDrop.module.scss";
 import { classNames } from "@helpers/classNames";
 import { getElementVerticalBorders } from "../../../../../helpers/getElementVerticalBorders";
 
 const edgeDistance = 10;
+
+const shallowEqualPos = (prev?: CSSProperties, next?: CSSProperties) =>
+  (prev?.top ?? undefined) === (next?.top ?? undefined) &&
+  (prev?.bottom ?? undefined) === (next?.bottom ?? undefined);
 
 const ZDropListAutoHeightWrapper = (props: ZDropListAutoHeightWrapperProps) => {
   const {
@@ -23,15 +26,12 @@ const ZDropListAutoHeightWrapper = (props: ZDropListAutoHeightWrapperProps) => {
   } = props;
 
   const wrapperRef = useRef<HTMLDivElement>(null);
-
   const cachedListItemHeightRef = useRef<number | null>(null);
 
   const [forcedPositionY, setForcedPositionY] = useState<
     CSSProperties | undefined
   >();
-
   const [maxAllowedHeightPx, setMaxAllowedHeightPx] = useState<number>(0);
-
   const [measuredContentHeightPx, setMeasuredContentHeightPx] =
     useState<number>(0);
 
@@ -41,188 +41,255 @@ const ZDropListAutoHeightWrapper = (props: ZDropListAutoHeightWrapperProps) => {
     className
   );
 
-  const calculateContentHeight = useCallback(() => {
-    setForcedPositionY(undefined);
+  const setForcedPositionYIfChanged = useCallback((next?: CSSProperties) => {
+    setForcedPositionY((prev) => (shallowEqualPos(prev, next) ? prev : next));
+  }, []);
 
-    if (wrapperRef.current && containerRef?.current) {
-      const { top, bottom } = getAvailableSpace(containerRef.current);
+  const setMaxAllowedHeightIfChanged = useCallback((next: number) => {
+    setMaxAllowedHeightPx((prev) => (prev === next ? prev : next));
+  }, []);
 
-      const availableTopPx = Math.max(0, top - edgeDistance);
-      const availableBottomPx = Math.max(0, bottom - edgeDistance);
+  const measureVisualContentHeightPx = useCallback(() => {
+    const el = wrapperRef.current;
 
-      let listItemHeightPx = cachedListItemHeightRef.current;
-
-      if (!listItemHeightPx) {
-        listItemHeightPx =
-          wrapperRef.current.querySelector("li")?.getBoundingClientRect()
-            .height || null;
-
-        if (!listItemHeightPx) return;
-
-        cachedListItemHeightRef.current = listItemHeightPx;
-      }
-
-      const minimumApprovedHeightPx = listItemHeightPx * 2;
-
-      if (
-        availableTopPx < minimumApprovedHeightPx &&
-        availableBottomPx < minimumApprovedHeightPx
-      ) {
-        return;
-      }
-
-      if (
-        position.includes("top") &&
-        availableTopPx > minimumApprovedHeightPx
-      ) {
-        setMaxAllowedHeightPx(availableTopPx);
-        return;
-      }
-
-      if (
-        position.includes("top") &&
-        availableTopPx <= minimumApprovedHeightPx
-      ) {
-        setMaxAllowedHeightPx(availableBottomPx);
-        setForcedPositionY({ top: "100%", bottom: "auto" });
-        return;
-      }
-
-      if (
-        position.includes("bottom") &&
-        availableBottomPx > minimumApprovedHeightPx
-      ) {
-        setMaxAllowedHeightPx(availableBottomPx);
-        return;
-      }
-
-      if (
-        position.includes("bottom") &&
-        availableBottomPx <= minimumApprovedHeightPx
-      ) {
-        setMaxAllowedHeightPx(availableTopPx);
-        setForcedPositionY({ top: "auto", bottom: "100%" });
-        return;
-      }
-
-      setForcedPositionY(undefined);
+    if (!el) {
+      return 0;
     }
-  }, [containerRef, position]);
+
+    const bordersPx = getElementVerticalBorders(el);
+
+    const prevHeight = el.style.height;
+    const prevMaxHeight = el.style.maxHeight;
+
+    el.style.height = "auto";
+    el.style.maxHeight = "none";
+    el.offsetHeight;
+
+    const wrapperRect = el.getBoundingClientRect();
+    const childrenElements = Array.from(el.children) as HTMLElement[];
+
+    if (childrenElements.length === 0) {
+      const height = (el.scrollHeight || 0) + bordersPx;
+
+      el.style.height = prevHeight;
+      el.style.maxHeight = prevMaxHeight;
+
+      return Math.max(0, height);
+    }
+
+    let minTop = Number.POSITIVE_INFINITY;
+    let maxBottom = Number.NEGATIVE_INFINITY;
+
+    let topMostEl: HTMLElement | null = null;
+    let bottomMostEl: HTMLElement | null = null;
+    let topMostTop = Number.POSITIVE_INFINITY;
+    let bottomMostBottom = Number.NEGATIVE_INFINITY;
+
+    for (const child of childrenElements) {
+      const rect = child.getBoundingClientRect();
+
+      const topRel = rect.top - wrapperRect.top;
+      const bottomRel = rect.bottom - wrapperRect.top;
+
+      if (topRel < minTop) {
+        minTop = topRel;
+      }
+
+      if (bottomRel > maxBottom) {
+        maxBottom = bottomRel;
+      }
+
+      if (rect.top < topMostTop) {
+        topMostTop = rect.top;
+        topMostEl = child;
+      }
+
+      if (rect.bottom > bottomMostBottom) {
+        bottomMostBottom = rect.bottom;
+        bottomMostEl = child;
+      }
+    }
+
+    let topMarginPx = 0;
+    let bottomMarginPx = 0;
+
+    if (topMostEl) {
+      const cs = window.getComputedStyle(topMostEl);
+      topMarginPx = parseFloat(cs.marginTop || "0") || 0;
+    }
+    if (bottomMostEl) {
+      const cs = window.getComputedStyle(bottomMostEl);
+      bottomMarginPx = parseFloat(cs.marginBottom || "0") || 0;
+    }
+
+    const unionHeight = Math.max(0, maxBottom - minTop);
+    const total = unionHeight + topMarginPx + bottomMarginPx + bordersPx;
+
+    el.style.height = prevHeight;
+    el.style.maxHeight = prevMaxHeight;
+
+    return Math.max(0, total);
+  }, []);
+
+  const calculateContentHeight = useCallback(() => {
+    if (!wrapperRef.current || !containerRef?.current) {
+      return;
+    }
+
+    const triggerRect = containerRef.current.getBoundingClientRect();
+    const viewportH =
+      window.innerHeight || document.documentElement.clientHeight;
+
+    const availableTopPx = Math.max(0, triggerRect.top - edgeDistance);
+    const availableBottomPx = Math.max(
+      0,
+      viewportH - triggerRect.bottom - edgeDistance
+    );
+
+    const preferTop = position.includes("top");
+
+    if (optionsCount === 0) {
+      const preferSpace = preferTop ? availableTopPx : availableBottomPx;
+      const otherSpace = preferTop ? availableBottomPx : availableTopPx;
+
+      const minUsable = 20;
+
+      if (preferSpace >= minUsable || otherSpace < minUsable) {
+        setMaxAllowedHeightIfChanged(preferSpace);
+        setForcedPositionYIfChanged(undefined);
+
+        return;
+      }
+
+      setMaxAllowedHeightIfChanged(otherSpace);
+      setForcedPositionYIfChanged(
+        preferTop
+          ? { top: "100%", bottom: "auto" }
+          : { top: "auto", bottom: "100%" }
+      );
+
+      return;
+    }
+
+    let liHeight = cachedListItemHeightRef.current;
+
+    if (!liHeight) {
+      const li = wrapperRef.current.querySelector("li") as HTMLElement | null;
+      const height = li?.getBoundingClientRect().height || 0;
+
+      if (height > 0) {
+        liHeight = height;
+        cachedListItemHeightRef.current = height;
+      }
+    }
+
+    if (!liHeight) {
+      setMaxAllowedHeightIfChanged(
+        preferTop ? availableTopPx : availableBottomPx
+      );
+      setForcedPositionYIfChanged(undefined);
+
+      return;
+    }
+
+    const min2 = liHeight * 2;
+    const isTopOk = availableTopPx >= min2;
+    const isBottomOk = availableBottomPx >= min2;
+
+    if (!isTopOk && !isBottomOk) {
+      setMaxAllowedHeightIfChanged(
+        preferTop ? availableTopPx : availableBottomPx
+      );
+      setForcedPositionYIfChanged(undefined);
+
+      return;
+    }
+
+    if (preferTop) {
+      if (isTopOk) {
+        setMaxAllowedHeightIfChanged(availableTopPx);
+        setForcedPositionYIfChanged(undefined);
+      } else {
+        setMaxAllowedHeightIfChanged(availableBottomPx);
+        setForcedPositionYIfChanged({ top: "100%", bottom: "auto" });
+      }
+    } else {
+      if (isBottomOk) {
+        setMaxAllowedHeightIfChanged(availableBottomPx);
+        setForcedPositionYIfChanged(undefined);
+      } else {
+        setMaxAllowedHeightIfChanged(availableTopPx);
+        setForcedPositionYIfChanged({ top: "auto", bottom: "100%" });
+      }
+    }
+  }, [
+    containerRef,
+    position,
+    optionsCount,
+    setForcedPositionYIfChanged,
+    setMaxAllowedHeightIfChanged,
+  ]);
 
   const preventFromOverflowY = useCallback(() => {
     if (!containerRef?.current || !wrapperRef.current) return;
-
-    const dropdownHeightPx = containerRef.current.scrollHeight;
-    const dropdownPositionYPx = containerRef.current.getBoundingClientRect().y;
-
-    const viewportHeightPx =
-      window.innerHeight || document.documentElement.clientHeight;
-
-    const isOverflowingTop =
-      dropdownPositionYPx < wrapperRef.current.scrollHeight;
-
-    const isOverflowingBottom =
-      dropdownPositionYPx + dropdownHeightPx + wrapperRef.current.clientHeight >
-      viewportHeightPx;
-
-    if (!isOverflowingTop && !isOverflowingBottom && !maxAllowedHeightPx) {
-      calculateContentHeight();
-      return;
-    }
-
-    if (!isOverflowingTop && isOverflowingBottom) {
-      setForcedPositionY({ top: "auto", bottom: "100%" });
-      calculateContentHeight();
-      return;
-    }
-
-    if (isOverflowingTop && !isOverflowingBottom) {
-      setForcedPositionY({ top: "100%", bottom: "auto" });
-      calculateContentHeight();
-      return;
-    }
-
-    if (isOverflowingTop && isOverflowingBottom) {
-      calculateContentHeight();
-    }
-  }, [containerRef, calculateContentHeight, maxAllowedHeightPx]);
+    calculateContentHeight();
+  }, [containerRef, calculateContentHeight]);
 
   const reCalcHeightFromContent = useCallback(() => {
     const wrapperElement = wrapperRef.current;
-    if (!wrapperElement) return;
 
-    const wrapperVerticalBordersPx = getElementVerticalBorders(wrapperElement);
-
-    const firstListItemElement = wrapperElement.querySelector(
-      "li"
-    ) as HTMLElement | null;
-
-    const isListRenderedInDom = !!firstListItemElement;
-
-    if (!isListRenderedInDom) {
-      cachedListItemHeightRef.current = null;
+    if (!wrapperElement) {
+      return;
     }
+
+    const bordersPx = getElementVerticalBorders(wrapperElement);
 
     let calculatedContentHeight: number;
 
-    if (isListRenderedInDom && optionsCount > 0) {
-      let listItemHeightPx = cachedListItemHeightRef.current;
+    if (optionsCount > 0) {
+      const firstLi = wrapperElement.querySelector("li") as HTMLElement | null;
 
-      if (!listItemHeightPx) {
-        listItemHeightPx =
-          firstListItemElement.getBoundingClientRect().height || null;
+      let liHeight = cachedListItemHeightRef.current;
 
-        if (listItemHeightPx) {
-          cachedListItemHeightRef.current = listItemHeightPx;
+      if (!liHeight && firstLi) {
+        const h = firstLi.getBoundingClientRect().height || 0;
+        if (h > 0) {
+          liHeight = h;
+          cachedListItemHeightRef.current = h;
         }
       }
 
-      calculatedContentHeight = listItemHeightPx
-        ? listItemHeightPx * optionsCount + wrapperVerticalBordersPx
-        : wrapperVerticalBordersPx;
-    } else {
-      const firstChildElement =
-        wrapperElement.firstElementChild as HTMLElement | null;
-
-      if (!firstChildElement) {
-        calculatedContentHeight = wrapperVerticalBordersPx;
+      if (liHeight && liHeight > 0) {
+        calculatedContentHeight = liHeight * optionsCount + bordersPx;
       } else {
-        const previousHeight = wrapperElement.style.height;
-        const previousMaxHeight = wrapperElement.style.maxHeight;
+        const prevHeight = wrapperElement.style.height;
+        const prevMaxHeight = wrapperElement.style.maxHeight;
 
         wrapperElement.style.height = "auto";
         wrapperElement.style.maxHeight = "none";
         wrapperElement.offsetHeight;
 
-        const firstChildRectHeight =
-          firstChildElement.getBoundingClientRect().height || 0;
-
-        wrapperElement.style.height = previousHeight;
-        wrapperElement.style.maxHeight = previousMaxHeight;
-
-        const firstChildComputedStyles =
-          window.getComputedStyle(firstChildElement);
-
-        const marginTopPx =
-          parseFloat(firstChildComputedStyles.marginTop || "0") || 0;
-        const marginBottomPx =
-          parseFloat(firstChildComputedStyles.marginBottom || "0") || 0;
-
         calculatedContentHeight =
-          firstChildRectHeight +
-          marginTopPx +
-          marginBottomPx +
-          wrapperVerticalBordersPx;
+          (wrapperElement.scrollHeight || 0) + bordersPx;
+
+        wrapperElement.style.height = prevHeight;
+        wrapperElement.style.maxHeight = prevMaxHeight;
       }
+    } else {
+      calculatedContentHeight = measureVisualContentHeightPx();
     }
 
-    const clampedContentHeight =
+    const clamped =
       maxAllowedHeightPx > 0
         ? Math.min(calculatedContentHeight, maxAllowedHeightPx)
         : calculatedContentHeight;
 
-    setMeasuredContentHeightPx(Math.max(0, Math.round(clampedContentHeight)));
-  }, [optionsCount, maxAllowedHeightPx]);
+    setMeasuredContentHeightPx((prev) => {
+      const next = Math.max(0, Math.round(clamped));
+
+      return prev === next ? prev : next;
+    });
+  }, [optionsCount, maxAllowedHeightPx, measureVisualContentHeightPx]);
 
   useLayoutEffect(() => {
     preventFromOverflowY();
@@ -234,56 +301,69 @@ const ZDropListAutoHeightWrapper = (props: ZDropListAutoHeightWrapperProps) => {
 
   useLayoutEffect(() => {
     cachedListItemHeightRef.current = null;
-    setForcedPositionY(undefined);
 
     let raf1 = 0;
     let raf2 = 0;
+    let raf3 = 0;
+
+    preventFromOverflowY();
+    reCalcHeightFromContent();
 
     raf1 = requestAnimationFrame(() => {
+      preventFromOverflowY();
+      reCalcHeightFromContent();
+
       raf2 = requestAnimationFrame(() => {
         preventFromOverflowY();
         reCalcHeightFromContent();
+
+        raf3 = requestAnimationFrame(() => {
+          preventFromOverflowY();
+          reCalcHeightFromContent();
+        });
       });
     });
 
     return () => {
       cancelAnimationFrame(raf1);
       cancelAnimationFrame(raf2);
+      cancelAnimationFrame(raf3);
     };
   }, [optionsCount, preventFromOverflowY, reCalcHeightFromContent]);
 
   useLayoutEffect(() => {
-    let resizeTimeoutId: ReturnType<typeof setTimeout>;
+    let rafId = 0;
 
     const onResize = () => {
       cachedListItemHeightRef.current = null;
-      setForcedPositionY(undefined);
 
-      clearTimeout(resizeTimeoutId);
-      resizeTimeoutId = setTimeout(() => {
+      cancelAnimationFrame(rafId);
+      rafId = requestAnimationFrame(() => {
         preventFromOverflowY();
         reCalcHeightFromContent();
-      }, 50);
+      });
     };
 
     window.addEventListener("resize", onResize);
 
     return () => {
-      clearTimeout(resizeTimeoutId);
+      cancelAnimationFrame(rafId);
       window.removeEventListener("resize", onResize);
     };
   }, [preventFromOverflowY, reCalcHeightFromContent]);
 
-  useLayoutEffect(() => {
-    reCalcHeightFromContent();
-  }, [maxAllowedHeightPx, forcedPositionY, reCalcHeightFromContent]);
+  const baseY: CSSProperties = position.includes("top")
+    ? { top: "auto", bottom: "100%" }
+    : { top: "100%", bottom: "auto" };
 
   const positionStyles: CSSProperties = {
     position: "absolute",
-    ...(position.includes("top") ? { bottom: "100%" } : { top: "100%" }),
-    ...(forcedPositionY && { ...forcedPositionY }),
-    ...(maxAllowedHeightPx && { maxHeight: `${maxAllowedHeightPx}px` }),
-    height: `${measuredContentHeightPx}px`,
+    ...baseY,
+    ...(forcedPositionY ?? {}),
+    ...(maxAllowedHeightPx ? { maxHeight: `${maxAllowedHeightPx}px` } : {}),
+    ...(measuredContentHeightPx > 0
+      ? { height: `${measuredContentHeightPx}px` }
+      : {}),
     overflowY: "auto",
   };
 

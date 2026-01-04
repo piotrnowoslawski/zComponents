@@ -75,4 +75,13 @@
       font-weight: 700;
     }
   }
+
+  .zd__no-data {
+    padding: 0;
+  }
+
+  &NoDataContent {
+    padding: 10px;
+    background-color: var(--zd-color-background-transp);
+  }
 }

@@ -142,7 +142,11 @@ const ReactHookFormIntegration: Story = {
       list: styles.zDropHookFormList,
       listItem: styles.zDropHookFormListItem,
     },
-    noDataContent: <div>No survivors found</div>,
+    noDataContent: (
+      <div className={styles.zDropHookFormNoDataContent}>
+        No survivors found
+      </div>
+    ),
     isAutoHeightEnabled: true,
     autoHeightPosition: "bottom",
   },
@@ -212,10 +216,6 @@ const ReactHookFormIntegration: Story = {
       control: false,
     },
     isAutoHeightEnabled: {
-      table: { disable: true },
-      control: false,
-    },
-    autoHeightPosition: {
       table: { disable: true },
       control: false,
     },
