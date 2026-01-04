@@ -5,10 +5,7 @@ import {
   useLayoutEffect,
   useCallback,
 } from "react";
-import {
-  getElementOffsetTop,
-  getReferenceElementDimensions,
-} from "../../../helpers/getElementOffsetTop";
+import { getReferenceElementDimensions } from "../../../helpers/getElementOffsetTop";
 import styles from "../../../styles/ZDrop.module.scss";
 import { ZDropListWrapperProps } from "integrations-react-hook-form";
 import { classNames } from "@helpers/classNames";
@@ -101,6 +98,84 @@ const ZDropListWrapper = (props: ZDropListWrapperProps) => {
     setAnimatedWrapperHeightPx(0);
   }, [optionsCount]);
 
+  const measureVisualContentHeightPx = useCallback(
+    (wrapper: HTMLDivElement, wrapperVerticalExtrasPx: number) => {
+      const prevHeight = wrapper.style.height;
+      const prevMaxHeight = wrapper.style.maxHeight;
+
+      wrapper.style.height = "auto";
+      wrapper.style.maxHeight = "none";
+      wrapper.offsetHeight;
+
+      const wrapperRect = wrapper.getBoundingClientRect();
+      const childrenElements = Array.from(wrapper.children) as HTMLElement[];
+
+      if (childrenElements.length === 0) {
+        const height = (wrapper.scrollHeight || 0) + wrapperVerticalExtrasPx;
+        wrapper.style.height = prevHeight;
+        wrapper.style.maxHeight = prevMaxHeight;
+
+        return Math.max(0, height);
+      }
+
+      let minTop = Number.POSITIVE_INFINITY;
+      let maxBottom = Number.NEGATIVE_INFINITY;
+
+      let topMostEl: HTMLElement | null = null;
+      let bottomMostEl: HTMLElement | null = null;
+      let topMostTop = Number.POSITIVE_INFINITY;
+      let bottomMostBottom = Number.NEGATIVE_INFINITY;
+
+      for (const child of childrenElements) {
+        const rect = child.getBoundingClientRect();
+
+        const topRel = rect.top - wrapperRect.top;
+        const bottomRel = rect.bottom - wrapperRect.top;
+
+        if (topRel < minTop) {
+          minTop = topRel;
+        }
+
+        if (bottomRel > maxBottom) {
+          maxBottom = bottomRel;
+        }
+
+        if (rect.top < topMostTop) {
+          topMostTop = rect.top;
+          topMostEl = child;
+        }
+
+        if (rect.bottom > bottomMostBottom) {
+          bottomMostBottom = rect.bottom;
+          bottomMostEl = child;
+        }
+      }
+
+      let topMarginPx = 0;
+      let bottomMarginPx = 0;
+
+      if (topMostEl) {
+        const cs = window.getComputedStyle(topMostEl);
+        topMarginPx = parseFloat(cs.marginTop || "0") || 0;
+      }
+
+      if (bottomMostEl) {
+        const cs = window.getComputedStyle(bottomMostEl);
+        bottomMarginPx = parseFloat(cs.marginBottom || "0") || 0;
+      }
+
+      const unionHeight = Math.max(0, maxBottom - minTop);
+      const total =
+        unionHeight + topMarginPx + bottomMarginPx + wrapperVerticalExtrasPx;
+
+      wrapper.style.height = prevHeight;
+      wrapper.style.maxHeight = prevMaxHeight;
+
+      return Math.max(0, total);
+    },
+    []
+  );
+
   const measureContentHeightPx = useCallback(() => {
     const wrapper = listWrapperRef.current;
 
@@ -134,41 +209,8 @@ const ZDropListWrapper = (props: ZDropListWrapperProps) => {
 
     cachedListItemHeightRef.current = null;
 
-    const firstChild = wrapper.firstElementChild as HTMLElement | null;
-
-    if (!firstChild) {
-      return wrapperVerticalExtrasPx;
-    }
-
-    const previousInlineHeight = wrapper.style.height;
-    const previousInlineMaxHeight = wrapper.style.maxHeight;
-
-    wrapper.style.height = "auto";
-    wrapper.style.maxHeight = "none";
-    wrapper.offsetHeight;
-
-    let contentRawPx = 0;
-
-    const childScrollHeight = firstChild.scrollHeight || 0;
-    if (childScrollHeight > 0) {
-      contentRawPx = childScrollHeight;
-    } else {
-      const rectHeightPx = firstChild.getBoundingClientRect().height || 0;
-
-      const childComputedStyles = window.getComputedStyle(firstChild);
-      const childMarginTopPx =
-        parseFloat(childComputedStyles.marginTop || "0") || 0;
-      const childMarginBottomPx =
-        parseFloat(childComputedStyles.marginBottom || "0") || 0;
-
-      contentRawPx = rectHeightPx + childMarginTopPx + childMarginBottomPx;
-    }
-
-    wrapper.style.height = previousInlineHeight;
-    wrapper.style.maxHeight = previousInlineMaxHeight;
-
-    return Math.max(0, contentRawPx + wrapperVerticalExtrasPx);
-  }, [optionsCount, getWrapperVerticalExtrasPx]);
+    return measureVisualContentHeightPx(wrapper, wrapperVerticalExtrasPx);
+  }, [optionsCount, getWrapperVerticalExtrasPx, measureVisualContentHeightPx]);
 
   const updateMaxSpaces = useCallback(() => {
     const wrapper = listWrapperRef.current;
@@ -177,7 +219,7 @@ const ZDropListWrapper = (props: ZDropListWrapperProps) => {
       return;
     }
 
-    const anchor = wrapper.parentElement;
+    const anchor = wrapper.parentElement as HTMLElement | null;
 
     if (!anchor) {
       return;
@@ -194,15 +236,37 @@ const ZDropListWrapper = (props: ZDropListWrapperProps) => {
 
     const elementVerticalSpacing = getWrapperVerticalSpacing();
 
-    const anchorTop = getElementOffsetTop(anchor);
-    const anchorBottom = anchorTop + anchor.offsetHeight;
+    const anchorRect = anchor.getBoundingClientRect();
+
+    const referenceEl = referenceElementClassName
+      ? (anchor.closest(`.${referenceElementClassName}`) as HTMLElement | null)
+      : null;
+
+    const refRect = referenceEl
+      ? referenceEl.getBoundingClientRect()
+      : ({ top: reference.top, bottom: reference.bottom } as DOMRect);
+
+    let refContentTop = refRect.top;
+    let refContentBottom = refRect.bottom;
+
+    if (referenceEl) {
+      const cs = window.getComputedStyle(referenceEl);
+      const paddingTop = parseFloat(cs.paddingTop || "0") || 0;
+      const paddingBottom = parseFloat(cs.paddingBottom || "0") || 0;
+      const borderTop = parseFloat(cs.borderTopWidth || "0") || 0;
+      const borderBottom = parseFloat(cs.borderBottomWidth || "0") || 0;
+
+      refContentTop = refRect.top + borderTop + paddingTop;
+      refContentBottom = refRect.bottom - borderBottom - paddingBottom;
+    }
 
     const above = Math.max(
-      anchorTop - reference.top - elementVerticalSpacing,
+      anchorRect.top - refContentTop - elementVerticalSpacing,
       0
     );
+
     const below = Math.max(
-      reference.bottom - anchorBottom - elementVerticalSpacing,
+      refContentBottom - anchorRect.bottom - elementVerticalSpacing,
       0
     );
 
@@ -210,11 +274,69 @@ const ZDropListWrapper = (props: ZDropListWrapperProps) => {
       lastAboveRef.current = above;
       setMaxSpaceAbove(above);
     }
+
     if (lastBelowRef.current !== below) {
       lastBelowRef.current = below;
       setMaxSpaceBelow(below);
     }
   }, [referenceElementClassName, getWrapperVerticalSpacing]);
+
+  const runMeasureTick = useCallback(() => {
+    updateMaxSpaces();
+
+    const next = measureContentHeightPx();
+
+    if (lastMeasuredContentHeightRef.current !== next) {
+      lastMeasuredContentHeightRef.current = next;
+      setMeasuredContentHeight(next);
+    }
+  }, [updateMaxSpaces, measureContentHeightPx]);
+
+  useLayoutEffect(() => {
+    const wrapper = listWrapperRef.current;
+
+    if (!wrapper) {
+      return;
+    }
+
+    let rafId = 0;
+
+    const schedule = () => {
+      cancelAnimationFrame(rafId);
+      rafId = requestAnimationFrame(() => {
+        runMeasureTick();
+      });
+    };
+
+    let ro: ResizeObserver | null = null;
+    let mo: MutationObserver | null = null;
+
+    const attachResizeObserver = () => {
+      ro?.disconnect();
+      ro = new ResizeObserver(() => schedule());
+
+      const target =
+        (wrapper.firstElementChild as HTMLElement | null) ?? wrapper;
+
+      ro.observe(target);
+    };
+
+    mo = new MutationObserver(() => {
+      attachResizeObserver();
+      schedule();
+    });
+
+    mo.observe(wrapper, { childList: true, subtree: true });
+
+    attachResizeObserver();
+    schedule();
+
+    return () => {
+      cancelAnimationFrame(rafId);
+      ro?.disconnect();
+      mo?.disconnect();
+    };
+  }, [runMeasureTick]);
 
   useLayoutEffect(() => {
     resetLocalCachesAndGuards();
@@ -224,11 +346,7 @@ const ZDropListWrapper = (props: ZDropListWrapperProps) => {
 
     raf1 = requestAnimationFrame(() => {
       raf2 = requestAnimationFrame(() => {
-        updateMaxSpaces();
-
-        const nextHeight = measureContentHeightPx();
-        lastMeasuredContentHeightRef.current = nextHeight;
-        setMeasuredContentHeight(nextHeight);
+        runMeasureTick();
       });
     });
 
@@ -255,28 +373,26 @@ const ZDropListWrapper = (props: ZDropListWrapperProps) => {
 
     let raf1 = 0;
     let raf2 = 0;
-
-    const runMeasure = () => {
-      const next = measureContentHeightPx();
-      if (lastMeasuredContentHeightRef.current !== next) {
-        lastMeasuredContentHeightRef.current = next;
-        setMeasuredContentHeight(next);
-      }
-    };
+    let raf3 = 0;
 
     raf1 = requestAnimationFrame(() => {
-      if (isSwitchingBetweenListAndFallback) {
-        raf2 = requestAnimationFrame(() => runMeasure());
-      } else {
-        runMeasure();
-      }
+      runMeasureTick();
+
+      raf2 = requestAnimationFrame(() => {
+        if (isSwitchingBetweenListAndFallback) runMeasureTick();
+
+        raf3 = requestAnimationFrame(() => {
+          if (isSwitchingBetweenListAndFallback) runMeasureTick();
+        });
+      });
     });
 
     return () => {
       cancelAnimationFrame(raf1);
       cancelAnimationFrame(raf2);
+      cancelAnimationFrame(raf3);
     };
-  }, [optionsCount, measureContentHeightPx]);
+  }, [optionsCount, runMeasureTick]);
 
   useLayoutEffect(() => {
     if (!listWrapperRef.current) {
@@ -292,11 +408,7 @@ const ZDropListWrapper = (props: ZDropListWrapperProps) => {
 
     raf1 = requestAnimationFrame(() => {
       raf2 = requestAnimationFrame(() => {
-        const next = measureContentHeightPx();
-        if (lastMeasuredContentHeightRef.current !== next) {
-          lastMeasuredContentHeightRef.current = next;
-          setMeasuredContentHeight(next);
-        }
+        runMeasureTick();
       });
     });
 
@@ -304,7 +416,7 @@ const ZDropListWrapper = (props: ZDropListWrapperProps) => {
       cancelAnimationFrame(raf1);
       cancelAnimationFrame(raf2);
     };
-  }, [children, optionsCount, measureContentHeightPx]);
+  }, [children, optionsCount, runMeasureTick]);
 
   const hasTopSpace = maxSpaceAbove > minUsableHeight;
   const hasBottomSpace = maxSpaceBelow > minUsableHeight;
