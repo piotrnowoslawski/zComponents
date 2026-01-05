@@ -55,6 +55,35 @@ const ZDropListWrapper = (props: ZDropListWrapperProps) => {
 
   const wrapperClasses = classNames(styles["zd__list-wrapper"], className);
 
+  const cssGapPxRef = useRef<number>(0);
+  const [cssGapPx, setCssGapPx] = useState<number>(0);
+
+  const readCssGapPx = useCallback(() => {
+    const wrapper = listWrapperRef.current;
+
+    if (!wrapper) {
+      return;
+    }
+
+    const prevInlineMT = wrapper.style.marginTop;
+    const prevInlineMB = wrapper.style.marginBottom;
+
+    wrapper.style.marginTop = "";
+    wrapper.style.marginBottom = "";
+
+    const cs = window.getComputedStyle(wrapper);
+    const mt = parseFloat(cs.marginTop || "0") || 0;
+
+    wrapper.style.marginTop = prevInlineMT;
+    wrapper.style.marginBottom = prevInlineMB;
+
+    if (cssGapPxRef.current !== mt) {
+      cssGapPxRef.current = mt;
+
+      setCssGapPx(mt);
+    }
+  }, []);
+
   const getWrapperVerticalSpacing = useCallback(() => {
     const wrapper = listWrapperRef.current;
 
@@ -235,7 +264,6 @@ const ZDropListWrapper = (props: ZDropListWrapperProps) => {
     }
 
     const elementVerticalSpacing = getWrapperVerticalSpacing();
-
     const anchorRect = anchor.getBoundingClientRect();
 
     const referenceEl = referenceElementClassName
@@ -272,11 +300,13 @@ const ZDropListWrapper = (props: ZDropListWrapperProps) => {
 
     if (lastAboveRef.current !== above) {
       lastAboveRef.current = above;
+
       setMaxSpaceAbove(above);
     }
 
     if (lastBelowRef.current !== below) {
       lastBelowRef.current = below;
+
       setMaxSpaceBelow(below);
     }
   }, [referenceElementClassName, getWrapperVerticalSpacing]);
@@ -285,12 +315,15 @@ const ZDropListWrapper = (props: ZDropListWrapperProps) => {
     updateMaxSpaces();
 
     const next = measureContentHeightPx();
-
     if (lastMeasuredContentHeightRef.current !== next) {
       lastMeasuredContentHeightRef.current = next;
       setMeasuredContentHeight(next);
     }
   }, [updateMaxSpaces, measureContentHeightPx]);
+
+  useLayoutEffect(() => {
+    readCssGapPx();
+  }, [readCssGapPx, className]);
 
   useLayoutEffect(() => {
     const wrapper = listWrapperRef.current;
@@ -452,19 +485,25 @@ const ZDropListWrapper = (props: ZDropListWrapperProps) => {
 
     if (lastAnimatedHeightRef.current !== nextHeightPx) {
       lastAnimatedHeightRef.current = nextHeightPx;
+
       setAnimatedWrapperHeightPx(nextHeightPx);
     }
   }, [finalHeight]);
-
-  const elementVerticalSpacing = getWrapperVerticalSpacing();
 
   const wrapperStyle: CSSProperties = {
     position: "absolute",
     height: `${animatedWrapperHeightPx}px`,
     maxHeight: `${animatedWrapperHeightPx}px`,
+
     ...(finalPosition === "top"
-      ? { top: `-${animatedWrapperHeightPx + elementVerticalSpacing}px` }
-      : { top: "100%" }),
+      ? { top: "auto", bottom: "100%" }
+      : { bottom: "auto", top: "100%" }),
+
+    ...(finalPosition === "top"
+      ? { marginTop: 0, marginBottom: `${cssGapPx}px` }
+      : { marginBottom: 0, marginTop: `${cssGapPx}px` }),
+
+    transitionProperty: "height, max-height",
   };
 
   return (
