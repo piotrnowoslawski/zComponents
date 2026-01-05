@@ -1,6 +1,6 @@
 {
   "name": "zcomponents-ui",
-  "version": "1.5.14",
+  "version": "1.5.15",
   "description": "Zero-dependency React UI components library with dropdowns and a dual-thumb range slider. Written in TypeScript, styled with SCSS, fully customizable and React Hook Form ready.",
   "keywords": [
     "react",
