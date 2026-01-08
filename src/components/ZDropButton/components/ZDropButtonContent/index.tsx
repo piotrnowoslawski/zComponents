@@ -337,9 +337,9 @@ const ZDropButtonContent = (props: ZDropButtonContentProps) => {
       return;
     }
 
-    const min2 = liHeight * 2;
-    const isTopOk = availableTopPx >= min2;
-    const isBottomOk = availableBottomPx >= min2;
+    const min = liHeight * 1;
+    const isTopOk = availableTopPx >= min;
+    const isBottomOk = availableBottomPx >= min;
 
     if (!isTopOk && !isBottomOk) {
       setMaxHIfChanged(preferTop ? availableTopPx : availableBottomPx);
