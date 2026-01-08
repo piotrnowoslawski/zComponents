@@ -89,7 +89,6 @@ const onChange = (selected: any) => {
 };
 
 const SurvivorsStrings: Story = {
-  name: "Array of strings - fully custom",
   render: (args: ZDropProps) => {
     const survivor = useZDropStore((s) => s.selectedSurvivor);
 

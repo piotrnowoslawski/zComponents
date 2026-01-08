@@ -15,6 +15,7 @@ import BasicZombiesObjects from "./ZComponents/ZDrop/stories/basic/BasicZombiesO
 import BasicZombiesCustomSearch from "./ZComponents/ZDrop/stories/basic/BasicCustomSearch";
 import ReactHookFormIntegration from "./ZComponents/ZDrop/stories/integrations/ReactHookForm/ReactHookFormIntegration";
 import ReactHookFormIntegrationMultiple from "./ZComponents/ZDrop/stories/integrations/ReactHookForm/ReactHookFormIntegrationMultiple";
+import WrapperWithAutoHeight from "./ZComponents/ZDrop/stories/position/WrapperWithAutoHeight";
 
 const meta: Meta<typeof ZDrop> = {
   title: "Components/ZDrop",
@@ -99,4 +100,9 @@ export const ReactHookFormIntegrationStory = {
 export const ReactHookFormIntegrationMultipleStory = {
   ...ReactHookFormIntegrationMultiple,
   name: "Integration - React Hook Form Multiple",
+};
+
+export const WrapperWithAutoHeightStory = {
+  ...WrapperWithAutoHeight,
+  name: "Positioning - Wrapper with auto height",
 };

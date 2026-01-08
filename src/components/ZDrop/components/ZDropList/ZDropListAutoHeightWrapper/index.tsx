@@ -35,6 +35,10 @@ const ZDropListAutoHeightWrapper = (props: ZDropListAutoHeightWrapperProps) => {
   const [measuredContentHeightPx, setMeasuredContentHeightPx] =
     useState<number>(0);
 
+  // NEW: keep a single "gap" value and mirror it on flip (margin-top <-> margin-bottom)
+  const cssGapPxRef = useRef<number>(0);
+  const [cssGapPx, setCssGapPx] = useState<number>(0);
+
   const wrapperClasses = classNames(
     styles["zd__list"],
     styles["zd__list-auto-height-wrapper"],
@@ -47,6 +51,30 @@ const ZDropListAutoHeightWrapper = (props: ZDropListAutoHeightWrapperProps) => {
 
   const setMaxAllowedHeightIfChanged = useCallback((next: number) => {
     setMaxAllowedHeightPx((prev) => (prev === next ? prev : next));
+  }, []);
+
+  // NEW: read "gap" from CSS (we treat margin-top as the canonical gap)
+  const readCssGapPx = useCallback(() => {
+    const el = wrapperRef.current;
+    if (!el) return;
+
+    const prevInlineMT = el.style.marginTop;
+    const prevInlineMB = el.style.marginBottom;
+
+    // temporarily remove inline margins to read CSS-defined spacing
+    el.style.marginTop = "";
+    el.style.marginBottom = "";
+
+    const cs = window.getComputedStyle(el);
+    const mt = parseFloat(cs.marginTop || "0") || 0;
+
+    el.style.marginTop = prevInlineMT;
+    el.style.marginBottom = prevInlineMB;
+
+    if (cssGapPxRef.current !== mt) {
+      cssGapPxRef.current = mt;
+      setCssGapPx(mt);
+    }
   }, []);
 
   const measureVisualContentHeightPx = useCallback(() => {
@@ -292,6 +320,10 @@ const ZDropListAutoHeightWrapper = (props: ZDropListAutoHeightWrapperProps) => {
   }, [optionsCount, maxAllowedHeightPx, measureVisualContentHeightPx]);
 
   useLayoutEffect(() => {
+    readCssGapPx();
+  }, [readCssGapPx, className]);
+
+  useLayoutEffect(() => {
     preventFromOverflowY();
     requestAnimationFrame(() => {
       preventFromOverflowY();
@@ -352,14 +384,82 @@ const ZDropListAutoHeightWrapper = (props: ZDropListAutoHeightWrapperProps) => {
     };
   }, [preventFromOverflowY, reCalcHeightFromContent]);
 
+  useLayoutEffect(() => {
+    let isCancelled = false;
+
+    const wrapper = wrapperRef.current;
+
+    if (wrapper) {
+      if (optionsCount === 0) {
+        const img = wrapper.querySelector("img") as HTMLImageElement | null;
+
+        if (img) {
+          const remeasure = () => {
+            if (isCancelled) {
+              return;
+            }
+
+            requestAnimationFrame(() => {
+              if (!isCancelled) {
+                preventFromOverflowY();
+                reCalcHeightFromContent();
+              }
+            });
+          };
+
+          if (img.complete) {
+            remeasure();
+          }
+
+          img.addEventListener("load", remeasure);
+          img.addEventListener("error", remeasure);
+
+          if ("decode" in img) {
+            (img as any)
+              .decode()
+              .then(() => remeasure())
+              .catch(() => {});
+          }
+
+          return () => {
+            isCancelled = true;
+            img.removeEventListener("load", remeasure);
+            img.removeEventListener("error", remeasure);
+          };
+        }
+      }
+    }
+
+    return () => {
+      isCancelled = true;
+    };
+  }, [optionsCount, preventFromOverflowY, reCalcHeightFromContent]);
+
   const baseY: CSSProperties = position.includes("top")
     ? { top: "auto", bottom: "100%" }
     : { top: "100%", bottom: "auto" };
+
+  // Decide final orientation after applying forcedPositionY
+  const mergedTop =
+    (forcedPositionY?.top as any) !== undefined
+      ? forcedPositionY?.top
+      : baseY.top;
+  const mergedBottom =
+    (forcedPositionY?.bottom as any) !== undefined
+      ? forcedPositionY?.bottom
+      : baseY.bottom;
+
+  const isFinalTop = mergedBottom === "100%";
 
   const positionStyles: CSSProperties = {
     position: "absolute",
     ...baseY,
     ...(forcedPositionY ?? {}),
+
+    ...(isFinalTop
+      ? { marginTop: 0, marginBottom: `${cssGapPx}px` }
+      : { marginBottom: 0, marginTop: `${cssGapPx}px` }),
+
     ...(maxAllowedHeightPx ? { maxHeight: `${maxAllowedHeightPx}px` } : {}),
     ...(measuredContentHeightPx > 0
       ? { height: `${measuredContentHeightPx}px` }

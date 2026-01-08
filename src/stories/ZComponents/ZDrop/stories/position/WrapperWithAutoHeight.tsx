@@ -5,44 +5,42 @@ import styles from "@stories/styles/StorybookTheme.module.scss";
 import { classNames } from "@helpers/classNames";
 import { useZDropStore, zDropStore } from "@stories/store/zDropStore";
 import {
-  weaponOptionsStrings,
-  weaponNames,
+  survivorOptionsStrings,
+  survivorNames,
 } from "@stories/staticData/strings/ZDropStringsData";
-import { removeOrReplaceCharacter } from "@stories/helpers/removeOrReplaceCharacter";
-import StoriesVisualComponents from "@stories/ZComponents/ZDrop/visualComponents";
 import SbNotFound from "../../visualComponents/SbNotFound";
 
 type Story = StoryObj<ZDropProps>;
 
-const optionRendererClasses = (isSelected: boolean) =>
-  classNames({
-    [styles.zDropWeaponsListItemSelected]: isSelected,
+const toggleRendererClasses = (isListVisible: boolean) =>
+  classNames(styles.zDropSurvivorsExpandToggleIcon, {
+    [styles["zDropSurvivorsExpandToggleIcon--active"]]: isListVisible,
   });
 
-const toggleRendererClasses = (isListVisible: boolean) =>
-  classNames(styles.zDropWeaponsExpandToggleIcon, {
-    [styles["zDropWeaponsExpandToggleIcon--active"]]: isListVisible,
+const optionRendererClasses = (isSelected: boolean) =>
+  classNames({
+    [styles.zDropSurvivorsListItemSelected]: isSelected,
   });
 
 const valueRenderer = (selected: any) => (
-  <div className={styles.zDropWeaponsInputValueContent}>
+  <div className={styles.zDropSurvivorsInputValueContent}>
     <img
-      src={`icons/weapons/z-${selected.option}.webp`}
-      alt={`Weapon ${selected.option}`}
+      src={`icons/survivors/z-${selected.option as string}.webp`}
+      alt={`Survivor ${selected.option}`}
     />
     <button
-      className={styles.zDropWeaponsInputValueRemoveButton}
+      className={styles.zDropSurvivorsInputValueRemoveButton}
       onClick={selected.onRemove}
     >
-      <img src={`icons/weapons/z-swords.webp`} alt="Remove Sword Icon" />
+      <img src={"icons/weapons/z-swords.webp"} alt="Remove Sword Icon" />
     </button>
   </div>
 );
 
 const optionRenderer = (option: any, isSelected: boolean) => (
   <div className={optionRendererClasses(isSelected)}>
-    <span>{removeOrReplaceCharacter(option as string, "-", " ")}</span>
-    <img src={`icons/weapons/z-${option}.webp`} alt={`Weapon ${option}`} />
+    <span>{option as string}</span>
+    <img src={`icons/survivors/z-${option}.webp`} alt={`Survivor ${option}`} />
   </div>
 );
 
@@ -51,7 +49,7 @@ const expandToggleRenderer = (isListVisible: boolean) => {
     <img
       style={{ pointerEvents: "none" }}
       className={toggleRendererClasses(isListVisible)}
-      src={"icons/weapons/z-hand-sword.webp"}
+      src={`icons/weapons/z-hand-sword.webp`}
       alt="Toggle Sword Icon"
     />
   );
@@ -59,7 +57,7 @@ const expandToggleRenderer = (isListVisible: boolean) => {
 
 const clearIcon = (
   <img
-    className={styles.zDropWeaponsClearButtonIcon}
+    className={styles.zDropSurvivorsClearButtonIcon}
     src={`icons/weapons/z-chainsaws.webp`}
     alt="Remove Chainsaws Icon"
   />
@@ -67,39 +65,38 @@ const clearIcon = (
 
 const noDataContent = <SbNotFound />;
 
-const onchange = (selected: any) => {
+const onChange = (selected: any) => {
   const isSelected =
     selected !== null && selected !== undefined && selected !== "";
 
   zDropStore.setState({
-    selectedWeapon: {
-      number: isSelected ? weaponNames[selected] : null,
+    selectedSurvivor: {
+      number: isSelected ? survivorNames[selected] : null,
       string: isSelected ? selected : "",
       object: isSelected
         ? {
-            stateId: weaponNames[selected],
+            stateId: survivorNames[selected],
             value: selected,
-            label: removeOrReplaceCharacter(selected, "-", " ").replace(
-              /\b\w/g,
-              (c) => c.toUpperCase()
-            ),
+            label: selected
+              ?.charAt(0)
+              ?.toUpperCase()
+              ?.concat(selected?.slice(1)),
           }
         : null,
     },
   });
 };
 
-const WeaponsStrings: Story = {
+const WrapperWithAutoHeight: Story = {
   render: (args: ZDropProps) => {
-    const weapon = useZDropStore((s) => s.selectedWeapon);
+    const survivor = useZDropStore((s) => s.selectedSurvivor);
 
     return (
       <div className={styles.zDropStorybookWrapper}>
-        <div className={styles.zDropContent}>
-          <StoriesVisualComponents storyType="strings" posterType="weapons" />
+        <div className={styles.zDropContentAutoHeight}>
           <ZDrop
-            value={weapon?.string}
-            onChange={(selected: any) => onchange(selected)}
+            value={survivor?.string}
+            onChange={(selected: any) => onChange(selected)}
             {...args}
           />
         </div>
@@ -107,23 +104,27 @@ const WeaponsStrings: Story = {
     );
   },
   args: {
-    options: weaponOptionsStrings,
-    name: "weaponsStrings",
+    options: survivorOptionsStrings,
+    name: "survivorsStrings",
     isMultiple: false,
     isDisabled: false,
     isSearchable: true,
     clear: "whenSearched",
-    placeholder: "select a weapon...",
-    referenceElementClassName: styles.zDropContent,
+    placeholder: "select a survivor...",
+    isAutoHeightEnabled: true,
+    autoHeightPosition: "bottom",
     styleClasses: {
       container: styles.zDropContainer,
-      inputField: styles.zDropWeaponsInputField,
-      inputValue: styles.zDropWeaponsInputValue,
-      clearButton: styles.zDropWeaponsClearButton,
-      expandToggle: styles.zDropWeaponsExpandToggle,
-      listWrapper: styles.zDropWeaponsListWrapper,
-      list: styles.zDropWeaponsList,
-      listItem: styles.zDropWeaponsListItem,
+      input: styles.zDropSurvivorsInput,
+      label: styles.zDropSurvivorsLabel,
+      inputField: styles.zDropSurvivorsInputField,
+      inputValue: styles.zDropSurvivorsInputValue,
+      clearButton: styles.zDropSurvivorsClearButton,
+      expandToggle: styles.zDropSurvivorsExpandToggle,
+      removeButton: styles.zDropSurvivorsRemoveButton,
+      listWrapper: styles.zDropSurvivorsListWrapper,
+      list: styles.zDropSurvivorsList,
+      listItem: styles.zDropSurvivorsListItem,
       noData: styles.sbNotFoundWrapper,
     },
     valueRenderer,
@@ -196,4 +197,4 @@ const WeaponsStrings: Story = {
   },
 };
 
-export default WeaponsStrings;
+export default WrapperWithAutoHeight;

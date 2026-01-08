@@ -348,10 +348,7 @@ const ZDropListWrapper = (props: ZDropListWrapperProps) => {
       ro?.disconnect();
       ro = new ResizeObserver(() => schedule());
 
-      const target =
-        (wrapper.firstElementChild as HTMLElement | null) ?? wrapper;
-
-      ro.observe(target);
+      ro.observe(wrapper);
     };
 
     mo = new MutationObserver(() => {
@@ -450,6 +447,56 @@ const ZDropListWrapper = (props: ZDropListWrapperProps) => {
       cancelAnimationFrame(raf2);
     };
   }, [children, optionsCount, runMeasureTick]);
+
+  useLayoutEffect(() => {
+    let isCancelled = false;
+
+    const wrapper = listWrapperRef.current;
+
+    if (wrapper) {
+      if (optionsCount === 0) {
+        const img = wrapper.querySelector("img") as HTMLImageElement | null;
+
+        if (img) {
+          const remeasure = () => {
+            if (isCancelled) {
+              return;
+            }
+
+            requestAnimationFrame(() => {
+              if (!isCancelled) {
+                runMeasureTick();
+              }
+            });
+          };
+
+          if (img.complete) {
+            remeasure();
+          }
+
+          img.addEventListener("load", remeasure);
+          img.addEventListener("error", remeasure);
+
+          if ("decode" in img) {
+            (img as any)
+              .decode()
+              .then(() => remeasure())
+              .catch(() => {});
+          }
+
+          return () => {
+            isCancelled = true;
+            img.removeEventListener("load", remeasure);
+            img.removeEventListener("error", remeasure);
+          };
+        }
+      }
+    }
+
+    return () => {
+      isCancelled = true;
+    };
+  }, [optionsCount, runMeasureTick]);
 
   const hasTopSpace = maxSpaceAbove > minUsableHeight;
   const hasBottomSpace = maxSpaceBelow > minUsableHeight;

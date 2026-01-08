@@ -36,6 +36,18 @@
     }
   }
 
+  &ContentAutoHeight {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100vh;
+
+    .zDropContainer {
+      transform: translateY(-50%);
+    }
+  }
+
   &Container {
     position: relative;
     z-index: 2;

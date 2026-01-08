@@ -25,7 +25,7 @@ export const ZDropList = (props: ZDropListProps) => {
 
   const dropdownListClasses = classNames(
     {
-      [styles["zd__list"]]: !isAutoHeightEnabled,
+      [styles["zd__list"]]: !isAutoHeightEnabled && !isListWrapperEnabled,
       [styles["zd__list--auto-height-enabled"]]: isAutoHeightEnabled,
       [styles["zd__list--reference-wrapper-enabled"]]: isListWrapperEnabled,
     },

@@ -95,7 +95,6 @@ const onchange = (selected: string[]) => {
 };
 
 const ZombiesStrings: Story = {
-  name: "Array of strings - multiple",
   render: (args: ZDropProps) => {
     const survivor = useZDropStore((s) => s.selectedSurvivor);
     const weapon = useZDropStore((s) => s.selectedWeapon);
